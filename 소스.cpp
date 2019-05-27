@@ -7,4 +7,5 @@ int main()
 	std::cout << *p << std::endl;
 	std::cout << "깃허브 사용어캐하냐" << std::endl;
 	std::cout << "tnwjdkdsnkls" << std::endl;
+std::cout<<"알리알리"
 }
