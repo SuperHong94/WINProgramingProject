@@ -46,13 +46,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	PAINTSTRUCT	ps;
 	HDC hDC;
+	static Boom boom;
+	boom.leftBottom.x = 200;
+	boom.leftBottom.y = 200;
+	boom.width = 100;
+	boom.boomShape = MyCircle;
 
 	//메시지 처리하기
 	switch (uMsg) {
 	case WM_CREATE:
+		SetTimer(hWnd, 1, 100, NULL);
 		break;
+	case WM_TIMER:
+		switch (wParam) {
+		case 1:
+			sj_Timer++;
+		}
 	case WM_PAINT:
 		hDC = BeginPaint(hWnd, &ps);
+		SunBoom_SJ(hDC, boom);
 		EndPaint(hWnd, &ps);
 		break;
 	case WM_DESTROY:
