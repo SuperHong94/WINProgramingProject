@@ -61,7 +61,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		switch (wParam) {
 		case 1:
 			sj_Timer++;
+			break;
 		}
+		InvalidateRect(hWnd, NULL, TRUE);
 	case WM_PAINT:
 		hDC = BeginPaint(hWnd, &ps);
 		SunBoom_SJ(hDC, boom);
