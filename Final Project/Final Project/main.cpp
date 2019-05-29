@@ -45,12 +45,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdPa
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	PAINTSTRUCT	ps;
-	HDC hDC;
-	static Boom boom;
-	boom.leftBottom.x = 200;
-	boom.leftBottom.y = 200;
-	boom.width = 100;
-	boom.boomShape = MyCircle;
+	static HDC hDC;
+	static Boom* boom;
+	//int boomCount = 0;  //폭탄 카운트는 0;
 
 	//메시지 처리하기
 	switch (uMsg) {
@@ -61,12 +58,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		switch (wParam) {
 		case 1:
 			sj_Timer++;
+			if (sj_Timer == 10) {
+				boom = new Boom[0];
+
+			}
+			if (sj_Timer >= 130) {
+				SunBoom_SJ(hDC, boom);
+				boom->rightTop.x += 10;
+				boom->rightTop.y += 10;
+			}
+			else if (sj_Timer >= 200) {
+				delete boom;
+				boom = NULL;
+			}
 			break;
 		}
 		InvalidateRect(hWnd, NULL, TRUE);
 	case WM_PAINT:
 		hDC = BeginPaint(hWnd, &ps);
-		SunBoom_SJ(hDC, boom);
+
 		EndPaint(hWnd, &ps);
 		break;
 	case WM_DESTROY:

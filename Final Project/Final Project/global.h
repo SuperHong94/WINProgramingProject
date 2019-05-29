@@ -15,4 +15,4 @@ struct Boom
 	int width;
 
 };
-void SunBoom_SJ(HDC hDC,Boom boom);
+void SunBoom_SJ(HDC hDC,Boom* boom);

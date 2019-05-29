@@ -1,12 +1,16 @@
 #include "global.h"
 int sj_Timer = 0;
-void SunBoom_SJ(HDC hDC, Boom boom)
+void SunBoom_SJ(HDC hDC, Boom* boom)
 {
 	HBRUSH hBrush;
-	int x = boom.leftBottom.x;
-	int y = boom.leftBottom.y;
-	int width = boom.width;
-	switch (boom.boomShape) {
+	boom->leftBottom.x = 200;
+	boom->leftBottom.y = 200;
+	boom->width = 100;
+	boom->boomShape = MyCircle;
+	int x = boom->leftBottom.x;
+	int y = boom->leftBottom.y;
+	int width = boom->width;
+	switch (boom->boomShape) {
 	case MyCircle:
 		hBrush = CreateSolidBrush(RGB(255, 0, 0));
 		(HBRUSH)SelectObject(hDC, hBrush);
