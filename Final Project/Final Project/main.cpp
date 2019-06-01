@@ -52,7 +52,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	//메시지 처리하기
 	switch (uMsg) {
 	case WM_CREATE:
+		soundSetup(); //사운드 셋업
 		SetTimer(hWnd, 1, 100, NULL);
+		playSound(Perion);//페리온 재생
 		break;
 	case WM_TIMER:
 		switch (wParam) {

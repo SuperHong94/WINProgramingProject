@@ -1,11 +1,16 @@
 #pragma once
 #include <Windows.h>
 #include <iostream>
+#include "SoundManager.h"
 extern int sj_Timer;
 enum EShape {
 	MyCircle=0,
 	MyRectangle,
 	MyTriangle
+};
+enum EBoomStatus {
+	noExplosion=0,
+	Explosion   //폭발 상태일 때 충돌 체크 할 꺼임
 };
 struct Boom
 {

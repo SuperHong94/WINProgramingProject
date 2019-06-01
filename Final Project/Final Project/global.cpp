@@ -2,7 +2,7 @@
 int sj_Timer = 0;
 void SunBoom_SJ(HDC hDC, Boom* boom)
 {
-	HBRUSH hBrush;
+	HBRUSH hBrush;  //»ö±ò
 	boom->leftBottom.x = 200;
 	boom->leftBottom.y = 200;
 	boom->width = 100;
