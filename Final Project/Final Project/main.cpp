@@ -66,10 +66,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		Player_1.right = 430;
 
 		circleboom.boomAnimaition = 0;
-		circleboom.leftBottom.x = 50;
-		circleboom.leftBottom.y = 150;
-		circleboom.rightTop.x = 150;
-		circleboom.rightTop.y = 50;
+		circleboom.leftTop.x = 50;
+		circleboom.leftTop.y = 50;
+		circleboom.rightBottom.x = 150;
+		circleboom.rightBottom.y = 150;
+
+		laserboom.boomAnimaition = 0;
+		laserboom.leftTop.x = 0;
+		laserboom.leftTop.y = 150;
+		laserboom.rightBottom.x = 800;
+		laserboom.rightBottom.y = 50;
 
 
 		soundSetup(); //사운드 셋업
@@ -113,8 +119,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 			if (sj_Timer >= 130) {
 				SunBoom_SJ(hDC, boom);
-				boom->rightTop.x += 10;
-				boom->rightTop.y += 10;
+				boom->rightBottom.x += 10;
+				boom->rightBottom.y += 10;
 			}
 			else if (sj_Timer >= 200) {
 				delete boom;
@@ -127,26 +133,27 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 			if (circleboom.boomAnimaition == 0)
 			{
-				circleboom.leftBottom.x = 50;
-				circleboom.leftBottom.y = 150;
-				circleboom.rightTop.x = 150;
-				circleboom.rightTop.y = 50;
+				circleboom.leftTop.x = 50;
+				circleboom.leftTop.y = 50;
+				circleboom.rightBottom.x = 150;
+				circleboom.rightBottom.y = 150;
 			}
 
 			else if (circleboom.boomAnimaition == 1)
 			{
-				circleboom.leftBottom.x -= 25;
-				circleboom.rightTop.y -= 25;
-				circleboom.rightTop.x += 25;
-				circleboom.leftBottom.y += 25;
+				circleboom.leftTop.x -= 25;
+				circleboom.leftTop.y -= 25;
+				circleboom.rightBottom.x += 25;
+				circleboom.rightBottom.y += 25;
 			}
 
 			else if (circleboom.boomAnimaition == 3)
 			{
-				circleboom.leftBottom.x += 50;
-				circleboom.rightTop.y += 50;
-				circleboom.rightTop.x -= 50;
-				circleboom.leftBottom.y -= 50;
+				circleboom.leftTop.x += 50;
+				circleboom.leftTop.y += 50;
+
+				circleboom.rightBottom.x -= 50;
+				circleboom.rightBottom.y -= 50;
 			}
 
 			
