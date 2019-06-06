@@ -50,6 +50,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	PAINTSTRUCT ps;
 
 	static Boom* boom;
+	static Boom circleboom;
+	static Boom laserboom;
 
 	//int boomCount = 0;  //폭탄 카운트는 0;
 
@@ -63,9 +65,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		Player_1.left = 380;
 		Player_1.right = 430;
 
+		circleboom.boomAnimaition = 0;
+		circleboom.leftBottom.x = 50;
+		circleboom.leftBottom.y = 150;
+		circleboom.rightTop.x = 150;
+		circleboom.rightTop.y = 50;
+
+
 		soundSetup(); //사운드 셋업
 		SetTimer(hWnd, 0, 10, NULL);
 		SetTimer(hWnd, 1, 100, NULL);
+		SetTimer(hWnd, 2, 1000, NULL);
 		playSound(Perion);//페리온 재생
 		break;
 	case WM_TIMER:
@@ -111,6 +121,36 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				boom = NULL;
 			}
 			break;
+		case 2:
+			++circleboom.boomAnimaition;
+			circleboom.boomAnimaition %= 5;
+
+			if (circleboom.boomAnimaition == 0)
+			{
+				circleboom.leftBottom.x = 50;
+				circleboom.leftBottom.y = 150;
+				circleboom.rightTop.x = 150;
+				circleboom.rightTop.y = 50;
+			}
+
+			else if (circleboom.boomAnimaition == 1)
+			{
+				circleboom.leftBottom.x -= 25;
+				circleboom.rightTop.y -= 25;
+				circleboom.rightTop.x += 25;
+				circleboom.leftBottom.y += 25;
+			}
+
+			else if (circleboom.boomAnimaition == 3)
+			{
+				circleboom.leftBottom.x += 50;
+				circleboom.rightTop.y += 50;
+				circleboom.rightTop.x -= 50;
+				circleboom.leftBottom.y -= 50;
+			}
+
+			
+			break;
 		}
 		InvalidateRect(hWnd, NULL, FALSE);
 	case WM_PAINT:
@@ -122,6 +162,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		PatBlt(hDC, 0, 0, bufferRT.right, bufferRT.bottom, WHITENESS);
 
 		Rectangle(hDC, Player_1.left, Player_1.top, Player_1.right, Player_1.bottom);
+		CircleBoom(hDC, circleboom);
 
 		GetClientRect(hWnd, &bufferRT);
 		BitBlt(MemDC, 0, 0, bufferRT.right, bufferRT.bottom, hDC, 0, 0, SRCCOPY);
