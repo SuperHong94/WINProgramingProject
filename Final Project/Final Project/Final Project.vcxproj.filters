@@ -32,6 +32,7 @@
     <ClInclude Include="SoundManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="resource.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -45,5 +46,7 @@
     <Image Include="Player_1.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
+=======
+>>>>>>> parent of b1bc396... 진짜 뭐가문제냐
   </ItemGroup>
 </Project>

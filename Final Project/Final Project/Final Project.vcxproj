@@ -148,15 +148,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="global.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="SoundManager.h" />
   </ItemGroup>
+<<<<<<< HEAD
   <ItemGroup>
     <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Player_1.bmp" />
   </ItemGroup>
+=======
+>>>>>>> parent of b1bc396... 진짜 뭐가문제냐
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -1,16 +1,12 @@
 #pragma once
 #include <Windows.h>
 #include <iostream>
+<<<<<<< HEAD
 #include "SoundManager.h"
+=======
+>>>>>>> parent of b1bc396... 진짜 뭐가문제냐
 #include "SoundManager.h"
-#include "resource.h"
 extern int sj_Timer;
-extern RECT Player_1;
-extern RECT WindowSize;
-enum ETURNN {
-	turn0 = 0,
-	turn1, turn2, turn3, turn4, turn5
-};
 enum EShape {
 	MyCircle=0,
 	MyRectangle,
@@ -26,16 +22,21 @@ enum EBoomStatus {
 struct Boom
 {
 	EShape boomShape;
+<<<<<<< HEAD
 	POINT leftTop;
 	POINT rightBottom;
 	Boom* nextBoom;
 
+=======
+	POINT rightTop;
+	POINT leftBottom;
+>>>>>>> parent of b1bc396... 진짜 뭐가문제냐
 	int boomAnimaition;
 	int width;
-	int height;
 
 	void setPosition();
 };
+<<<<<<< HEAD
 
 void addBoom(Boom* head, EShape tmp_boomShape, int tmpLeftTop_x, int tmpLeftTop_y, int tmpRightBottom_x, int tmpRightBottom_y);
 void deleteBoom(Boom* target);
@@ -50,3 +51,8 @@ bool Crush(RECT*, int LX, int LY, int RX, int RY); //�浹!!LY�� LeftY�� �ظ� ply
 void DrawDie(RECT*);
 void Doughnut(HDC hDC, HINSTANCE hInstance);
 void SunBoom_SJ(HDC hDC, Boom boom);
+=======
+void SunBoom_SJ(HDC hDC,Boom* boom);
+void CircleBoom(HDC hDC, Boom boom);
+void LaserBoom(HDC hDC, Boom boom);
+>>>>>>> parent of b1bc396... 진짜 뭐가문제냐

@@ -1,10 +1,9 @@
 #include "global.h"
 
 int sj_Timer = 0;
-RECT Player_1;
-RECT WindowSize;
-bool Crush(RECT* player, int LX, int LY, int RX, int RY) //Ãæµ¹!!LY´Â LeftYÀÇ ÁØ¸» plyaerÇÏ°í ÆøÅºÀÇ ¹üÀ§¶û Ãæµ¹Ã³¸®ÇÒ²¨ÀÓ  //Ãæµ¹ÇÏ¸é true¸®ÅÏ
+void SunBoom_SJ(HDC hDC, Boom* boom)
 {
+<<<<<<< HEAD
 	int playerWidth = (player->bottom - player->top) / 2;  //³ôÀÌ±¸ÇØ¼­ 2·Î ³ª´® playerÁßÁ¡ÁÂÇ¥±¸ÇÒ·Á°íÇÏ´Â°ÅÀÓ
 	int playerX = player->left + playerWidth; //playerÀÇ ÁßÁ¡XÁÂÇ¥
 	int playerY = player->top + playerWidth;      //plyaerÀÇ ÁßÁ¡ YÁÂÇ¥
@@ -41,47 +40,28 @@ void addBoom(Boom* head, EShape tmp_boomShape, int tmpLeftTop_x, int tmpLeftTop_
 void SunBoom_SJ(HDC hDC, Boom boom)
 {
 
+=======
+>>>>>>> parent of b1bc396... ì§„ì§œ ë­ê°€ë¬¸ì œëƒ
 	HBRUSH hBrush;  //»ö±ò
-	static bool ff = true;  //¹è¿­ ÇÑ¹ø¸¸ °ªÀÔ·Â ¹ŞÀ»·Á°í ³Ö¾úÀ½ ÇÔ¼ö³¡³¯¶§Âë¿¡ flas·Î ¹Ù²ñ
-	boom.width = 10;
-	boom.boomShape = MyCircle;
-	static int x[8];
-	static int y[8];
-	if (ff)
-		for (int i = 0; i < 8; i++) {
-			x[i] = boom.leftTop.x;
-			y[i] = boom.leftTop.y;
-
-		}
-	if (y[2] >= 1000)  //¾È±×¸®´Â Á¶°Ç  //y2´Â ³²ÂÊÀ¸·Î ¹æÇâ ÃÑ¾ËÀÓ
-		return;
-	static int width = boom.width;
-
-	switch (boom.boomShape) {
+	boom->leftBottom.x = 200;
+	boom->leftBottom.y = 200;
+	boom->width = 100;
+	boom->boomShape = MyCircle;
+	int x = boom->leftBottom.x;
+	int y = boom->leftBottom.y;
+	int width = boom->width;
+	switch (boom->boomShape) {
 	case MyCircle:
 		hBrush = CreateSolidBrush(RGB(255, 0, 0));
 		(HBRUSH)SelectObject(hDC, hBrush);
-		for (int i = 0; i < 8; i++) {
-			Ellipse(hDC, x[i], y[i], x[i] + width, y[i] + width);
+		if (sj_Timer%10==9) {
+			Ellipse(hDC, x + width / 4, y - width / 4, x + (width*0.75), y + width / 4); //¿ø»ó´Ü¿¡ ±×¸®±â Å×½ºÆ®¿ëÀÓ
 		}
+		else
+			Ellipse(hDC, x, y, x + width, y + width);
 
-
-		for (int i = 0; i < 8; i++) {
-			if (Crush(&Player_1, x[i], y[i], x[i] + width, y[i] + width))
-				Ellipse(hDC, Player_1.left, Player_1.top, Player_1.right, Player_1.bottom);
-		}
 		DeleteObject(hBrush);
-		break;
 	}
-	ff = false;
-	x[0]++; y[0] = y[0];  //µ¿ÂÊ
-	x[1]--; y[1] = y[1];  //¼­ÂÊ
-	x[2] = x[2]; y[2]++; //³²
-	x[3] = x[3]; y[3]--; //ºÏ
-	x[4]++; y[4]--;  //ºÏµ¿
-	x[5]--; y[5]--;  //ºÏ¼­
-	x[6]--; y[6]++;  //³²¼­
-	x[7]++; y[7]++;//³²µ¿
 }
 void deleteBoom(Boom* target)
 {
@@ -228,7 +208,11 @@ void CircleBoom(HDC hDC, Boom* boom)
 		oldPen = (HPEN)SelectObject(hDC, hPen);
 		hBrush = CreateSolidBrush(RGB(255, 255, 255));
 		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
+<<<<<<< HEAD
 		Ellipse(hDC, boom->leftTop.x, boom->rightBottom.y, boom->rightBottom.x, boom->leftTop.y);
+=======
+		Ellipse(hDC, boom.leftBottom.x, boom.rightTop.y, boom.rightTop.x, boom.leftBottom.y);
+>>>>>>> parent of b1bc396... ì§„ì§œ ë­ê°€ë¬¸ì œëƒ
 		SelectObject(hDC, oldBrush);
 		DeleteObject(hBrush);
 		SelectObject(hDC, oldPen);
@@ -237,28 +221,44 @@ void CircleBoom(HDC hDC, Boom* boom)
 	case 1:
 		hBrush = CreateSolidBrush(RGB(255, 0, 255));
 		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
+<<<<<<< HEAD
 		Ellipse(hDC, boom->leftTop.x, boom->rightBottom.y, boom->rightBottom.x, boom->leftTop.y);
+=======
+		Ellipse(hDC, boom.leftBottom.x, boom.rightTop.y, boom.rightTop.x, boom.leftBottom.y);
+>>>>>>> parent of b1bc396... ì§„ì§œ ë­ê°€ë¬¸ì œëƒ
 		SelectObject(hDC, oldBrush);
 		DeleteObject(hBrush);
 		break;
 	case 2:
 		hBrush = CreateSolidBrush(RGB(255, 255, 255));
 		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
+<<<<<<< HEAD
 		Ellipse(hDC, boom->leftTop.x, boom->rightBottom.y, boom->rightBottom.x, boom->leftTop.y);
+=======
+		Ellipse(hDC, boom.leftBottom.x, boom.rightTop.y, boom.rightTop.x, boom.leftBottom.y);
+>>>>>>> parent of b1bc396... ì§„ì§œ ë­ê°€ë¬¸ì œëƒ
 		SelectObject(hDC, oldBrush);
 		DeleteObject(hBrush);
 		break;
 	case 3:
 		hBrush = CreateSolidBrush(RGB(255, 0, 255));
 		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
+<<<<<<< HEAD
 		Ellipse(hDC, boom->leftTop.x, boom->rightBottom.y, boom->rightBottom.x, boom->leftTop.y);
+=======
+		Ellipse(hDC, boom.leftBottom.x, boom.rightTop.y, boom.rightTop.x, boom.leftBottom.y);
+>>>>>>> parent of b1bc396... ì§„ì§œ ë­ê°€ë¬¸ì œëƒ
 		SelectObject(hDC, oldBrush);
 		DeleteObject(hBrush);
 		break;
 	case 4:
 		hBrush = CreateSolidBrush(RGB(255, 255, 255));
 		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
+<<<<<<< HEAD
 		Ellipse(hDC, boom->leftTop.x, boom->rightBottom.y, boom->rightBottom.x, boom->leftTop.y);
+=======
+		Ellipse(hDC, boom.leftBottom.x, boom.rightTop.y, boom.rightTop.x, boom.leftBottom.y);
+>>>>>>> parent of b1bc396... ì§„ì§œ ë­ê°€ë¬¸ì œëƒ
 		SelectObject(hDC, oldBrush);
 		DeleteObject(hBrush);
 		break;
@@ -273,6 +273,7 @@ void LaserBoom(HDC hDC, Boom* boom)
 	HPEN hPen, oldPen;
 	HBRUSH hBrush, oldBrush;
 
+<<<<<<< HEAD
 	switch (boom->boomAnimaition % 5)
 	{
 	case 0:
@@ -353,3 +354,6 @@ void Animation(HDC hDC)
 {
 
 }
+=======
+}
+>>>>>>> parent of b1bc396... ì§„ì§œ ë­ê°€ë¬¸ì œëƒ
