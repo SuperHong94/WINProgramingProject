@@ -1,8 +1,12 @@
 #include "global.h"
+
+
 HINSTANCE g_hInst;
 LPCTSTR lpszClass = L"Window Class Name";
 LPCTSTR lpszWindowName = L"Window Programming Lab";
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdParam, int nCmdShow)
 {
 	HWND hWnd;
@@ -27,7 +31,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdPa
 	RegisterClassEx(&WndClass);
 
 	//윈도우 생성
-	hWnd = CreateWindow(lpszClass, lpszWindowName, WS_OVERLAPPEDWINDOW, 0, 0, 800, 600, NULL, (HMENU)NULL, hInstance, NULL);
+	hWnd = CreateWindow(lpszClass, lpszWindowName, WS_OVERLAPPEDWINDOW, 0, 0, 1200, 800, NULL, (HMENU)NULL, hInstance, NULL);
 
 	//윈도우 출력
 	ShowWindow(hWnd, nCmdShow);
@@ -51,7 +55,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	static Boom* boom;
 	static Boom circleboom;
-	static Boom laserboom;
+	static Boom laserboom_horizontal;
+	static Boom laserboom_vertical;
+	static Boom* head;
 
 	//int boomCount = 0;  //폭탄 카운트는 0;
 
@@ -60,6 +66,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	//메시지 처리하기
 	switch (uMsg) {
 	case WM_CREATE:
+		head = new Boom;
+		head->nextBoom = NULL;
+
 		Player_1.top = 380;
 		Player_1.bottom = 430;
 		Player_1.left = 380;
@@ -71,17 +80,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		circleboom.rightBottom.x = 150;
 		circleboom.rightBottom.y = 150;
 
-		laserboom.boomAnimaition = 0;
-		laserboom.leftTop.x = 0;
-		laserboom.leftTop.y = 150;
-		laserboom.rightBottom.x = 800;
-		laserboom.rightBottom.y = 50;
+		laserboom_horizontal.boomAnimaition = 0;
+		laserboom_horizontal.leftTop.x = 0;
+		laserboom_horizontal.leftTop.y = 400;
+		laserboom_horizontal.rightBottom.x = 800;
+		laserboom_horizontal.rightBottom.y = 450;
 
 
 		soundSetup(); //사운드 셋업
 		SetTimer(hWnd, 0, 10, NULL);
 		SetTimer(hWnd, 1, 100, NULL);
 		SetTimer(hWnd, 2, 1000, NULL);
+
 		playSound(Perion);//페리온 재생
 		break;
 	case WM_TIMER:
@@ -129,8 +139,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			break;
 		case 2:
 			++circleboom.boomAnimaition;
+			++laserboom_horizontal.boomAnimaition;
 			circleboom.boomAnimaition %= 5;
-
+			laserboom_horizontal.boomAnimaition %= 5;
 			if (circleboom.boomAnimaition == 0)
 			{
 				circleboom.leftTop.x = 50;
@@ -156,6 +167,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				circleboom.rightBottom.y -= 50;
 			}
 
+			if (laserboom_horizontal.boomAnimaition == 0)
+			{
+				laserboom_horizontal.leftTop.x = 0;
+				laserboom_horizontal.leftTop.y = 400;
+				laserboom_horizontal.rightBottom.x = 800;
+				laserboom_horizontal.rightBottom.y = 450;
+			}
+
+			else if (laserboom_horizontal.boomAnimaition == 1)
+			{
+
+				laserboom_horizontal.leftTop.y -= 10;
+				laserboom_horizontal.rightBottom.y += 10;
+			}
+			else if (laserboom_horizontal.boomAnimaition == 3)
+			{
+				laserboom_horizontal.leftTop.y += 15;
+				laserboom_horizontal.rightBottom.y -= 15;
+			}
 			
 			break;
 		}
@@ -170,6 +200,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 		Rectangle(hDC, Player_1.left, Player_1.top, Player_1.right, Player_1.bottom);
 		CircleBoom(hDC, circleboom);
+		LaserBoom(hDC, laserboom_horizontal);
 
 		GetClientRect(hWnd, &bufferRT);
 		BitBlt(MemDC, 0, 0, bufferRT.right, bufferRT.bottom, hDC, 0, 0, SRCCOPY);
@@ -179,7 +210,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		EndPaint(hWnd, &ps);
 		break;
 	case WM_DESTROY:
+		KillTimer(hWnd, 0);
 		KillTimer(hWnd, 1);
+		KillTimer(hWnd, 2);
+		free(head);
 		PostQuitMessage(0);
 		break;
 

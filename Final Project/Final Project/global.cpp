@@ -2,6 +2,29 @@
 
 int sj_Timer = 0;
 
+void addBoom(Boom* head, EShape tmp_boomShape, int tmpLeftTop_x, int tmpLeftTop_y, int tmpRightBottom_x, int tmpRightBottom_y)
+{
+	Boom* p = new Boom;
+	p->nextBoom = head->nextBoom;
+	p->boomShape = tmp_boomShape;
+	p->leftTop.x = tmpLeftTop_x;
+	p->leftTop.y = tmpLeftTop_y;
+	p->rightBottom.x = tmpRightBottom_x;
+	p->rightBottom.y = tmpRightBottom_y;
+	p->boomAnimaition = 0;
+	p->width = p->rightBottom.x - p->leftTop.x;
+	head->nextBoom = p;
+}
+
+void deleteBoom(Boom* target)
+{
+	Boom* Delete = target->nextBoom;
+
+	target->nextBoom = Delete->nextBoom;
+
+	free(Delete);
+}
+
 void SunBoom_SJ(HDC hDC, Boom* boom)
 {
 	HBRUSH hBrush;  //»ö±ò
@@ -78,7 +101,7 @@ void CircleBoom(HDC hDC, Boom boom)
 	}
 }
 
-void LaserBoom_Horizontal(HDC hDC, Boom boom)
+void LaserBoom(HDC hDC, Boom boom)
 {
 	HPEN hPen, oldPen;
 	HBRUSH hBrush, oldBrush;
@@ -97,38 +120,30 @@ void LaserBoom_Horizontal(HDC hDC, Boom boom)
 		DeleteObject(hPen);
 		break;
 	case 1:
-		hPen = CreatePen(PS_DOT, 1, RGB(0, 0, 0));
-		oldPen = (HPEN)SelectObject(hDC, hPen);
-		hBrush = CreateSolidBrush(RGB(255, 255, 255));
+		hBrush = CreateSolidBrush(RGB(255, 0, 255));
 		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
-		Rectangle(hDC, boom.leftTop.x, boom.rightBottom.y + 10, boom.rightBottom.x, boom.leftTop.y - 10);
+		Rectangle(hDC, boom.leftTop.x, boom.rightBottom.y, boom.rightBottom.x, boom.leftTop.y);
 		SelectObject(hDC, oldBrush);
 		DeleteObject(hBrush);
-		SelectObject(hDC, oldPen);
-		DeleteObject(hPen);
 		break;
 	case 2:
-		hPen = CreatePen(PS_DOT, 1, RGB(0, 0, 0));
-		oldPen = (HPEN)SelectObject(hDC, hPen);
 		hBrush = CreateSolidBrush(RGB(255, 255, 255));
 		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
-		Rectangle(hDC, boom.leftTop.x, boom.rightBottom.y + 10, boom.rightBottom.x, boom.leftTop.y - 10);
+		Rectangle(hDC, boom.leftTop.x, boom.rightBottom.y, boom.rightBottom.x, boom.leftTop.y);
 		SelectObject(hDC, oldBrush);
 		DeleteObject(hBrush);
-		SelectObject(hDC, oldPen);
-		DeleteObject(hPen);
 		break;
 	case 3:
 		hBrush = CreateSolidBrush(RGB(255, 0, 255));
 		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
-		Ellipse(hDC, boom.leftTop.x, boom.rightBottom.y - 15, boom.rightBottom.x, boom.leftTop.y + 15);
+		Rectangle(hDC, boom.leftTop.x, boom.rightBottom.y, boom.rightBottom.x, boom.leftTop.y);
 		SelectObject(hDC, oldBrush);
 		DeleteObject(hBrush);
 		break;
 	case 4:
 		hBrush = CreateSolidBrush(RGB(255, 255, 255));
 		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
-		Ellipse(hDC, boom.leftTop.x, boom.rightBottom.y - 15, boom.rightBottom.x, boom.leftTop.y + 15);
+		Rectangle(hDC, boom.leftTop.x, boom.rightBottom.y, boom.rightBottom.x, boom.leftTop.y);
 		SelectObject(hDC, oldBrush);
 		DeleteObject(hBrush);
 		break;
