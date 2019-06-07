@@ -42,7 +42,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="BitMap\투명.bmp">
+    <Image Include="Player_1.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>
