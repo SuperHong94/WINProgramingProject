@@ -44,20 +44,67 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdPa
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	PAINTSTRUCT	ps;
-	static HDC hDC;
+	static HDC hDC, MemDC;
+	static HBITMAP BackBit, oldBackBit, hBit[10];
+	static RECT bufferRT;
+	PAINTSTRUCT ps;
+
 	static Boom* boom;
+	static Boom circleboom;
+	static Boom laserboom;
+
 	//int boomCount = 0;  //폭탄 카운트는 0;
+
+	static RECT Player_1;
 
 	//메시지 처리하기
 	switch (uMsg) {
 	case WM_CREATE:
+		Player_1.top = 380;
+		Player_1.bottom = 430;
+		Player_1.left = 380;
+		Player_1.right = 430;
+
+		circleboom.boomAnimaition = 0;
+		circleboom.leftBottom.x = 50;
+		circleboom.leftBottom.y = 150;
+		circleboom.rightTop.x = 150;
+		circleboom.rightTop.y = 50;
+
+
 		soundSetup(); //사운드 셋업
+		SetTimer(hWnd, 0, 10, NULL);
 		SetTimer(hWnd, 1, 100, NULL);
+		SetTimer(hWnd, 2, 1000, NULL);
 		playSound(Perion);//페리온 재생
 		break;
 	case WM_TIMER:
 		switch (wParam) {
+		case 0:
+			if (GetAsyncKeyState('A') < 0)
+			{
+				Player_1.left -= 3;
+				Player_1.right -= 3;
+			}
+
+			if (GetAsyncKeyState('W') < 0)
+			{
+				Player_1.top -= 3;
+				Player_1.bottom -= 3;
+			}
+
+			if (GetAsyncKeyState('S') < 0)
+			{
+				Player_1.top += 3;
+				Player_1.bottom += 3;
+			}
+
+			if (GetAsyncKeyState('D') < 0)
+			{
+				Player_1.left += 3;
+				Player_1.right += 3;
+			}
+			break;
 		case 1:
 			sj_Timer++;
 			if (sj_Timer == 10) {
@@ -74,14 +121,58 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				boom = NULL;
 			}
 			break;
-		}
-		InvalidateRect(hWnd, NULL, TRUE);
-	case WM_PAINT:
-		hDC = BeginPaint(hWnd, &ps);
+		case 2:
+			++circleboom.boomAnimaition;
+			circleboom.boomAnimaition %= 5;
 
+			if (circleboom.boomAnimaition == 0)
+			{
+				circleboom.leftBottom.x = 50;
+				circleboom.leftBottom.y = 150;
+				circleboom.rightTop.x = 150;
+				circleboom.rightTop.y = 50;
+			}
+
+			else if (circleboom.boomAnimaition == 1)
+			{
+				circleboom.leftBottom.x -= 25;
+				circleboom.rightTop.y -= 25;
+				circleboom.rightTop.x += 25;
+				circleboom.leftBottom.y += 25;
+			}
+
+			else if (circleboom.boomAnimaition == 3)
+			{
+				circleboom.leftBottom.x += 50;
+				circleboom.rightTop.y += 50;
+				circleboom.rightTop.x -= 50;
+				circleboom.leftBottom.y -= 50;
+			}
+
+			
+			break;
+		}
+		InvalidateRect(hWnd, NULL, FALSE);
+	case WM_PAINT:
+		MemDC = BeginPaint(hWnd, &ps);
+		GetClientRect(hWnd, &bufferRT);
+		hDC = CreateCompatibleDC(MemDC);
+		BackBit = CreateCompatibleBitmap(MemDC, bufferRT.right, bufferRT.bottom);
+		oldBackBit = (HBITMAP)SelectObject(hDC, BackBit);
+		PatBlt(hDC, 0, 0, bufferRT.right, bufferRT.bottom, WHITENESS);
+
+		Rectangle(hDC, Player_1.left, Player_1.top, Player_1.right, Player_1.bottom);
+		CircleBoom(hDC, circleboom);
+
+		GetClientRect(hWnd, &bufferRT);
+		BitBlt(MemDC, 0, 0, bufferRT.right, bufferRT.bottom, hDC, 0, 0, SRCCOPY);
+		SelectObject(hDC, oldBackBit);
+		DeleteObject(BackBit);
+		DeleteDC(hDC);
 		EndPaint(hWnd, &ps);
 		break;
 	case WM_DESTROY:
+		KillTimer(hWnd, 1);
 		PostQuitMessage(0);
 		break;
 

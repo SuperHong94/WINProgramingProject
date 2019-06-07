@@ -22,5 +22,63 @@ void SunBoom_SJ(HDC hDC, Boom* boom)
 
 		DeleteObject(hBrush);
 	}
+}
+
+void CircleBoom(HDC hDC, Boom boom)
+{
+	HPEN hPen, oldPen;
+	HBRUSH hBrush, oldBrush;
+
+	switch (boom.boomAnimaition % 5)
+	{
+	case 0:
+		hPen = CreatePen(PS_DOT, 1, RGB(0, 0, 0));
+		oldPen = (HPEN)SelectObject(hDC, hPen);
+		hBrush = CreateSolidBrush(RGB(255, 255, 255));
+		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
+		Ellipse(hDC, boom.leftBottom.x, boom.rightTop.y, boom.rightTop.x, boom.leftBottom.y);
+		SelectObject(hDC, oldBrush);
+		DeleteObject(hBrush);
+		SelectObject(hDC, oldPen);
+		DeleteObject(hPen);
+		break;
+	case 1:
+		hBrush = CreateSolidBrush(RGB(255, 0, 255));
+		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
+		Ellipse(hDC, boom.leftBottom.x, boom.rightTop.y, boom.rightTop.x, boom.leftBottom.y);
+		SelectObject(hDC, oldBrush);
+		DeleteObject(hBrush);
+		break;
+	case 2:
+		hBrush = CreateSolidBrush(RGB(255, 255, 255));
+		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
+		Ellipse(hDC, boom.leftBottom.x, boom.rightTop.y, boom.rightTop.x, boom.leftBottom.y);
+		SelectObject(hDC, oldBrush);
+		DeleteObject(hBrush);
+		break;
+	case 3:
+		hBrush = CreateSolidBrush(RGB(255, 0, 255));
+		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
+		Ellipse(hDC, boom.leftBottom.x, boom.rightTop.y, boom.rightTop.x, boom.leftBottom.y);
+		SelectObject(hDC, oldBrush);
+		DeleteObject(hBrush);
+		break;
+	case 4:
+		hBrush = CreateSolidBrush(RGB(255, 255, 255));
+		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
+		Ellipse(hDC, boom.leftBottom.x, boom.rightTop.y, boom.rightTop.x, boom.leftBottom.y);
+		SelectObject(hDC, oldBrush);
+		DeleteObject(hBrush);
+		break;
+	default:
+
+		break;
+	}
+}
+
+void LaserBoom(HDC hDC, Boom boom)
+{
+	HPEN hPen, oldPen;
+	HBRUSH hBrush, oldBrush;
 
 }
