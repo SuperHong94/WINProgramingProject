@@ -1,6 +1,5 @@
 #include "global.h"
 
-
 HINSTANCE g_hInst;
 LPCTSTR lpszClass = L"Window Class Name";
 LPCTSTR lpszWindowName = L"Window Programming Lab";
@@ -54,9 +53,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	PAINTSTRUCT ps;
 
 	static Boom* boom;
-	static Boom circleboom;
-	static Boom laserboom_horizontal;
-	static Boom laserboom_vertical;
 	static Boom* head;
 
 	//int boomCount = 0;  //폭탄 카운트는 0;
@@ -73,19 +69,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		Player_1.bottom = 430;
 		Player_1.left = 380;
 		Player_1.right = 430;
-
-		circleboom.boomAnimaition = 0;
-		circleboom.leftTop.x = 50;
-		circleboom.leftTop.y = 50;
-		circleboom.rightBottom.x = 150;
-		circleboom.rightBottom.y = 150;
-
-		laserboom_horizontal.boomAnimaition = 0;
-		laserboom_horizontal.leftTop.x = 0;
-		laserboom_horizontal.leftTop.y = 400;
-		laserboom_horizontal.rightBottom.x = 800;
-		laserboom_horizontal.rightBottom.y = 450;
-
+		
+		addBoom(head, Boom_Circle, 50, 50, 150, 150);
+		addBoom(head, Boom_Laser, 0, 400, 1200, 450);
 
 		soundSetup(); //사운드 셋업
 		SetTimer(hWnd, 0, 10, NULL);
@@ -138,58 +124,40 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 			break;
 		case 2:
-			++circleboom.boomAnimaition;
-			++laserboom_horizontal.boomAnimaition;
-			circleboom.boomAnimaition %= 5;
-			laserboom_horizontal.boomAnimaition %= 5;
-			if (circleboom.boomAnimaition == 0)
-			{
-				circleboom.leftTop.x = 50;
-				circleboom.leftTop.y = 50;
-				circleboom.rightBottom.x = 150;
-				circleboom.rightBottom.y = 150;
-			}
-
-			else if (circleboom.boomAnimaition == 1)
-			{
-				circleboom.leftTop.x -= 25;
-				circleboom.leftTop.y -= 25;
-				circleboom.rightBottom.x += 25;
-				circleboom.rightBottom.y += 25;
-			}
-
-			else if (circleboom.boomAnimaition == 3)
-			{
-				circleboom.leftTop.x += 50;
-				circleboom.leftTop.y += 50;
-
-				circleboom.rightBottom.x -= 50;
-				circleboom.rightBottom.y -= 50;
-			}
-
-			if (laserboom_horizontal.boomAnimaition == 0)
-			{
-				laserboom_horizontal.leftTop.x = 0;
-				laserboom_horizontal.leftTop.y = 400;
-				laserboom_horizontal.rightBottom.x = 800;
-				laserboom_horizontal.rightBottom.y = 450;
-			}
-
-			else if (laserboom_horizontal.boomAnimaition == 1)
-			{
-
-				laserboom_horizontal.leftTop.y -= 10;
-				laserboom_horizontal.rightBottom.y += 10;
-			}
-			else if (laserboom_horizontal.boomAnimaition == 3)
-			{
-				laserboom_horizontal.leftTop.y += 15;
-				laserboom_horizontal.rightBottom.y -= 15;
-			}
-			
+			setAnimation(head);
+			setBoomPosition(head);
 			break;
 		}
 		InvalidateRect(hWnd, NULL, FALSE);
+
+	case WM_KEYDOWN:
+		if (wParam == 'E')
+		{
+			if (GetAsyncKeyState('A') < 0)
+			{
+				Player_1.left -= 50;
+				Player_1.right -= 50;
+			}
+
+			if (GetAsyncKeyState('W') < 0)
+			{
+				Player_1.top -= 50;
+				Player_1.bottom -= 50;
+			}
+
+			if (GetAsyncKeyState('S') < 0)
+			{
+				Player_1.top += 50;
+				Player_1.bottom += 50;
+			}
+
+			if (GetAsyncKeyState('D') < 0)
+			{
+				Player_1.left += 50;
+				Player_1.right += 50;
+			}
+		}
+		break;
 	case WM_PAINT:
 		MemDC = BeginPaint(hWnd, &ps);
 		GetClientRect(hWnd, &bufferRT);
@@ -199,8 +167,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		PatBlt(hDC, 0, 0, bufferRT.right, bufferRT.bottom, WHITENESS);
 
 		Rectangle(hDC, Player_1.left, Player_1.top, Player_1.right, Player_1.bottom);
-		CircleBoom(hDC, circleboom);
-		LaserBoom(hDC, laserboom_horizontal);
+		printBoomAnimation(hDC, head);
 
 		GetClientRect(hWnd, &bufferRT);
 		BitBlt(MemDC, 0, 0, bufferRT.right, bufferRT.bottom, hDC, 0, 0, SRCCOPY);
