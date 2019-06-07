@@ -1,1 +1,6 @@
-﻿  Final Project.vcxproj -> C:\Users\홍순조\Documents\GitHub\WINProgramingProject\WINProgramingProject\Final Project\Debug\Final Project.exe
+﻿  global.cpp
+c:\users\홍순조\desktop\git연습\winprogramingproject\final project\final project\global.cpp(128): warning C4101: 'oldBrush' :참조되지 않은 지역 변수입니다.
+c:\users\홍순조\desktop\git연습\winprogramingproject\final project\final project\global.cpp(128): warning C4101: 'hBrush' :참조되지 않은 지역 변수입니다.
+c:\users\홍순조\desktop\git연습\winprogramingproject\final project\final project\global.cpp(127): warning C4101: 'hPen' :참조되지 않은 지역 변수입니다.
+c:\users\홍순조\desktop\git연습\winprogramingproject\final project\final project\global.cpp(127): warning C4101: 'oldPen' :참조되지 않은 지역 변수입니다.
+  Final Project.vcxproj -> C:\Users\홍순조\Desktop\git연습\WINProgramingProject\Final Project\Debug\Final Project.exe
