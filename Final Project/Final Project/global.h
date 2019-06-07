@@ -37,3 +37,4 @@ void SunBoom_SJ(HDC hDC,Boom* boom);
 void CircleBoom(HDC hDC, Boom* boom);
 void LaserBoom(HDC hDC, Boom* boom);
 void printBoomAnimation(HDC hDC, Boom* head);
+void Animation(HDC hDC);

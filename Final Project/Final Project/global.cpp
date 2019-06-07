@@ -268,3 +268,8 @@ void printBoomAnimation(HDC hDC, Boom* head)
 		}
 	}
 }
+
+void Animation(HDC hDC)
+{
+
+}

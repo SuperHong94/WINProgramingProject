@@ -22,7 +22,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdPa
 	WndClass.hInstance = hInstance;
 	WndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	WndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
-	WndClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+	WndClass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 	WndClass.lpszMenuName = NULL;
 	WndClass.lpszClassName = lpszClass;
 	WndClass.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
@@ -66,9 +66,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		head->nextBoom = NULL;
 
 		Player_1.top = 380;
-		Player_1.bottom = 430;
+		Player_1.bottom = 405;
 		Player_1.left = 380;
-		Player_1.right = 430;
+		Player_1.right = 405;
 		
 		addBoom(head, Boom_Circle, 50, 50, 150, 150);
 		addBoom(head, Boom_Laser, 0, 400, 1200, 450);
@@ -164,7 +164,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		hDC = CreateCompatibleDC(MemDC);
 		BackBit = CreateCompatibleBitmap(MemDC, bufferRT.right, bufferRT.bottom);
 		oldBackBit = (HBITMAP)SelectObject(hDC, BackBit);
-		PatBlt(hDC, 0, 0, bufferRT.right, bufferRT.bottom, WHITENESS);
+		PatBlt(hDC, 0, 0, bufferRT.right, bufferRT.bottom, BLACKNESS);
 
 		Rectangle(hDC, Player_1.left, Player_1.top, Player_1.right, Player_1.bottom);
 		printBoomAnimation(hDC, head);
