@@ -117,6 +117,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			if (sj_Timer == 10)  //1√ 
 			{
 				SunBoom_SJ(hDC, bullet_head, 300, 300);
+			
 			}
 			if (sj_Timer == 20)
 			{
@@ -192,6 +193,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				Player_1.right += 50;
 			}
 		}
+		
 		switch (wParam) {
 		case VK_BACK:
 			sj_Timer -= 10;

@@ -41,10 +41,10 @@ void effSoundSetup()
 	FMOD_System_Init(effg_pSystem, 1, FMOD_INIT_NORMAL, NULL);
 
 	//사운드 경로
-	for (int i = 0; i < EFFSD_END; i++) {
-		wsprintfA(str, "effect\\Jump.mp3", i);
-		FMOD_System_CreateStream(SJ_pSystem, str, FMOD_LOOP_NORMAL, 0, &effg_pSound[i]);
-	}
+
+		wsprintfA(str, "effect\\jump.mp3", jump);
+		FMOD_System_CreateStream(SJ_pSystem, str, FMOD_LOOP_OFF, 0, &effg_pSound[jump]);
+
 }
 void effSoundoff()
 {
