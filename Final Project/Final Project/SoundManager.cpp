@@ -42,7 +42,7 @@ void effSoundSetup()
 
 	//사운드 경로
 	for (int i = 0; i < EFFSD_END; i++) {
-		wsprintfA(str, "sound\\Perion.mp3", i++);
+		wsprintfA(str, "effect\\Jump.mp3", i);
 		FMOD_System_CreateStream(SJ_pSystem, str, FMOD_LOOP_NORMAL, 0, &effg_pSound[i]);
 	}
 }
@@ -53,5 +53,5 @@ void effSoundoff()
 }
 void effPlaySound(EFFOUNDKIND eSound)
 {
-	FMOD_System_PlaySound(SJ_pSystem, FMOD_CHANNEL_FREE, effg_pSound[eSound], 0, &effg_pChannel[eSound]);
+	FMOD_System_PlaySound(effg_pSystem, FMOD_CHANNEL_FREE, effg_pSound[eSound], 0, &effg_pChannel[eSound]);
 }

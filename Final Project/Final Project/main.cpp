@@ -57,8 +57,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 	//int boomCount = 0;  //폭탄 카운트는 0;
 
-	static RECT Player_1;
-
 	//메시지 처리하기
 	switch (uMsg) {
 	case WM_CREATE:
@@ -76,10 +74,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		addBoom(head, Boom_Laser, 0, 400, 1200, 450);
 
 		soundSetup(); //사운드 셋업
+		effSoundSetup();//이펙트 셋업
 		SetTimer(hWnd, 0, 10, NULL);
 		SetTimer(hWnd, 1, 100, NULL);
 		SetTimer(hWnd, 2, 1000, NULL);
-
+		
 		playSound(Perion);//페리온 재생
 		break;
 	case WM_TIMER:
@@ -167,6 +166,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_KEYDOWN:
 		if (wParam == 'E')
 		{
+			effPlaySound(jump);
+			
 			if (GetAsyncKeyState('A') < 0)
 			{
 				Player_1.left -= 50;

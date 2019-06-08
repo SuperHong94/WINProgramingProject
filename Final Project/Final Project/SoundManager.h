@@ -13,7 +13,7 @@ enum ESOUNDKIND
 };
 enum EFFOUNDKIND //이펙트 사운드
 {
-	EFFSD_1 = 0,
+	jump = 0,
 	EFFSD_2,
 	EFFSD_END
 };

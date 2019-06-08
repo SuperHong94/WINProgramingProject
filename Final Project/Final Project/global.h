@@ -40,8 +40,8 @@ enum EBoomStatus {
 struct Boom
 {
 	EShape boomShape;
-	POINT leftTop;
-	POINT rightBottom;
+	POINT leftTop{ 0 };
+	POINT rightBottom{ 0 };
 	Boom* nextBoom;
 
 	int boomAnimaition;

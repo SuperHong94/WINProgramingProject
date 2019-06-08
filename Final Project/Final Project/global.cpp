@@ -271,7 +271,8 @@ void Boom::setPosition()
 
 		break;
 	}
-
+	 if(Crush(&Player_1, leftTop.x, leftTop.y, rightBottom.x, rightBottom.y))
+      Energybar.right -= 10;
 }
 
 
