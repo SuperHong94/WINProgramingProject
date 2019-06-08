@@ -62,15 +62,47 @@ void SunBoom_SJ(HDC hDC, Boom* head, int x, int y)
 	addBoom(head, Bullet_DownLeft, x - 5, y - 5, x + 5, y + 5);
 	addBoom(head, Bullet_DownRight, x - 5, y - 5, x + 5, y + 5);
 }
+void Doughnut(HDC hDC, Boom* head, int x, int y, int width)
+{
+
+	addBoom(head, MyDoughnut1, x, y, x + width, y + 20);
+	addBoom(head, MyDoughnut2, x, y, x + 20, y + width);
+	addBoom(head, MyDoughnut3, x, y + width - 20, x + width, y + width);
+	addBoom(head, MyDoughnut4, x + width - 20, y, x + width, y + width);
+}
+
+
+
 
 void NormalBullet(HDC hDC, Boom* boom)
 {
 	if (boom == NULL)
 		return;
-	HBRUSH hBrush;
+	HBRUSH hBrush, oldBrush;
 	hBrush = CreateSolidBrush(RGB(255, 0, 0));
-	(HBRUSH)SelectObject(hDC, hBrush);
-	Ellipse(hDC, boom->leftTop.x, boom->leftTop.y, boom->rightBottom.x, boom->rightBottom.y);
+	oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
+	switch (boom->boomShape) {
+	case Boom_Sun:
+		Ellipse(hDC, boom->leftTop.x, boom->leftTop.y, boom->rightBottom.x, boom->rightBottom.y);
+		break;
+	case MyDoughnut1:
+	case MyDoughnut2:
+	case MyDoughnut3:
+	case MyDoughnut4:
+		Rectangle(hDC, boom->leftTop.x, boom->leftTop.y, boom->rightBottom.x, boom->rightBottom.y);
+		break;
+	case Bullet_Up:
+	case Bullet_Down:
+	case Bullet_Right:
+	case Bullet_Left:
+	case Bullet_UpRight:
+	case Bullet_UpLeft:
+	case Bullet_DownRight:
+	case Bullet_DownLeft:
+		Ellipse(hDC, boom->leftTop.x, boom->leftTop.y, boom->rightBottom.x, boom->rightBottom.y);
+		break;
+	} 
+	(HBRUSH)SelectObject(hDC, oldBrush);
 	DeleteObject(hBrush);
 }
 
@@ -102,41 +134,7 @@ void setAnimation(Boom* head)
 		p->nextBoom->boomAnimaition++;
 	}
 }
-void Doughnut(HDC hDC, HINSTANCE hInstance)
-{
-	HDC mDC;
-	HBRUSH hBrush, oldBrush;
-	mDC = CreateCompatibleDC(hDC);
-	hBrush = CreateSolidBrush(RGB(255, 0, 0));
-	oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
 
-	static int x = (int)WindowSize.right / 2;
-	static int y = (int)WindowSize.bottom / 2;
-
-	static int width = 100;
-
-	if (width + x >= 1000)
-		return;
-	Rectangle(hDC, x, y, x + width, y + 20);
-	Rectangle(hDC, x, y, x + 20, y + width);
-	Rectangle(hDC, x, y + width - 20, x + width, y + width);
-	Rectangle(hDC, x + width - 20, y, x + width, y + width);
-	(HBRUSH)SelectObject(hDC, oldBrush);
-	if (Crush(&Player_1, x, y, x + width, y + 20)) {
-		Ellipse(hDC, Player_1.left, Player_1.top, Player_1.right, Player_1.bottom);
-	}
-	if (Crush(&Player_1, x, y, x + 20, y + width))
-		Ellipse(hDC, Player_1.left, Player_1.top, Player_1.right, Player_1.bottom);
-	if (Crush(&Player_1, x, y + width - 20, x + width, y + width))
-		Ellipse(hDC, Player_1.left, Player_1.top, Player_1.right, Player_1.bottom);
-	if (Crush(&Player_1, x + width - 20, y, x + width, y + width))
-		Ellipse(hDC, Player_1.left, Player_1.top, Player_1.right, Player_1.bottom);
-
-	x--;
-	y--;
-	width += 2;
-	DeleteObject(hBrush);
-}
 void Boom::setPosition()
 {
 	switch (boomShape)
@@ -144,6 +142,31 @@ void Boom::setPosition()
 	case Boom_Sun:
 
 		break;
+	case MyDoughnut1:
+		leftTop.x--;
+		leftTop.y--;
+		rightBottom.x++;
+		rightBottom.y--;
+		break;
+	case MyDoughnut2:
+		leftTop.x--;
+		leftTop.y--;
+		rightBottom.x--;
+		rightBottom.y++;
+		break;
+	case MyDoughnut3:
+		leftTop.x--;
+		leftTop.y++;
+		rightBottom.x++;
+		rightBottom.y++;
+		break;
+	case MyDoughnut4:
+		leftTop.x++;
+		leftTop.y--;
+		rightBottom.x++;
+		rightBottom.y++;
+		break;
+
 	case MyRectangle:
 
 		break;
@@ -336,26 +359,29 @@ void printBoomAnimation(HDC hDC, Boom* head)
 		{
 		case 0:
 			break;
-		case 1:
-
+		case MyDoughnut1:
+		case MyDoughnut2:
+		case MyDoughnut3:
+		case MyDoughnut4:
+			NormalBullet(hDC, p->nextBoom);
 			break;
-		case 2:
 
-			break;
-		case 3:
+		case Boom_Circle:
 			CircleBoom(hDC, p->nextBoom);
 			break;
-		case 4:
+		case Boom_Laser:
 			LaserBoom(hDC, p->nextBoom);
 			break;
-		case 5:
-		case 6:
-		case 7:
-		case 8:
-		case 9:
-		case 10:
-		case 11:
-		case 12:
+
+		case Bullet_Up:
+		case Bullet_Down:
+		case Bullet_Right:
+		case Bullet_Left:
+		case Bullet_UpRight:
+		case Bullet_DownRight:
+		case Bullet_DownLeft:
+		case Bullet_UpLeft:
+
 			NormalBullet(hDC, p->nextBoom);
 		default:
 			break;

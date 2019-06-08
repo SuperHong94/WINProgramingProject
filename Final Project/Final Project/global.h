@@ -12,7 +12,12 @@ enum ETURNN {
 	turn1, turn2, turn3, turn4, turn5
 };
 enum EShape {
-	Boom_Sun=0,
+
+	Boom_Sun = 0,
+	MyDoughnut1,
+	MyDoughnut2,
+	MyDoughnut3,
+	MyDoughnut4,
 	MyRectangle,
 	MyTriangle,
 	Boom_Circle,
@@ -27,7 +32,7 @@ enum EShape {
 	Bullet_UpLeft
 };
 enum EBoomStatus {
-	noExplosion=0,
+	noExplosion = 0,
 	Explosion   //폭발 상태일 때 충돌 체크 할 꺼임
 };
 
@@ -39,7 +44,7 @@ struct Boom
 	Boom* nextBoom;
 
 	int boomAnimaition;
-	int width;
+	int width=100;
 	int height;
 
 	void setPosition();
@@ -59,5 +64,6 @@ void Animation(HDC hDC);
 void InitBoom(Boom& boom, int lX, int lY, int rX, int rY); //폭탄 초기화 함수
 bool Crush(RECT*, int LX, int LY, int RX, int RY); //충돌!!LY는 LeftY의 준말 plyaer하고 폭탄의 범위랑 충돌처리할꺼임  //충돌하면 true리턴
 void DrawDie(RECT*);
-void Doughnut(HDC hDC, HINSTANCE hInstance);
+void Doughnut(HDC hDC, Boom* head, int x, int y,int width);
 bool OutOfRange(Boom* boom);
+
