@@ -47,14 +47,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdPa
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+	char buffer[10]; //ÃÊ¼¼´Â Å¸ÀÌ¸Ó
 	static HDC hDC, MemDC;
 	static HBITMAP BackBit, oldBackBit, hBit[10];
 	static RECT bufferRT;
 	PAINTSTRUCT ps;
-
-	static Boom* boom;
 	static Boom* head;
-
+	static Boom* bullet_head;
+	static Boom Sunboom1;
 	//int boomCount = 0;  //ÆøÅº Ä«¿îÆ®´Â 0;
 
 	static RECT Player_1;
@@ -63,13 +63,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	switch (uMsg) {
 	case WM_CREATE:
 		head = new Boom;
-		head->nextBoom = NULL;
+		bullet_head = new Boom;
 
+		bullet_head->nextBoom = NULL;
+		head->nextBoom = NULL;
+		GetClientRect(hWnd, &WindowSize);
 		Player_1.top = 380;
 		Player_1.bottom = 405;
 		Player_1.left = 380;
 		Player_1.right = 405;
-		
 		addBoom(head, Boom_Circle, 50, 50, 150, 150);
 		addBoom(head, Boom_Laser, 0, 400, 1200, 450);
 
@@ -106,26 +108,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				Player_1.left += 3;
 				Player_1.right += 3;
 			}
+			CheckBullet(bullet_head);
+			setBoomPosition(bullet_head);
+			setAnimation(head);
+			setBoomPosition(head);
 			break;
 		case 1:
 			sj_Timer++;
-			if (sj_Timer == 10) {
-				boom = new Boom[0];
-
-			}
-			if (sj_Timer >= 130) {
-				SunBoom_SJ(hDC, boom);
-				boom->rightBottom.x += 10;
-				boom->rightBottom.y += 10;
-			}
-			else if (sj_Timer >= 200) {
-				delete boom;
-				boom = NULL;
+			if (sj_Timer == 50)
+			{
+				SunBoom_SJ(hDC, bullet_head, 150, 150);
 			}
 			break;
 		case 2:
-			setAnimation(head);
-			setBoomPosition(head);
+			
 			break;
 		}
 		InvalidateRect(hWnd, NULL, FALSE);
@@ -165,9 +161,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		BackBit = CreateCompatibleBitmap(MemDC, bufferRT.right, bufferRT.bottom);
 		oldBackBit = (HBITMAP)SelectObject(hDC, BackBit);
 		PatBlt(hDC, 0, 0, bufferRT.right, bufferRT.bottom, BLACKNESS);
+		sprintf(buffer, "½Ã°£: %d", sj_Timer);
+		TextOutA(hDC, 500, 10, buffer, 10);
 
 		Rectangle(hDC, Player_1.left, Player_1.top, Player_1.right, Player_1.bottom);
+		Doughnut(hDC, g_hInst);  //µµ³Ó ÆøÅº
 		printBoomAnimation(hDC, head);
+		printBoomAnimation(hDC, bullet_head);
+
 
 		GetClientRect(hWnd, &bufferRT);
 		BitBlt(MemDC, 0, 0, bufferRT.right, bufferRT.bottom, hDC, 0, 0, SRCCOPY);
