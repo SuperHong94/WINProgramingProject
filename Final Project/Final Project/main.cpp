@@ -53,6 +53,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	static RECT bufferRT;
 	PAINTSTRUCT ps;
 	static Boom* head;
+	static Boom* bullet_head;
 	static Boom Sunboom1;
 	//int boomCount = 0;  //ÆøÅº Ä«¿îÆ®´Â 0;
 
@@ -62,16 +63,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	switch (uMsg) {
 	case WM_CREATE:
 		head = new Boom;
+		bullet_head = new Boom;
+
+		bullet_head->nextBoom = NULL;
 		head->nextBoom = NULL;
 		GetClientRect(hWnd, &WindowSize);
 		Player_1.top = 380;
 		Player_1.bottom = 405;
 		Player_1.left = 380;
 		Player_1.right = 405;
-		
 		addBoom(head, Boom_Circle, 50, 50, 150, 150);
 		addBoom(head, Boom_Laser, 0, 400, 1200, 450);
-		InitBoom(Sunboom1, 100, 100, 200, 200);
+
 		soundSetup(); //»ç¿îµå ¼Â¾÷
 		SetTimer(hWnd, 0, 10, NULL);
 		SetTimer(hWnd, 1, 100, NULL);
@@ -105,14 +108,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				Player_1.left += 3;
 				Player_1.right += 3;
 			}
+			CheckBullet(bullet_head);
+			setBoomPosition(bullet_head);
+			setAnimation(head);
+			setBoomPosition(head);
 			break;
 		case 1:
 			sj_Timer++;
-
+			if (sj_Timer == 50)
+			{
+				SunBoom_SJ(hDC, bullet_head, 150, 150);
+			}
 			break;
 		case 2:
-			setAnimation(head);
-			setBoomPosition(head);
+			
 			break;
 		}
 		InvalidateRect(hWnd, NULL, FALSE);
@@ -157,8 +166,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 		Rectangle(hDC, Player_1.left, Player_1.top, Player_1.right, Player_1.bottom);
 		Doughnut(hDC, g_hInst);  //µµ³Ó ÆøÅº
-		SunBoom_SJ(hDC, Sunboom1);
 		printBoomAnimation(hDC, head);
+		printBoomAnimation(hDC, bullet_head);
+
 
 		GetClientRect(hWnd, &bufferRT);
 		BitBlt(MemDC, 0, 0, bufferRT.right, bufferRT.bottom, hDC, 0, 0, SRCCOPY);
