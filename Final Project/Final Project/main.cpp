@@ -47,7 +47,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdPa
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	char buffer[10]; //초세는 타이머
+	char buffer[1000]; //초세는 타이머
 	static HDC hDC, MemDC;
 	static HBITMAP BackBit, oldBackBit, hBit[10];
 	static RECT bufferRT;
@@ -113,14 +113,46 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			break;
 		case 1:  //0.1초 단위로 생성됨
 			sj_Timer++;
-			if (sj_Timer == 50)
-			{
-				
-			}
-			if (sj_Timer == 10)
+			if (sj_Timer == 10)  //1초
 			{
 				SunBoom_SJ(hDC, bullet_head, 300, 300);
-				Doughnut(hDC, bullet_head,500,500,100);
+			}
+			if (sj_Timer == 20)
+			{
+				SunBoom_SJ(hDC, bullet_head, 400, 400);
+			}
+			if (sj_Timer == 30) {
+				SunBoom_SJ(hDC, bullet_head, 500, 500);
+			}
+			if (sj_Timer == 40) {
+				SunBoom_SJ(hDC, bullet_head, 700, 700);
+			}
+			if (sj_Timer == 45) {
+				SunBoom_SJ(hDC, bullet_head, 500, 500);
+			}
+			if (sj_Timer == 50) {
+				SunBoom_SJ(hDC, bullet_head, 200, 200);
+			}
+			if (sj_Timer == 55) {
+				SunBoom_SJ(hDC, bullet_head, 200, 300);
+			}
+			if (sj_Timer == 60) {
+				SunBoom_SJ(hDC, bullet_head, 200, 300);
+			}
+			if (sj_Timer == 70) {
+				SunBoom_SJ(hDC, bullet_head, 200, 400);
+			}
+			if (sj_Timer == 78) {
+				SunBoom_SJ(hDC, bullet_head, 200, 500);
+			}
+			if (sj_Timer == 79) {
+				SunBoom_SJ(hDC, bullet_head, 200, 600);
+			}
+			if (sj_Timer == 100) {
+				SunBoom_SJ(hDC, bullet_head, 700, 100);
+			}
+			if (sj_Timer == 230) {
+				Doughnut(hDC, bullet_head,WindowSize.right / 2, WindowSize.bottom / 2,100); //윈도우 중앙에서
 			}
 			break;
 		case 2: //1초 단위로
@@ -157,6 +189,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				Player_1.right += 50;
 			}
 		}
+		switch (wParam) {
+		case VK_BACK:
+			sj_Timer -= 10;
+			break;
+		}
 		break;
 	case WM_PAINT:
 		MemDC = BeginPaint(hWnd, &ps);
@@ -168,10 +205,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		sprintf(buffer, "시간: %d", sj_Timer);
 		TextOutA(hDC, 500, 10, buffer, 10);
 
-		Rectangle(hDC, Player_1.left, Player_1.top, Player_1.right, Player_1.bottom);
+		
 		printBoomAnimation(hDC, head);
 		printBoomAnimation(hDC, bullet_head);
-
+		Rectangle(hDC, Player_1.left, Player_1.top, Player_1.right, Player_1.bottom);
 		GetClientRect(hWnd, &bufferRT);
 		BitBlt(MemDC, 0, 0, bufferRT.right, bufferRT.bottom, hDC, 0, 0, SRCCOPY);
 		SelectObject(hDC, oldBackBit);

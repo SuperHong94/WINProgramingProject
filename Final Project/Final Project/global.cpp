@@ -70,10 +70,6 @@ void Doughnut(HDC hDC, Boom* head, int x, int y, int width)
 	addBoom(head, MyDoughnut3, x, y + width - 20, x + width, y + width);
 	addBoom(head, MyDoughnut4, x + width - 20, y, x + width, y + width);
 }
-
-
-
-
 void NormalBullet(HDC hDC, Boom* boom)
 {
 	if (boom == NULL)
@@ -82,9 +78,9 @@ void NormalBullet(HDC hDC, Boom* boom)
 	hBrush = CreateSolidBrush(RGB(255, 0, 0));
 	oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
 	switch (boom->boomShape) {
-	case Boom_Sun:
-		Ellipse(hDC, boom->leftTop.x, boom->leftTop.y, boom->rightBottom.x, boom->rightBottom.y);
-		break;
+	//case Boom_Sun:
+	//	Ellipse(hDC, boom->leftTop.x, boom->leftTop.y, boom->rightBottom.x, boom->rightBottom.y);
+	//	break;
 	case MyDoughnut1:
 	case MyDoughnut2:
 	case MyDoughnut3:
@@ -326,7 +322,6 @@ void LaserBoom(HDC hDC, Boom* boom)
 		SelectObject(hDC, oldPen);
 		DeleteObject(hPen);
 	}
-
 	else
 	{
 		switch (boom->boomAnimaition % 2)
@@ -365,14 +360,12 @@ void printBoomAnimation(HDC hDC, Boom* head)
 		case MyDoughnut4:
 			NormalBullet(hDC, p->nextBoom);
 			break;
-
 		case Boom_Circle:
 			CircleBoom(hDC, p->nextBoom);
 			break;
 		case Boom_Laser:
 			LaserBoom(hDC, p->nextBoom);
 			break;
-
 		case Bullet_Up:
 		case Bullet_Down:
 		case Bullet_Right:
@@ -381,7 +374,6 @@ void printBoomAnimation(HDC hDC, Boom* head)
 		case Bullet_DownRight:
 		case Bullet_DownLeft:
 		case Bullet_UpLeft:
-
 			NormalBullet(hDC, p->nextBoom);
 		default:
 			break;
