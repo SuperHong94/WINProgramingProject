@@ -3,6 +3,7 @@
 int sj_Timer = 0;
 RECT Player_1;
 RECT WindowSize;
+RECT Energybar;
 bool Crush(RECT* player, int LX, int LY, int RX, int RY) //충돌!!LY는 LeftY의 준말 plyaer하고 폭탄의 범위랑 충돌처리할꺼임  //충돌하면 true리턴
 {
 	int playerWidth = (player->bottom - player->top) / 2;  //높이구해서 2로 나눔 player중점좌표구할려고하는거임
@@ -12,7 +13,7 @@ bool Crush(RECT* player, int LX, int LY, int RX, int RY) //충돌!!LY는 LeftY의 준
 	int boomLY = LY - playerWidth;
 	int boomRX = playerWidth + RX;
 	int boomRY = RY + playerWidth;
-	if ((playerX >= boomLX && playerX <= boomRX) && (playerY >= boomLY && playerY <= boomRY))
+	if ((playerX >= boomLX && playerX <= boomRX) && (playerY >= boomLY && playerY <= boomRY))	
 		return true;
 	else
 		return false;
@@ -53,14 +54,14 @@ void addBoom(Boom* head, EShape tmp_boomShape, int tmpLeftTop_x, int tmpLeftTop_
 
 void SunBoom_SJ(HDC hDC, Boom* head, int x, int y)
 {
-	addBoom(head, Bullet_Down, x - 5, y - 5, x + 5, y + 5);
-	addBoom(head, Bullet_Right, x - 5, y - 5, x + 5, y + 5);
-	addBoom(head, Bullet_Left, x - 5, y - 5, x + 5, y + 5);
-	addBoom(head, Bullet_Up, x - 5, y - 5, x + 5, y + 5);
-	addBoom(head, Bullet_UpRight, x - 5, y - 5, x + 5, y + 5);
-	addBoom(head, Bullet_UpLeft, x - 5, y - 5, x + 5, y + 5);
-	addBoom(head, Bullet_DownLeft, x - 5, y - 5, x + 5, y + 5);
-	addBoom(head, Bullet_DownRight, x - 5, y - 5, x + 5, y + 5);
+	addBoom(head, Bullet_Down, x - 10, y - 10, x + 10, y + 10);
+	addBoom(head, Bullet_Right, x - 10, y - 10, x + 10, y + 10);
+	addBoom(head, Bullet_Left, x - 10, y - 10, x + 10, y + 10);
+	addBoom(head, Bullet_Up, x - 10, y - 10, x + 10, y + 10);
+	addBoom(head, Bullet_UpRight, x - 10, y - 10, x + 10, y + 10);
+	addBoom(head, Bullet_UpLeft, x - 10, y - 10, x + 10, y + 10);
+	addBoom(head, Bullet_DownLeft, x - 10, y - 10, x + 10, y + 10);
+	addBoom(head, Bullet_DownRight, x - 10, y - 10, x + 10, y + 10);
 }
 void Doughnut(HDC hDC, Boom* head, int x, int y, int width)
 {
@@ -78,16 +79,19 @@ void NormalBullet(HDC hDC, Boom* boom)
 	hBrush = CreateSolidBrush(RGB(255, 0, 0));
 	oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
 	switch (boom->boomShape) {
-	//case Boom_Sun:
-	//	Ellipse(hDC, boom->leftTop.x, boom->leftTop.y, boom->rightBottom.x, boom->rightBottom.y);
-	//	break;
+		//case Boom_Sun:
+		//	Ellipse(hDC, boom->leftTop.x, boom->leftTop.y, boom->rightBottom.x, boom->rightBottom.y);
+		//	break;
 	case MyDoughnut1:
 	case MyDoughnut2:
 	case MyDoughnut3:
 	case MyDoughnut4:
 		Rectangle(hDC, boom->leftTop.x, boom->leftTop.y, boom->rightBottom.x, boom->rightBottom.y);
+		
 		break;
 	case Bullet_Up:
+		Ellipse(hDC, boom->leftTop.x, boom->leftTop.y, boom->rightBottom.x, boom->rightBottom.y);
+		break;
 	case Bullet_Down:
 	case Bullet_Right:
 	case Bullet_Left:
@@ -95,9 +99,12 @@ void NormalBullet(HDC hDC, Boom* boom)
 	case Bullet_UpLeft:
 	case Bullet_DownRight:
 	case Bullet_DownLeft:
+		
 		Ellipse(hDC, boom->leftTop.x, boom->leftTop.y, boom->rightBottom.x, boom->rightBottom.y);
+		
 		break;
-	} 
+	}
+
 	(HBRUSH)SelectObject(hDC, oldBrush);
 	DeleteObject(hBrush);
 }
@@ -176,6 +183,7 @@ void Boom::setPosition()
 			leftTop.y = 50;
 			rightBottom.x = 150;
 			rightBottom.y = 150;
+
 		}
 
 		else if (boomAnimaition == 100)
@@ -257,11 +265,13 @@ void Boom::setPosition()
 		rightBottom.y++;
 		leftTop.x--;
 		rightBottom.x--;
+
 		break;
 	default:
 
 		break;
 	}
+
 }
 
 
@@ -269,7 +279,7 @@ void CircleBoom(HDC hDC, Boom* boom)
 {
 	HPEN hPen, oldPen;
 	HBRUSH hBrush, oldBrush;
-	
+
 	if (boom->boomAnimaition < 100)
 	{
 		hPen = CreatePen(PS_DOT, 1, RGB(0, 0, 0));
@@ -386,6 +396,7 @@ void CheckBullet(Boom* head)
 	Boom* p;
 	for (p = head; p->nextBoom != NULL; p = p->nextBoom)
 	{
+		
 		while (OutOfRange(p->nextBoom))
 		{
 			deleteBoom(p);
@@ -398,4 +409,17 @@ void CheckBullet(Boom* head)
 void Animation(HDC hDC)
 {
 
+}
+
+void DrawEnergybar(HDC hDC)
+{
+	HBRUSH hBrush, hBrush1;
+	hBrush = CreateSolidBrush(RGB(100, 100, 100));
+	hBrush1 = CreateSolidBrush(RGB(0, 0, 100));
+	(HBRUSH)SelectObject(hDC, hBrush);
+	Rectangle(hDC, WindowSize.left, WindowSize.bottom - 20, WindowSize.right, WindowSize.bottom);
+	(HBRUSH)SelectObject(hDC, hBrush1);
+	Rectangle(hDC, Energybar.left, Energybar.bottom - 20, Energybar.right, Energybar.bottom);
+	DeleteObject(hBrush);
+	DeleteObject(hBrush1);
 }

@@ -22,7 +22,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdPa
 	WndClass.hInstance = hInstance;
 	WndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	WndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
-	WndClass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
+	WndClass.hbrBackground = (HBRUSH)GetStockObject(RGB(0,255,0));
 	WndClass.lpszMenuName = NULL;
 	WndClass.lpszClassName = lpszClass;
 	WndClass.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
@@ -64,10 +64,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_CREATE:
 		head = new Boom;
 		bullet_head = new Boom;
-
 		bullet_head->nextBoom = NULL;
 		head->nextBoom = NULL;
 		GetClientRect(hWnd, &WindowSize);
+		GetClientRect(hWnd, &Energybar);
 		Player_1.top = 380;
 		Player_1.bottom = 405;
 		Player_1.left = 380;
@@ -110,6 +110,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 			CheckBullet(bullet_head);
 			setBoomPosition(bullet_head);
+			setAnimation(head);
+			setBoomPosition(head);
 			break;
 		case 1:  //0.1초 단위로 생성됨
 			sj_Timer++;
@@ -197,20 +199,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_PAINT:
 		MemDC = BeginPaint(hWnd, &ps);
-		GetClientRect(hWnd, &bufferRT);
+		//GetClientRect(hWnd, &bufferRT);
 		hDC = CreateCompatibleDC(MemDC);
-		BackBit = CreateCompatibleBitmap(MemDC, bufferRT.right, bufferRT.bottom);
+		BackBit = CreateCompatibleBitmap(MemDC, WindowSize.right, WindowSize.bottom);
 		oldBackBit = (HBITMAP)SelectObject(hDC, BackBit);
-		PatBlt(hDC, 0, 0, bufferRT.right, bufferRT.bottom, BLACKNESS);
+		PatBlt(hDC, 0, 0, WindowSize.right, WindowSize.bottom, BLACKNESS);
 		sprintf(buffer, "시간: %d", sj_Timer);
 		TextOutA(hDC, 500, 10, buffer, 10);
-
+		
 		
 		printBoomAnimation(hDC, head);
 		printBoomAnimation(hDC, bullet_head);
 		Rectangle(hDC, Player_1.left, Player_1.top, Player_1.right, Player_1.bottom);
-		GetClientRect(hWnd, &bufferRT);
-		BitBlt(MemDC, 0, 0, bufferRT.right, bufferRT.bottom, hDC, 0, 0, SRCCOPY);
+		GetClientRect(hWnd, &WindowSize);
+		DrawEnergybar(hDC);
+		BitBlt(MemDC, 0, 0, WindowSize.right, WindowSize.bottom, hDC, 0, 0, SRCCOPY);
 		SelectObject(hDC, oldBackBit);
 		DeleteObject(BackBit);
 		DeleteDC(hDC);

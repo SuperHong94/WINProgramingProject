@@ -7,6 +7,7 @@
 extern int sj_Timer;
 extern RECT Player_1;
 extern RECT WindowSize;
+extern RECT Energybar;
 enum ETURNN {
 	turn0 = 0,
 	turn1, turn2, turn3, turn4, turn5
@@ -66,4 +67,4 @@ bool Crush(RECT*, int LX, int LY, int RX, int RY); //충돌!!LY는 LeftY의 준말 ply
 void DrawDie(RECT*);
 void Doughnut(HDC hDC, Boom* head, int x, int y,int width);
 bool OutOfRange(Boom* boom);
-
+void DrawEnergybar(HDC hDC);

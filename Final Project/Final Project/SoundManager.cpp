@@ -29,9 +29,6 @@ void playSound(ESOUNDKIND eSound)
 	FMOD_System_PlaySound(SJ_pSystem, FMOD_CHANNEL_FREE, SJ_pSound[eSound], 0, &SJ_pChannel[eSound]);
 
 }
-void playSound_Stop(ESOUNDKIND eSound)
-{
-}
 
 void effSoundSetup()
 {
