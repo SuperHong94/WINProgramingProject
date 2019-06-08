@@ -115,7 +115,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			sj_Timer++;
 			if (sj_Timer == 50)
 			{
-<
 				
 			}
 			if (sj_Timer == 10)
