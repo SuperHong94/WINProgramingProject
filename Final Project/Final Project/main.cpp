@@ -115,6 +115,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			sj_Timer++;
 			if (sj_Timer == 50)
 			{
+<
 				
 			}
 			if (sj_Timer == 10)
@@ -169,10 +170,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		TextOutA(hDC, 500, 10, buffer, 10);
 
 		Rectangle(hDC, Player_1.left, Player_1.top, Player_1.right, Player_1.bottom);
-
 		printBoomAnimation(hDC, head);
 		printBoomAnimation(hDC, bullet_head);
-
 
 		GetClientRect(hWnd, &bufferRT);
 		BitBlt(MemDC, 0, 0, bufferRT.right, bufferRT.bottom, hDC, 0, 0, SRCCOPY);

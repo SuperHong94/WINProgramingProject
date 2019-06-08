@@ -71,6 +71,9 @@ void Doughnut(HDC hDC, Boom* head, int x, int y, int width)
 	addBoom(head, MyDoughnut4, x + width - 20, y, x + width, y + width);
 }
 
+
+
+
 void NormalBullet(HDC hDC, Boom* boom)
 {
 	if (boom == NULL)
@@ -100,7 +103,6 @@ void NormalBullet(HDC hDC, Boom* boom)
 		break;
 	} 
 	(HBRUSH)SelectObject(hDC, oldBrush);
-
 	DeleteObject(hBrush);
 }
 
@@ -130,7 +132,6 @@ void setAnimation(Boom* head)
 	for (p = head; p->nextBoom != NULL; p = p->nextBoom)
 	{
 		p->nextBoom->boomAnimaition++;
-		p->nextBoom->boomAnimaition %= 5;
 	}
 }
 
@@ -165,11 +166,15 @@ void Boom::setPosition()
 		rightBottom.x++;
 		rightBottom.y++;
 		break;
+
+	case MyRectangle:
+
+		break;
 	case MyTriangle:
 
 		break;
 	case Boom_Circle:
-		if (boomAnimaition == 0)
+		if (boomAnimaition >= 0 && boomAnimaition < 100)
 		{
 			leftTop.x = 50;
 			leftTop.y = 50;
@@ -177,7 +182,7 @@ void Boom::setPosition()
 			rightBottom.y = 150;
 		}
 
-		else if (boomAnimaition == 1)
+		else if (boomAnimaition == 100)
 		{
 			leftTop.x -= 25;
 			leftTop.y -= 25;
@@ -185,16 +190,18 @@ void Boom::setPosition()
 			rightBottom.y += 25;
 		}
 
-		else if (boomAnimaition == 3)
+		else if (boomAnimaition > 100)
 		{
-			leftTop.x += 50;
-			leftTop.y += 50;
-			rightBottom.x -= 50;
-			rightBottom.y -= 50;
+			leftTop.x += 2;
+			leftTop.y += 2;
+			rightBottom.x -= 2;
+			rightBottom.y -= 2;
+			if (leftTop.x >= rightBottom.x)
+				boomAnimaition = 0;
 		}
 		break;
 	case Boom_Laser:
-		if (boomAnimaition == 0)
+		if (boomAnimaition >= 0 && boomAnimaition < 100)
 		{
 			leftTop.x = 0;
 			leftTop.y = 400;
@@ -202,15 +209,17 @@ void Boom::setPosition()
 			rightBottom.y = 450;
 		}
 
-		else if (boomAnimaition == 1)
+		else if (boomAnimaition == 100)
 		{
-			leftTop.y -= 10;
-			rightBottom.y += 10;
+			leftTop.y -= 25;
+			rightBottom.y += 25;
 		}
-		else if (boomAnimaition == 3)
+		else if (boomAnimaition > 100)
 		{
-			leftTop.y += 15;
-			rightBottom.y -= 15;
+			leftTop.y += 2;
+			rightBottom.y -= 2;
+			if (leftTop.y >= rightBottom.y)
+				boomAnimaition = 0;
 		}
 		break;
 	case Bullet_Up:
@@ -264,10 +273,9 @@ void CircleBoom(HDC hDC, Boom* boom)
 {
 	HPEN hPen, oldPen;
 	HBRUSH hBrush, oldBrush;
-
-	switch (boom->boomAnimaition % 5)
+	
+	if (boom->boomAnimaition < 100)
 	{
-	case 0:
 		hPen = CreatePen(PS_DOT, 1, RGB(0, 0, 0));
 		oldPen = (HPEN)SelectObject(hDC, hPen);
 		hBrush = CreateSolidBrush(RGB(255, 255, 255));
@@ -277,38 +285,27 @@ void CircleBoom(HDC hDC, Boom* boom)
 		DeleteObject(hBrush);
 		SelectObject(hDC, oldPen);
 		DeleteObject(hPen);
-		break;
-	case 1:
-		hBrush = CreateSolidBrush(RGB(255, 0, 255));
-		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
-		Ellipse(hDC, boom->leftTop.x, boom->rightBottom.y, boom->rightBottom.x, boom->leftTop.y);
-		SelectObject(hDC, oldBrush);
-		DeleteObject(hBrush);
-		break;
-	case 2:
-		hBrush = CreateSolidBrush(RGB(255, 255, 255));
-		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
-		Ellipse(hDC, boom->leftTop.x, boom->rightBottom.y, boom->rightBottom.x, boom->leftTop.y);
-		SelectObject(hDC, oldBrush);
-		DeleteObject(hBrush);
-		break;
-	case 3:
-		hBrush = CreateSolidBrush(RGB(255, 0, 255));
-		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
-		Ellipse(hDC, boom->leftTop.x, boom->rightBottom.y, boom->rightBottom.x, boom->leftTop.y);
-		SelectObject(hDC, oldBrush);
-		DeleteObject(hBrush);
-		break;
-	case 4:
-		hBrush = CreateSolidBrush(RGB(255, 255, 255));
-		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
-		Ellipse(hDC, boom->leftTop.x, boom->rightBottom.y, boom->rightBottom.x, boom->leftTop.y);
-		SelectObject(hDC, oldBrush);
-		DeleteObject(hBrush);
-		break;
-	default:
+	}
 
-		break;
+	else
+	{
+		switch (boom->boomAnimaition % 2)
+		{
+		case 0:
+			hBrush = CreateSolidBrush(RGB(255, 0, 255));
+			oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
+			Ellipse(hDC, boom->leftTop.x, boom->rightBottom.y, boom->rightBottom.x, boom->leftTop.y);
+			SelectObject(hDC, oldBrush);
+			DeleteObject(hBrush);
+			break;
+		case 1:
+			hBrush = CreateSolidBrush(RGB(255, 255, 255));
+			oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
+			Ellipse(hDC, boom->leftTop.x, boom->rightBottom.y, boom->rightBottom.x, boom->leftTop.y);
+			SelectObject(hDC, oldBrush);
+			DeleteObject(hBrush);
+			break;
+		}
 	}
 }
 
@@ -317,9 +314,8 @@ void LaserBoom(HDC hDC, Boom* boom)
 	HPEN hPen, oldPen;
 	HBRUSH hBrush, oldBrush;
 
-	switch (boom->boomAnimaition % 5)
+	if (boom->boomAnimaition < 100)
 	{
-	case 0:
 		hPen = CreatePen(PS_DOT, 1, RGB(0, 0, 0));
 		oldPen = (HPEN)SelectObject(hDC, hPen);
 		hBrush = CreateSolidBrush(RGB(255, 255, 255));
@@ -329,38 +325,27 @@ void LaserBoom(HDC hDC, Boom* boom)
 		DeleteObject(hBrush);
 		SelectObject(hDC, oldPen);
 		DeleteObject(hPen);
-		break;
-	case 1:
-		hBrush = CreateSolidBrush(RGB(255, 0, 255));
-		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
-		Rectangle(hDC, boom->leftTop.x, boom->rightBottom.y, boom->rightBottom.x, boom->leftTop.y);
-		SelectObject(hDC, oldBrush);
-		DeleteObject(hBrush);
-		break;
-	case 2:
-		hBrush = CreateSolidBrush(RGB(255, 255, 255));
-		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
-		Rectangle(hDC, boom->leftTop.x, boom->rightBottom.y, boom->rightBottom.x, boom->leftTop.y);
-		SelectObject(hDC, oldBrush);
-		DeleteObject(hBrush);
-		break;
-	case 3:
-		hBrush = CreateSolidBrush(RGB(255, 0, 255));
-		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
-		Rectangle(hDC, boom->leftTop.x, boom->rightBottom.y, boom->rightBottom.x, boom->leftTop.y);
-		SelectObject(hDC, oldBrush);
-		DeleteObject(hBrush);
-		break;
-	case 4:
-		hBrush = CreateSolidBrush(RGB(255, 255, 255));
-		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
-		Rectangle(hDC, boom->leftTop.x, boom->rightBottom.y, boom->rightBottom.x, boom->leftTop.y);
-		SelectObject(hDC, oldBrush);
-		DeleteObject(hBrush);
-		break;
-	default:
+	}
 
-		break;
+	else
+	{
+		switch (boom->boomAnimaition % 2)
+		{
+		case 0:
+			hBrush = CreateSolidBrush(RGB(255, 0, 255));
+			oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
+			Rectangle(hDC, boom->leftTop.x, boom->rightBottom.y, boom->rightBottom.x, boom->leftTop.y);
+			SelectObject(hDC, oldBrush);
+			DeleteObject(hBrush);
+			break;
+		case 1:
+			hBrush = CreateSolidBrush(RGB(255, 255, 255));
+			oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
+			Rectangle(hDC, boom->leftTop.x, boom->rightBottom.y, boom->rightBottom.x, boom->leftTop.y);
+			SelectObject(hDC, oldBrush);
+			DeleteObject(hBrush);
+			break;
+		}
 	}
 }
 
@@ -387,6 +372,7 @@ void printBoomAnimation(HDC hDC, Boom* head)
 		case Boom_Laser:
 			LaserBoom(hDC, p->nextBoom);
 			break;
+
 		case Bullet_Up:
 		case Bullet_Down:
 		case Bullet_Right:
@@ -395,6 +381,7 @@ void printBoomAnimation(HDC hDC, Boom* head)
 		case Bullet_DownRight:
 		case Bullet_DownLeft:
 		case Bullet_UpLeft:
+
 			NormalBullet(hDC, p->nextBoom);
 		default:
 			break;
