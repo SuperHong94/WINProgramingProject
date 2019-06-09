@@ -13,7 +13,6 @@ enum ETURNN {
 	turn1, turn2, turn3, turn4, turn5
 };
 enum EShape {
-
 	Boom_Sun = 0,
 	MyDoughnut1,
 	MyDoughnut2,
@@ -30,7 +29,11 @@ enum EShape {
 	Bullet_UpRight,
 	Bullet_DownRight,
 	Bullet_DownLeft,
-	Bullet_UpLeft
+	Bullet_UpLeft,
+	Boom_LeftLaser,
+	Boom_RightLaser,
+	Boom_DownLaser,
+	Boom_UpLaser
 };
 enum EBoomStatus {
 	noExplosion = 0,

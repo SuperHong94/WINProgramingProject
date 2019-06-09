@@ -71,7 +71,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		Player_1.left = 380;
 		Player_1.right = 405;
 		addBoom(head, Boom_Circle, 550, 550, 700, 700);
-		addBoom(head, Boom_Laser, -100, 400, 1300, 450);
+		addBoom(head, Boom_RightLaser, -100, 400, 1300, 450);
+		addBoom(head, Boom_UpLaser, 600, -100, 650, 900);
+		addBoom(head, Boom_LeftLaser, -100, 600, 1300, 650);
+		addBoom(head, Boom_DownLaser, 450, -100, 500, 900);
+
 
 		soundSetup(); //사운드 셋업
 		effSoundSetup();//이펙트 셋업
