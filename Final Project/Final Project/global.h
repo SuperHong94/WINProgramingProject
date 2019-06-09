@@ -53,18 +53,21 @@ struct Boom
 
 void SunBoom_SJ(HDC hDC, Boom* head, int x, int y);
 void CheckBullet(Boom* head);
+void CheckBoom(Boom* head);
 void addBoom(Boom* head, EShape tmp_boomShape, int tmpLeftTop_x, int tmpLeftTop_y, int tmpRightBottom_x, int tmpRightBottom_y);
 void deleteBoom(Boom* target);
 void setBoomPosition(Boom* head);
 void setAnimation(Boom* head);
-void CircleBoom(HDC hDC, Boom* boom);
-void LaserBoom(HDC hDC, Boom* boom);
+void CircleBoom(HDC hDC, HINSTANCE g_hInst, Boom* boom);
+void LaserBoom(HDC hDC, HINSTANCE g_hInst, Boom* boom);
 void NormalBullet(HDC hDC, Boom* boom);
-void printBoomAnimation(HDC hDC, Boom* head);
-void Animation(HDC hDC);
+void printBoomAnimation(HDC hDC, HINSTANCE g_hInst, Boom* head);
+void Animation(HDC hDC, HINSTANCE g_hInst, Boom* head, Boom* bullet_head);
 void InitBoom(Boom& boom, int lX, int lY, int rX, int rY); //폭탄 초기화 함수
 bool Crush(RECT*, int LX, int LY, int RX, int RY); //충돌!!LY는 LeftY의 준말 plyaer하고 폭탄의 범위랑 충돌처리할꺼임  //충돌하면 true리턴
 void DrawDie(RECT*);
 void Doughnut(HDC hDC, Boom* head, int x, int y,int width);
 bool OutOfRange(Boom* boom);
 void DrawEnergybar(HDC hDC);
+void CheckBulletCrush(Boom* head);
+void CheckBoomCrush(Boom* head);

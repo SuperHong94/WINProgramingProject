@@ -70,8 +70,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		Player_1.bottom = 405;
 		Player_1.left = 380;
 		Player_1.right = 405;
-		addBoom(head, Boom_Circle, 50, 50, 150, 150);
-		addBoom(head, Boom_Laser, 0, 400, 1200, 450);
+		addBoom(head, Boom_Circle, 550, 550, 700, 700);
+		addBoom(head, Boom_Laser, -100, 400, 1300, 450);
 
 		soundSetup(); //사운드 셋업
 		effSoundSetup();//이펙트 셋업
@@ -108,9 +108,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				Player_1.right += 3;
 			}
 			CheckBullet(bullet_head);
+			CheckBoom(head);
 			setBoomPosition(bullet_head);
 			setAnimation(head);
 			setBoomPosition(head);
+			CheckBulletCrush(bullet_head);
+			CheckBoomCrush(head);
 			break;
 		case 1:  //0.1초 단위로 생성됨
 			sj_Timer++;
@@ -207,15 +210,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		BackBit = CreateCompatibleBitmap(MemDC, WindowSize.right, WindowSize.bottom);
 		oldBackBit = (HBITMAP)SelectObject(hDC, BackBit);
 		PatBlt(hDC, 0, 0, WindowSize.right, WindowSize.bottom, BLACKNESS);
+
 		sprintf(buffer, "시간: %d", sj_Timer);
 		TextOutA(hDC, 500, 10, buffer, 10);
-		
-		
-		printBoomAnimation(hDC, head);
-		printBoomAnimation(hDC, bullet_head);
-		Rectangle(hDC, Player_1.left, Player_1.top, Player_1.right, Player_1.bottom);
-		GetClientRect(hWnd, &WindowSize);
+		Animation(hDC, g_hInst, head, bullet_head);
 		DrawEnergybar(hDC);
+
+		GetClientRect(hWnd, &WindowSize);
+
 		BitBlt(MemDC, 0, 0, WindowSize.right, WindowSize.bottom, hDC, 0, 0, SRCCOPY);
 		SelectObject(hDC, oldBackBit);
 		DeleteObject(BackBit);

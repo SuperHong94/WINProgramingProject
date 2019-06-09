@@ -63,6 +63,7 @@ void SunBoom_SJ(HDC hDC, Boom* head, int x, int y)
 	addBoom(head, Bullet_DownLeft, x - 10, y - 10, x + 10, y + 10);
 	addBoom(head, Bullet_DownRight, x - 10, y - 10, x + 10, y + 10);
 }
+
 void Doughnut(HDC hDC, Boom* head, int x, int y, int width)
 {
 
@@ -71,13 +72,17 @@ void Doughnut(HDC hDC, Boom* head, int x, int y, int width)
 	addBoom(head, MyDoughnut3, x, y + width - 20, x + width, y + width);
 	addBoom(head, MyDoughnut4, x + width - 20, y, x + width, y + width);
 }
+
 void NormalBullet(HDC hDC, Boom* boom)
 {
 	if (boom == NULL)
 		return;
 	HBRUSH hBrush, oldBrush;
+	HPEN hPen, oldPen;
 	hBrush = CreateSolidBrush(RGB(255, 0, 0));
 	oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
+	hPen = CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
+	oldPen = (HPEN)SelectObject(hDC, hPen);
 	switch (boom->boomShape) {
 		//case Boom_Sun:
 		//	Ellipse(hDC, boom->leftTop.x, boom->leftTop.y, boom->rightBottom.x, boom->rightBottom.y);
@@ -104,7 +109,8 @@ void NormalBullet(HDC hDC, Boom* boom)
 		
 		break;
 	}
-
+	(HPEN)SelectObject(hDC, oldPen);
+	DeleteObject(hPen);
 	(HBRUSH)SelectObject(hDC, oldBrush);
 	DeleteObject(hBrush);
 }
@@ -134,7 +140,8 @@ void setAnimation(Boom* head)
 
 	for (p = head; p->nextBoom != NULL; p = p->nextBoom)
 	{
-		p->nextBoom->boomAnimaition++;
+		if (p->nextBoom->boomAnimaition != -1)
+			p->nextBoom->boomAnimaition++;
 	}
 }
 
@@ -177,16 +184,7 @@ void Boom::setPosition()
 
 		break;
 	case Boom_Circle:
-		if (boomAnimaition >= 0 && boomAnimaition < 100)
-		{
-			leftTop.x = 50;
-			leftTop.y = 50;
-			rightBottom.x = 150;
-			rightBottom.y = 150;
-
-		}
-
-		else if (boomAnimaition == 100)
+		if (boomAnimaition == 100)
 		{
 			leftTop.x -= 25;
 			leftTop.y -= 25;
@@ -201,19 +199,11 @@ void Boom::setPosition()
 			rightBottom.x -= 2;
 			rightBottom.y -= 2;
 			if (leftTop.x >= rightBottom.x)
-				boomAnimaition = 0;
+				boomAnimaition = -1;
 		}
 		break;
 	case Boom_Laser:
-		if (boomAnimaition >= 0 && boomAnimaition < 100)
-		{
-			leftTop.x = 0;
-			leftTop.y = 400;
-			rightBottom.x = 1200;
-			rightBottom.y = 450;
-		}
-
-		else if (boomAnimaition == 100)
+		if (boomAnimaition == 100)
 		{
 			leftTop.y -= 25;
 			rightBottom.y += 25;
@@ -223,7 +213,7 @@ void Boom::setPosition()
 			leftTop.y += 2;
 			rightBottom.y -= 2;
 			if (leftTop.y >= rightBottom.y)
-				boomAnimaition = 0;
+				boomAnimaition = -1;
 		}
 		break;
 	case Bullet_Up:
@@ -271,27 +261,25 @@ void Boom::setPosition()
 
 		break;
 	}
-	 if(Crush(&Player_1, leftTop.x, leftTop.y, rightBottom.x, rightBottom.y))
-      Energybar.right -= 10;
 }
 
 
-void CircleBoom(HDC hDC, Boom* boom)
+void CircleBoom(HDC hDC, HINSTANCE g_hInst,Boom* boom)
 {
 	HPEN hPen, oldPen;
 	HBRUSH hBrush, oldBrush;
 
+	HDC memDC;
+	HBITMAP CircleBoom;
+
 	if (boom->boomAnimaition < 100)
 	{
-		hPen = CreatePen(PS_DOT, 1, RGB(0, 0, 0));
-		oldPen = (HPEN)SelectObject(hDC, hPen);
-		hBrush = CreateSolidBrush(RGB(255, 255, 255));
-		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
-		Ellipse(hDC, boom->leftTop.x, boom->rightBottom.y, boom->rightBottom.x, boom->leftTop.y);
-		SelectObject(hDC, oldBrush);
-		DeleteObject(hBrush);
-		SelectObject(hDC, oldPen);
-		DeleteObject(hPen);
+		CircleBoom = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_CIRCLEBOOM));
+		memDC = CreateCompatibleDC(hDC);
+		(HBITMAP)SelectObject(memDC, CircleBoom);
+		TransparentBlt(hDC, boom->leftTop.x, boom->leftTop.y, boom->rightBottom.x - boom->leftTop.x, boom->rightBottom.y - boom->leftTop.y, memDC, 0, 0, 1024, 1024, RGB(0, 0, 0));
+		DeleteObject(CircleBoom);
+		DeleteDC(memDC);
 	}
 
 	else
@@ -299,7 +287,7 @@ void CircleBoom(HDC hDC, Boom* boom)
 		switch (boom->boomAnimaition % 2)
 		{
 		case 0:
-			hBrush = CreateSolidBrush(RGB(255, 0, 255));
+			hBrush = CreateSolidBrush(RGB(255, 0, 0));
 			oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
 			Ellipse(hDC, boom->leftTop.x, boom->rightBottom.y, boom->rightBottom.x, boom->leftTop.y);
 			SelectObject(hDC, oldBrush);
@@ -316,38 +304,39 @@ void CircleBoom(HDC hDC, Boom* boom)
 	}
 }
 
-void LaserBoom(HDC hDC, Boom* boom)
+void LaserBoom(HDC hDC, HINSTANCE g_hInst, Boom* boom)
 {
 	HPEN hPen, oldPen;
 	HBRUSH hBrush, oldBrush;
 
+	HDC memDC;
+	HBITMAP LaserBoom;
+
+
 	if (boom->boomAnimaition < 100)
 	{
-		hPen = CreatePen(PS_DOT, 1, RGB(0, 0, 0));
-		oldPen = (HPEN)SelectObject(hDC, hPen);
-		hBrush = CreateSolidBrush(RGB(255, 255, 255));
-		oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
-		Rectangle(hDC, boom->leftTop.x, boom->rightBottom.y, boom->rightBottom.x, boom->leftTop.y);
-		SelectObject(hDC, oldBrush);
-		DeleteObject(hBrush);
-		SelectObject(hDC, oldPen);
-		DeleteObject(hPen);
+		LaserBoom = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_LASERBOOM));
+		memDC = CreateCompatibleDC(hDC);
+		(HBITMAP)SelectObject(memDC, LaserBoom);
+		TransparentBlt(hDC, boom->leftTop.x, boom->leftTop.y, boom->rightBottom.x - boom->leftTop.x, boom->rightBottom.y - boom->leftTop.y, memDC, 0, 0, 1024, 1024, RGB(0, 0, 0));
+		DeleteObject(LaserBoom);
+		DeleteDC(memDC);
 	}
 	else
 	{
 		switch (boom->boomAnimaition % 2)
 		{
 		case 0:
-			hBrush = CreateSolidBrush(RGB(255, 0, 255));
+			hBrush = CreateSolidBrush(RGB(255, 0, 0));
 			oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
-			Rectangle(hDC, boom->leftTop.x, boom->rightBottom.y, boom->rightBottom.x, boom->leftTop.y);
+			Rectangle(hDC, boom->leftTop.x, boom->leftTop.y, boom->rightBottom.x, boom->rightBottom.y);
 			SelectObject(hDC, oldBrush);
 			DeleteObject(hBrush);
 			break;
 		case 1:
 			hBrush = CreateSolidBrush(RGB(255, 255, 255));
 			oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
-			Rectangle(hDC, boom->leftTop.x, boom->rightBottom.y, boom->rightBottom.x, boom->leftTop.y);
+			Rectangle(hDC, boom->leftTop.x, boom->leftTop.y, boom->rightBottom.x, boom->rightBottom.y);
 			SelectObject(hDC, oldBrush);
 			DeleteObject(hBrush);
 			break;
@@ -355,7 +344,7 @@ void LaserBoom(HDC hDC, Boom* boom)
 	}
 }
 
-void printBoomAnimation(HDC hDC, Boom* head)
+void printBoomAnimation(HDC hDC, HINSTANCE g_hInst, Boom* head)
 {
 	Boom* p;
 
@@ -372,10 +361,10 @@ void printBoomAnimation(HDC hDC, Boom* head)
 			NormalBullet(hDC, p->nextBoom);
 			break;
 		case Boom_Circle:
-			CircleBoom(hDC, p->nextBoom);
+			CircleBoom(hDC, g_hInst, p->nextBoom);
 			break;
 		case Boom_Laser:
-			LaserBoom(hDC, p->nextBoom);
+			LaserBoom(hDC, g_hInst, p->nextBoom);
 			break;
 		case Bullet_Up:
 		case Bullet_Down:
@@ -401,15 +390,61 @@ void CheckBullet(Boom* head)
 		while (OutOfRange(p->nextBoom))
 		{
 			deleteBoom(p);
+			if (p->nextBoom == NULL)
+				break;
 		}
 		if (p->nextBoom == NULL)
 			break;
 	}
 }
 
-void Animation(HDC hDC)
+void CheckBoom(Boom* head)
 {
+	Boom* p;
 
+	for (p = head; p->nextBoom != NULL; p = p->nextBoom)
+	{
+
+		if (p->nextBoom->boomShape >= 1 && p->nextBoom->boomShape <= 4)
+		{
+			while (OutOfRange(p->nextBoom))
+			{
+				deleteBoom(p);
+				if (p->nextBoom == NULL)
+					break;
+			}
+		}
+		else
+		{
+			while (p->nextBoom->boomAnimaition == -1)
+			{
+				deleteBoom(p);
+				if (p->nextBoom == NULL)
+					break;
+			}
+		}
+
+
+		if (p->nextBoom == NULL)
+			break;
+	}
+}
+
+void Animation(HDC hDC, HINSTANCE g_hInst, Boom* head, Boom* bullet_head)
+{
+	HDC memDC;
+	HBITMAP Character;
+
+	Character = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_PLAYER));
+
+	printBoomAnimation(hDC, g_hInst, head);
+	printBoomAnimation(hDC, g_hInst, bullet_head);
+
+	memDC = CreateCompatibleDC(hDC);
+	(HBITMAP)SelectObject(memDC, Character);
+	StretchBlt(hDC, Player_1.left, Player_1.top, Player_1.right - Player_1.left, Player_1.bottom - Player_1.top, memDC, 0, 0, 50, 50, SRCCOPY);
+	DeleteObject(Character);
+	DeleteDC(memDC);
 }
 
 void DrawEnergybar(HDC hDC)
@@ -423,4 +458,26 @@ void DrawEnergybar(HDC hDC)
 	Rectangle(hDC, Energybar.left, Energybar.bottom - 20, Energybar.right, Energybar.bottom);
 	DeleteObject(hBrush);
 	DeleteObject(hBrush1);
+}
+
+void CheckBulletCrush(Boom* head)
+{
+	Boom* p;
+
+	for (p = head; p->nextBoom != NULL; p = p->nextBoom)
+	{
+		if (Crush(&Player_1, p->nextBoom->leftTop.x, p->nextBoom->leftTop.y, p->nextBoom->rightBottom.x, p->nextBoom->rightBottom.y))
+			Energybar.right -= 10;
+	}
+}
+
+void CheckBoomCrush(Boom* head)
+{
+	Boom* p;
+
+	for (p = head; p->nextBoom != NULL; p = p->nextBoom)
+	{
+		if ((p->nextBoom->boomAnimaition >= 100) && Crush(&Player_1, p->nextBoom->leftTop.x, p->nextBoom->leftTop.y, p->nextBoom->rightBottom.x, p->nextBoom->rightBottom.y))
+			Energybar.right -= 10;
+	}
 }

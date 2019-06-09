@@ -1,2 +1,6 @@
-﻿  SoundManager.cpp
-  Final Project.vcxproj -> C:\Users\홍순조\Desktop\git\WINProgramingProject\Final Project\Debug\Final Project.exe
+﻿  global.cpp
+c:\users\msi\documents\github\winprogramingproject\final project\final project\global.cpp(269): warning C4101: 'hPen' :참조되지 않은 지역 변수입니다.
+c:\users\msi\documents\github\winprogramingproject\final project\final project\global.cpp(269): warning C4101: 'oldPen' :참조되지 않은 지역 변수입니다.
+c:\users\msi\documents\github\winprogramingproject\final project\final project\global.cpp(309): warning C4101: 'hPen' :참조되지 않은 지역 변수입니다.
+c:\users\msi\documents\github\winprogramingproject\final project\final project\global.cpp(309): warning C4101: 'oldPen' :참조되지 않은 지역 변수입니다.
+  Final Project.vcxproj -> C:\Users\msi\Documents\Github\WINProgramingProject\Final Project\Debug\Final Project.exe
