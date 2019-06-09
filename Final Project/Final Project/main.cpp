@@ -75,8 +75,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		addBoom(head, Boom_UpLaser, 600, -100, 650, 900);
 		addBoom(head, Boom_LeftLaser, -100, 600, 1300, 650);
 		addBoom(head, Boom_DownLaser, 450, -100, 500, 900);
-
-
 		soundSetup(); //사운드 셋업
 		effSoundSetup();//이펙트 셋업
 		SetTimer(hWnd, 0, 10, NULL);
