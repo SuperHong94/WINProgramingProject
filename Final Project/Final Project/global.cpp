@@ -104,7 +104,6 @@ void NormalBullet(HDC hDC, Boom* boom)
 	case Bullet_UpLeft:
 	case Bullet_DownRight:
 	case Bullet_DownLeft:
-		
 		Ellipse(hDC, boom->leftTop.x, boom->leftTop.y, boom->rightBottom.x, boom->rightBottom.y);
 		
 		break;
@@ -194,10 +193,10 @@ void Boom::setPosition()
 
 		else if (boomAnimaition > 100)
 		{
-			leftTop.x += 2;
-			leftTop.y += 2;
-			rightBottom.x -= 2;
-			rightBottom.y -= 2;
+			leftTop.x += 10;
+			leftTop.y += 10;
+			rightBottom.x -= 10;
+			rightBottom.y -= 10;
 			if (leftTop.x >= rightBottom.x)
 				boomAnimaition = -1;
 		}
@@ -217,122 +216,56 @@ void Boom::setPosition()
 		}
 		break;
 	case Bullet_Up:
-		leftTop.y--;
-		rightBottom.y--;
+		leftTop.y -= 3;
+		rightBottom.y -= 3;
 		break;
 	case Bullet_Down:
-		leftTop.y++;
-		rightBottom.y++;
+		leftTop.y += 3;
+		rightBottom.y += 3;
 		break;
 	case Bullet_Right:
-		leftTop.x++;
-		rightBottom.x++;
+		leftTop.x += 3;
+		rightBottom.x += 3;
 		break;
 	case Bullet_Left:
-		leftTop.x--;
-		rightBottom.x--;
+		leftTop.x -= 3;
+		rightBottom.x -= 3;
 		break;
 	case Bullet_UpRight:
-		leftTop.y--;
-		leftTop.x++;
-		rightBottom.x++;
-		rightBottom.y--;
+		leftTop.y -= 3;
+		leftTop.x += 3;
+		rightBottom.x += 3;
+		rightBottom.y -= 3;
 		break;
 	case Bullet_UpLeft:
-		leftTop.y--;
-		rightBottom.y--;
-		leftTop.x--;
-		rightBottom.x--;
+		leftTop.y -= 3;
+		rightBottom.y -= 3;
+		leftTop.x -= 3;
+		rightBottom.x -= 3;
 		break;
 	case Bullet_DownRight:
-		leftTop.y++;
-		rightBottom.y++;
-		leftTop.x++;
-		rightBottom.x++;
+		leftTop.y += 3;
+		rightBottom.y += 3;
+		leftTop.x += 3;
+		rightBottom.x += 3;
 		break;
 	case Bullet_DownLeft:
-		leftTop.y++;
-		rightBottom.y++;
-		leftTop.x--;
-		rightBottom.x--;
+		leftTop.y += 3;
+		rightBottom.y += 3;
+		leftTop.x -= 3;
+		rightBottom.x -= 3;
 		break;
-	case Boom_LeftLaser:
+	case Boom_Laser2:
 		if (boomAnimaition == 100)
 		{
-			leftTop.x = 1200;
+			leftTop.x -= 25;
+			rightBottom.x += 25;
 		}
-		else if (boomAnimaition > 100 && boomAnimaition < 120)
+		else if (boomAnimaition > 100)
 		{
-			leftTop.x -= 2;
-		}
-		else if (boomAnimaition == 120)
-		{
-			leftTop.x = -100;
-		}
-		else if (boomAnimaition > 120)
-		{
-			rightBottom.x -= 100;
-			if (rightBottom.x <= -100)
-				boomAnimaition = -1;
-		}
-		break;
-	case Boom_RightLaser:
-		if (boomAnimaition == 100)
-		{
-			rightBottom.x = 0;
-		}
-		else if (boomAnimaition > 100 && boomAnimaition < 120)
-		{
-			rightBottom.x += 2;
-		}
-		else if (boomAnimaition == 120)
-		{
-			rightBottom.x = 1300;
-		}
-		else if (boomAnimaition > 120)
-		{
-			leftTop.x += 100;
-			if (leftTop.x >= 1300)
-				boomAnimaition = -1;
-		}
-		break;
-	case Boom_DownLaser:
-		if (boomAnimaition == 100)
-		{
-			rightBottom.y = 0;
-		}
-		else if (boomAnimaition > 100 && boomAnimaition < 120)
-		{
-			rightBottom.y += 2;
-		}
-		else if (boomAnimaition == 120)
-		{
-			rightBottom.y = 900;
-		}
-		else if (boomAnimaition > 120)
-		{
-			leftTop.y += 100;
-			if (leftTop.y >= 900)
-				boomAnimaition = -1;
-		}
-		break;
-	case Boom_UpLaser:
-		if (boomAnimaition == 100)
-		{
-			leftTop.y = 900;
-		}
-		else if (boomAnimaition > 100 && boomAnimaition < 120)
-		{
-			leftTop.y -= 2;
-		}
-		else if (boomAnimaition == 120)
-		{
-			leftTop.y = -100;
-		}
-		else if (boomAnimaition > 120)
-		{
-			rightBottom.y -= 100;
-			if (rightBottom.y <= -100)
+			leftTop.x += 2;
+			rightBottom.x -= 2;
+			if (leftTop.x >= rightBottom.x)
 				boomAnimaition = -1;
 		}
 		break;
@@ -442,13 +375,6 @@ void printBoomAnimation(HDC hDC, HINSTANCE g_hInst, Boom* head)
 		case Boom_Circle:
 			CircleBoom(hDC, g_hInst, p->nextBoom);
 			break;
-		case Boom_Laser:
-		case Boom_LeftLaser:
-		case Boom_RightLaser:
-		case Boom_UpLaser:
-		case Boom_DownLaser:
-			LaserBoom(hDC, g_hInst, p->nextBoom);
-			break;
 		case Bullet_Up:
 		case Bullet_Down:
 		case Bullet_Right:
@@ -458,6 +384,11 @@ void printBoomAnimation(HDC hDC, HINSTANCE g_hInst, Boom* head)
 		case Bullet_DownLeft:
 		case Bullet_UpLeft:
 			NormalBullet(hDC, p->nextBoom);
+			break;
+		case Boom_Laser:
+		case Boom_Laser2:
+			LaserBoom(hDC, g_hInst, p->nextBoom);
+			break;
 		default:
 			break;
 		}

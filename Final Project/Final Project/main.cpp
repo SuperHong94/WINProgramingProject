@@ -70,11 +70,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		Player_1.bottom = 405;
 		Player_1.left = 380;
 		Player_1.right = 405;
-		addBoom(head, Boom_Circle, 550, 550, 700, 700);
-		addBoom(head, Boom_RightLaser, -100, 400, 1300, 450);
-		addBoom(head, Boom_UpLaser, 600, -100, 650, 900);
-		addBoom(head, Boom_LeftLaser, -100, 600, 1300, 650);
-		addBoom(head, Boom_DownLaser, 450, -100, 500, 900);
+		
 
 
 		soundSetup(); //사운드 셋업
@@ -121,52 +117,100 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			break;
 		case 1:  //0.1초 단위로 생성됨
 			sj_Timer++;
-			if (sj_Timer == 10)  //1초
+			switch (sj_Timer)
 			{
-				SunBoom_SJ(hDC, bullet_head, 300, 300);
-			
-			}
-			if (sj_Timer == 20)
-			{
-				SunBoom_SJ(hDC, bullet_head, 400, 400);
-			}
-			if (sj_Timer == 30) {
-				SunBoom_SJ(hDC, bullet_head, 500, 500);
-			}
-			if (sj_Timer == 40) {
-				SunBoom_SJ(hDC, bullet_head, 700, 700);
-			}
-			if (sj_Timer == 45) {
-				SunBoom_SJ(hDC, bullet_head, 500, 500);
-			}
-			if (sj_Timer == 50) {
-				SunBoom_SJ(hDC, bullet_head, 200, 200);
-			}
-			if (sj_Timer == 55) {
-				SunBoom_SJ(hDC, bullet_head, 200, 300);
-			}
-			if (sj_Timer == 60) {
-				SunBoom_SJ(hDC, bullet_head, 200, 300);
-			}
-			if (sj_Timer == 70) {
-				SunBoom_SJ(hDC, bullet_head, 200, 400);
-			}
-			if (sj_Timer == 78) {
-				SunBoom_SJ(hDC, bullet_head, 200, 500);
-			}
-			if (sj_Timer == 79) {
-				SunBoom_SJ(hDC, bullet_head, 200, 600);
-			}
-			if (sj_Timer == 100) {
-				SunBoom_SJ(hDC, bullet_head, 700, 100);
-			}
-			if (sj_Timer == 230) {
-				Doughnut(hDC, bullet_head,WindowSize.right / 2, WindowSize.bottom / 2,100); //윈도우 중앙에서
+			case 10:
+				addBoom(head, Boom_Circle, 100, 80, 500, 480);
+				break;
+			case 11:
+				addBoom(head, Boom_Circle, 100, 350, 500, 750);
+				break;
+			case 12:
+				addBoom(head, Boom_Circle, 500, 350, 800, 650);
+				break;
+			case 13:
+				addBoom(head, Boom_Circle, 500, 80, 800, 380);
+				break;
+			case 40:
+				addBoom(head, Boom_Circle, 450, 80, 1050, 680);
+				break;
+			case 110:
+				addBoom(head, Boom_Laser, -100, 50, 1300, 100);
+				break;
+			case 111:
+				addBoom(head, Boom_Laser, -100, 150, 1300, 200);
+				break;
+			case 112:
+				addBoom(head, Boom_Laser, -100, 250, 1300, 300);
+				break;
+			case 113:
+				addBoom(head, Boom_Laser, -100, 350, 1300, 400);
+				break;
+			case 160:
+				addBoom(head, Boom_Laser, -100, 650, 1300, 700);
+				break;
+			case 161:
+				addBoom(head, Boom_Laser, -100, 550, 1300, 600);
+				break;
+			case 162:
+				addBoom(head, Boom_Laser, -100, 450, 1300, 500);
+				break;
+			case 163:
+				addBoom(head, Boom_Laser, -100, 350, 1300, 400);
+				break;
+			case 203:
+				SunBoom_SJ(hDC, bullet_head, 540, 380);
+				break;
+			case 208:
+				SunBoom_SJ(hDC, bullet_head, 150, 200);
+				break;
+			case 209:
+				SunBoom_SJ(hDC, bullet_head, 250, 300);
+				break;
+			case 210:
+				SunBoom_SJ(hDC, bullet_head, 550, 300);
+				break;
+			case 240:
+				SunBoom_SJ(hDC, bullet_head, 750, 300);
+				break;
+			case 241:
+				SunBoom_SJ(hDC, bullet_head, 650, 450);
+				break;
+			case 242:
+				SunBoom_SJ(hDC, bullet_head, 730, 380);
+				break;
+			case 296:
+				Doughnut(hDC, head, 520, 380, 50);
+				break;
+			case 297:
+				SunBoom_SJ(hDC, bullet_head, 100, 100);
+				SunBoom_SJ(hDC, bullet_head, 1100, 100);
+				SunBoom_SJ(hDC, bullet_head, 100, 700);
+				SunBoom_SJ(hDC, bullet_head, 1100, 700);
+				break;
+			case 310:
+				addBoom(head, Boom_Laser2, 200, -100, 250, 900);
+				SunBoom_SJ(hDC, bullet_head, 850, 650);
+				break;
+			case 315:
+				addBoom(head, Boom_Laser2, 900, -100, 950, 900);
+				break;
+			case 320:
+				SunBoom_SJ(hDC, bullet_head, 250, 650);
+				addBoom(head, Boom_Laser, -100, 200, 1300, 250);
+				break;
+			case 325:
+				addBoom(head, Boom_Laser, -100, 600, 1300, 650);
+				break;
+			case 390:
+				SunBoom_SJ(hDC, bullet_head, 124, 350);
+				SunBoom_SJ(hDC, bullet_head, 842, 420);
+				break;
+			default:
+				break;
 			}
 			break;
 		case 2: //1초 단위로
-			setAnimation(head);
-			setBoomPosition(head);
 			break;
 		}
 		InvalidateRect(hWnd, NULL, FALSE);
@@ -178,26 +222,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			
 			if (GetAsyncKeyState('A') < 0)
 			{
-				Player_1.left -= 50;
-				Player_1.right -= 50;
+				Player_1.left -= 100;
+				Player_1.right -= 100;
 			}
 
 			if (GetAsyncKeyState('W') < 0)
 			{
-				Player_1.top -= 50;
-				Player_1.bottom -= 50;
+				Player_1.top -= 100;
+				Player_1.bottom -= 100;
 			}
 
 			if (GetAsyncKeyState('S') < 0)
 			{
-				Player_1.top += 50;
-				Player_1.bottom += 50;
+				Player_1.top += 100;
+				Player_1.bottom += 100;
 			}
 
 			if (GetAsyncKeyState('D') < 0)
 			{
-				Player_1.left += 50;
-				Player_1.right += 50;
+				Player_1.left += 100;
+				Player_1.right += 100;
 			}
 		}
 		
