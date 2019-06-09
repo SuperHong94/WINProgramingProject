@@ -22,7 +22,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdPa
 	WndClass.hInstance = hInstance;
 	WndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	WndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
-	WndClass.hbrBackground = (HBRUSH)GetStockObject(RGB(0,255,0));
+	WndClass.hbrBackground = (HBRUSH)GetStockObject(RGB(0, 255, 0));
 	WndClass.lpszMenuName = NULL;
 	WndClass.lpszClassName = lpszClass;
 	WndClass.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
@@ -54,6 +54,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	PAINTSTRUCT ps;
 	static Boom* head;
 	static Boom* bullet_head;
+	static int synch = 0; //싱크 맞춘다.
 
 	//int boomCount = 0;  //폭탄 카운트는 0;
 
@@ -75,12 +76,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		addBoom(head, Boom_UpLaser, 600, -100, 650, 900);
 		addBoom(head, Boom_LeftLaser, -100, 600, 1300, 650);
 		addBoom(head, Boom_DownLaser, 450, -100, 500, 900);
+
+
 		soundSetup(); //사운드 셋업
 		effSoundSetup();//이펙트 셋업
 		SetTimer(hWnd, 0, 10, NULL);
 		SetTimer(hWnd, 1, 100, NULL);
 		SetTimer(hWnd, 2, 1000, NULL);
-		
+
 		playSound(Perion);//페리온 재생
 		break;
 	case WM_TIMER:
@@ -119,47 +122,109 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			break;
 		case 1:  //0.1초 단위로 생성됨
 			sj_Timer++;
-			if (sj_Timer == 10)  //1초
+			if (sj_Timer + synch == 10)  //1초
 			{
 				SunBoom_SJ(hDC, bullet_head, 300, 300);
-			
+
 			}
-			if (sj_Timer == 20)
+			if (sj_Timer + synch == 20)
 			{
 				SunBoom_SJ(hDC, bullet_head, 400, 400);
 			}
-			if (sj_Timer == 30) {
+			if (sj_Timer + synch == 30) {
 				SunBoom_SJ(hDC, bullet_head, 500, 500);
 			}
-			if (sj_Timer == 40) {
+			if (sj_Timer + synch == 40) {
 				SunBoom_SJ(hDC, bullet_head, 700, 700);
 			}
-			if (sj_Timer == 45) {
+			if (sj_Timer + synch == 45) {
 				SunBoom_SJ(hDC, bullet_head, 500, 500);
 			}
-			if (sj_Timer == 50) {
+			if (sj_Timer + synch == 50) {
 				SunBoom_SJ(hDC, bullet_head, 200, 200);
 			}
-			if (sj_Timer == 55) {
+			if (sj_Timer + synch == 55) {
 				SunBoom_SJ(hDC, bullet_head, 200, 300);
 			}
-			if (sj_Timer == 60) {
+			if (sj_Timer + synch == 60) {
 				SunBoom_SJ(hDC, bullet_head, 200, 300);
 			}
-			if (sj_Timer == 70) {
+			if (sj_Timer + synch == 70) {
 				SunBoom_SJ(hDC, bullet_head, 200, 400);
 			}
-			if (sj_Timer == 78) {
+			if (sj_Timer + synch == 75) {
 				SunBoom_SJ(hDC, bullet_head, 200, 500);
 			}
-			if (sj_Timer == 79) {
+			if (sj_Timer + synch == 76) {
 				SunBoom_SJ(hDC, bullet_head, 200, 600);
 			}
-			if (sj_Timer == 100) {
+			if (sj_Timer + synch == 100) {
 				SunBoom_SJ(hDC, bullet_head, 700, 100);
 			}
-			if (sj_Timer == 230) {
-				Doughnut(hDC, bullet_head,WindowSize.right / 2, WindowSize.bottom / 2,100); //윈도우 중앙에서
+			if (sj_Timer + synch == 125) {
+				SunBoom_SJ(hDC, bullet_head, 700, 200);
+			}
+			if (sj_Timer + synch == 130) {
+				SunBoom_SJ(hDC, bullet_head, 700, 200);
+			}
+			if (sj_Timer + synch == 140) {
+				SunBoom_SJ(hDC, bullet_head, 700, 300);
+			}
+			if (sj_Timer + synch == 160) {
+				SunBoom_SJ(hDC, bullet_head, 700, 200);
+			}
+			if (sj_Timer + synch == 168) {
+				SunBoom_SJ(hDC, bullet_head, 700, 300);
+			}
+			if (sj_Timer + synch == 170) {
+				SunBoom_SJ(hDC, bullet_head, 700, 300);
+			}
+			if (sj_Timer + synch == 180) {
+				SunBoom_SJ(hDC, bullet_head, 500, 500);
+			}
+			if (sj_Timer + synch == 190) {
+				SunBoom_SJ(hDC, bullet_head, 300, 300);
+				SunBoom_SJ(hDC, bullet_head, 700, 700);
+				
+			}
+			if (sj_Timer + synch == 200) {
+				SunBoom_SJ(hDC, bullet_head, 100, 100);
+				SunBoom_SJ(hDC, bullet_head, 900, 900);
+
+			}
+			if (sj_Timer + synch == 230) {
+				Doughnut(hDC, bullet_head, WindowSize.right / 2, WindowSize.bottom / 2, 100); //윈도우 중앙에서
+			}
+			if (sj_Timer + synch == 308) {
+				addBoom(head, Boom_Circle, 550, 550, 700, 700);
+			}
+			if (sj_Timer + synch == 310) {
+				addBoom(head, Boom_Circle, 400, 400, 500, 700);
+			}
+			if (sj_Timer + synch == 320) {
+				addBoom(head, Boom_Circle, 600, 300, 700, 400);
+			}
+
+			
+			if (sj_Timer + synch == 380) {
+				addBoom(head, Boom_DownLaser, 450, -100, 500, 900);
+				addBoom(head, Boom_DownLaser, 150, -100, 200, 900);
+				addBoom(head, Boom_DownLaser, 650, -100, 700, 900);
+			}
+			if (sj_Timer + synch == 335) {
+				SunBoom_SJ(hDC, bullet_head, 120, 400);
+			}
+			if (sj_Timer + synch == 337) {
+				SunBoom_SJ(hDC, bullet_head, 360, 400);
+			}
+			if (sj_Timer + synch == 339) {
+				SunBoom_SJ(hDC, bullet_head, 480, 400);
+			}
+			if (sj_Timer + synch == 341) {
+				SunBoom_SJ(hDC, bullet_head, 600, 400);
+			}
+			if (sj_Timer + synch == 343) {
+				SunBoom_SJ(hDC, bullet_head, 840, 400);
 			}
 			break;
 		case 2: //1초 단위로
@@ -168,40 +233,42 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			break;
 		}
 		InvalidateRect(hWnd, NULL, FALSE);
+		break;
 
 	case WM_KEYDOWN:
-		if (wParam == 'E')
-		{
+		switch (wParam) {
+		case 'E':
 			effPlaySound(jump);
-			
+
 			if (GetAsyncKeyState('A') < 0)
 			{
-				Player_1.left -= 50;
-				Player_1.right -= 50;
+				Player_1.left -= 100;
+				Player_1.right -= 100;
 			}
 
 			if (GetAsyncKeyState('W') < 0)
 			{
-				Player_1.top -= 50;
-				Player_1.bottom -= 50;
+				Player_1.top -= 100;
+				Player_1.bottom -= 100;
 			}
 
 			if (GetAsyncKeyState('S') < 0)
 			{
-				Player_1.top += 50;
-				Player_1.bottom += 50;
+				Player_1.top += 100;
+				Player_1.bottom += 100;
 			}
 
 			if (GetAsyncKeyState('D') < 0)
 			{
-				Player_1.left += 50;
-				Player_1.right += 50;
+				Player_1.left += 100;
+				Player_1.right += 100;
 			}
-		}
-		
-		switch (wParam) {
-		case VK_BACK:
-			sj_Timer -= 10;
+			break;
+		case VK_F1:
+			synch++;
+			break;
+		case VK_F2:
+			synch--;
 			break;
 		}
 		break;
