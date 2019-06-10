@@ -6,10 +6,6 @@ RECT WindowSize;
 RECT Energybar;
 HBITMAP Laser_Boom;
 HBITMAP Circle_Boom;
-HBITMAP Teleport;
-HBITMAP PLAYER_1;
-bool Tp;
-RECT tmp;
 
 bool Crush(RECT* player, int LX, int LY, int RX, int RY) //충돌!!LY는 LeftY의 준말 plyaer하고 폭탄의 범위랑 충돌처리할꺼임  //충돌하면 true리턴
 {
@@ -208,25 +204,6 @@ void Boom::setPosition()
 				boomAnimaition = -1;
 		}
 		break;
-	case Boom_Rectangle:
-		if (boomAnimaition == 100)
-		{
-			leftTop.x -= 25;
-			leftTop.y -= 25;
-			rightBottom.x += 25;
-			rightBottom.y += 25;
-		}
-
-		else if (boomAnimaition > 100)
-		{
-			leftTop.x += 10;
-			leftTop.y += 10;
-			rightBottom.x -= 10;
-			rightBottom.y -= 10;
-			if (leftTop.x >= rightBottom.x)
-				boomAnimaition = -1;
-		}
-		break;
 	case Boom_Laser:
 		if (boomAnimaition == 100)
 		{
@@ -238,86 +215,6 @@ void Boom::setPosition()
 			leftTop.y += 2;
 			rightBottom.y -= 2;
 			if (leftTop.y >= rightBottom.y)
-				boomAnimaition = -1;
-		}
-		break;
-	case Boom_LeftLaser:
-		if (boomAnimaition == 100)
-		{
-			leftTop.x = 1100;
-		}
-		else if (boomAnimaition > 100 && boomAnimaition < 110)
-		{
-			leftTop.x -= 2;
-		}
-		else if (boomAnimaition == 110)
-		{
-			leftTop.x = -100;
-		}
-		else if (boomAnimaition > 110)
-		{
-			rightBottom.x -= 100;
-			if (rightBottom.x <= -100)
-				boomAnimaition = -1;
-		}
-		break;
-	case Boom_RightLaser:
-		if (boomAnimaition == 100)
-		{
-			rightBottom.x = 0;
-		}
-		else if (boomAnimaition > 100 && boomAnimaition < 110)
-		{
-			rightBottom.x += 2;
-		}
-		else if (boomAnimaition == 110)
-		{
-			rightBottom.x = 1300;
-		}
-		else if (boomAnimaition > 110)
-		{
-			leftTop.x += 100;
-			if (leftTop.x >= 1300)
-				boomAnimaition = -1;
-		}
-		break;
-	case Boom_DownLaser:
-		if (boomAnimaition == 100)
-		{
-			rightBottom.y = 0;
-		}
-		else if (boomAnimaition > 100 && boomAnimaition < 110)
-		{
-			rightBottom.y += 2;
-		}
-		else if (boomAnimaition == 110)
-		{
-			rightBottom.y = 900;
-		}
-		else if (boomAnimaition > 110)
-		{
-			leftTop.y += 100;
-			if (leftTop.y >= 900)
-				boomAnimaition = -1;
-		}
-		break;
-	case Boom_UpLaser:
-		if (boomAnimaition == 100)
-		{
-			leftTop.y = 900;
-		}
-		else if (boomAnimaition > 100 && boomAnimaition < 110)
-		{
-			leftTop.y -= 2;
-		}
-		else if (boomAnimaition == 110)
-		{
-			leftTop.y = -100;
-		}
-		else if (boomAnimaition > 110)
-		{
-			rightBottom.y -= 100;
-			if (rightBottom.y <= -100)
 				boomAnimaition = -1;
 		}
 		break;
@@ -487,11 +384,6 @@ void printBoomAnimation(HDC hDC, HINSTANCE g_hInst, Boom* head)
 			break;
 		case Boom_Laser:
 		case Boom_Laser2:
-		case Boom_LeftLaser:
-		case Boom_RightLaser:
-		case Boom_UpLaser:
-		case Boom_DownLaser:
-		case Boom_Rectangle:
 			LaserBoom(hDC, g_hInst, p->nextBoom);
 			break;
 		default:
@@ -552,18 +444,17 @@ void CheckBoom(Boom* head)
 void Animation(HDC hDC, HINSTANCE g_hInst, Boom* head, Boom* bullet_head)
 {
 	HDC memDC;
+	HBITMAP Character;
+
+	Character = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_PLAYER));
 
 	printBoomAnimation(hDC, g_hInst, head);
 	printBoomAnimation(hDC, g_hInst, bullet_head);
 
 	memDC = CreateCompatibleDC(hDC);
-	if (Tp)
-	{
-		(HBITMAP)SelectObject(memDC, Teleport);
-		TransparentBlt(hDC, tmp.left, tmp.top, tmp.right - tmp.left, tmp.bottom - tmp.top, memDC, 0, 0, 50, 50, RGB(0, 0, 0));
-	}
-	(HBITMAP)SelectObject(memDC, PLAYER_1);
+	(HBITMAP)SelectObject(memDC, Character);
 	StretchBlt(hDC, Player_1.left, Player_1.top, Player_1.right - Player_1.left, Player_1.bottom - Player_1.top, memDC, 0, 0, 50, 50, SRCCOPY);
+	DeleteObject(Character);
 	DeleteDC(memDC);
 }
 
