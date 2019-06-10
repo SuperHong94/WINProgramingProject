@@ -146,9 +146,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			CheckBoomCrush(head);
 			break;
 		case 1:  //0.1초 단위로 생성됨
+			sj_Timer++;
 			switch (eRound)
 			{
-				sj_Timer++;
+				
 			case Select:
 				break;
 			case Round1:
@@ -479,7 +480,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				SetTimer(hWnd, 0, 10, NULL);
 				SetTimer(hWnd, 1, 100, NULL);
 				SetTimer(hWnd, 2, 1000, NULL);
-				//sj_Timer = 0;
+				sj_Timer = 0;
 				playSound(STAGE2);
 				menuOnOff = false;
 				break;
