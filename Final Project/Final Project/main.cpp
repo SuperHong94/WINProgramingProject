@@ -121,6 +121,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			switch (sj_Timer)
 			{
 			case 10:
+				addBoom(head, Boom_Laser2, 50, -100, 100, 1000);
 				addBoom(head, Boom_Circle, 100, 80, 500, 480);
 				break;
 			case 11:
@@ -153,6 +154,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			case 115:
 				addBoom(head, Boom_Laser, -100, 550, 1300, 600);
 				break;
+			case 116:
+				addBoom(head, Boom_Laser, -100, 650, 1300, 700);
+				break;
+			case 117:
+				addBoom(head, Boom_Laser, -100, 750, 1300, 800);
+				break;
 			case 160:
 				addBoom(head, Boom_Laser, -100, 650, 1300, 700);
 				break;
@@ -164,6 +171,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				break;
 			case 163:
 				addBoom(head, Boom_Laser, -100, 350, 1300, 400);
+				break;
+			case 164:
+				addBoom(head, Boom_Laser, -100, 250, 1300, 300);
+				break;
+			case 165:
+				addBoom(head, Boom_Laser, -100, 150, 1300, 200);
+				break;
+			case 166:
+				addBoom(head, Boom_Laser, -100, 50, 1300, 100);
 				break;
 			case 203:
 				SunBoom_SJ(hDC, bullet_head, 540, 380);
