@@ -9,7 +9,7 @@ enum ESOUNDKIND
 {
 	Perion = 0,
 	Effect,  //이펙트
-	SD_END   //이펙트 끝 
+	SD_END,   //이펙트 끝 
 };
 enum EFFOUNDKIND //이펙트 사운드
 {

@@ -71,11 +71,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		Player_1.bottom = 405;
 		Player_1.left = 380;
 		Player_1.right = 405;
-		addBoom(head, Boom_Circle, 550, 550, 700, 700);
-		addBoom(head, Boom_RightLaser, -100, 400, 1300, 450);
-		addBoom(head, Boom_UpLaser, 600, -100, 650, 900);
-		addBoom(head, Boom_LeftLaser, -100, 600, 1300, 650);
-		addBoom(head, Boom_DownLaser, 450, -100, 500, 900);
+		Laser_Boom = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_LASERBOOM));
+		Circle_Boom = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_CIRCLEBOOM));
 
 
 		soundSetup(); //사운드 셋업
@@ -122,6 +119,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			break;
 		case 1:  //0.1초 단위로 생성됨
 			sj_Timer++;
+<<<<<<< HEAD
 			if (sj_Timer + synch == 10)  //1초
 			{
 				SunBoom_SJ(hDC, bullet_head, 300, 300);
@@ -225,11 +223,108 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 			if (sj_Timer + synch == 343) {
 				SunBoom_SJ(hDC, bullet_head, 840, 400);
+=======
+			switch (sj_Timer)
+			{
+			case 10:
+				addBoom(head, Boom_Circle, 100, 80, 500, 480);
+				break;
+			case 11:
+				addBoom(head, Boom_Circle, 100, 350, 500, 750);
+				break;
+			case 12:
+				addBoom(head, Boom_Circle, 500, 350, 800, 650);
+				break;
+			case 13:
+				addBoom(head, Boom_Circle, 500, 80, 800, 380);
+				break;
+			case 40:
+				addBoom(head, Boom_Circle, 450, 80, 1050, 680);
+				break;
+			case 110:
+				addBoom(head, Boom_Laser, -100, 50, 1300, 100);
+				break;
+			case 111:
+				addBoom(head, Boom_Laser, -100, 150, 1300, 200);
+				break;
+			case 112:
+				addBoom(head, Boom_Laser, -100, 250, 1300, 300);
+				break;
+			case 113:
+				addBoom(head, Boom_Laser, -100, 350, 1300, 400);
+				break;
+			case 114:
+				addBoom(head, Boom_Laser, -100, 450, 1300, 500);
+				break;
+			case 115:
+				addBoom(head, Boom_Laser, -100, 550, 1300, 600);
+				break;
+			case 160:
+				addBoom(head, Boom_Laser, -100, 650, 1300, 700);
+				break;
+			case 161:
+				addBoom(head, Boom_Laser, -100, 550, 1300, 600);
+				break;
+			case 162:
+				addBoom(head, Boom_Laser, -100, 450, 1300, 500);
+				break;
+			case 163:
+				addBoom(head, Boom_Laser, -100, 350, 1300, 400);
+				break;
+			case 203:
+				SunBoom_SJ(hDC, bullet_head, 540, 380);
+				break;
+			case 208:
+				SunBoom_SJ(hDC, bullet_head, 150, 200);
+				break;
+			case 209:
+				SunBoom_SJ(hDC, bullet_head, 250, 300);
+				break;
+			case 210:
+				SunBoom_SJ(hDC, bullet_head, 550, 300);
+				break;
+			case 240:
+				SunBoom_SJ(hDC, bullet_head, 750, 300);
+				break;
+			case 241:
+				SunBoom_SJ(hDC, bullet_head, 650, 450);
+				break;
+			case 242:
+				SunBoom_SJ(hDC, bullet_head, 730, 380);
+				break;
+			case 296:
+				Doughnut(hDC, head, 520, 380, 50);
+				break;
+			case 297:
+				SunBoom_SJ(hDC, bullet_head, 100, 100);
+				SunBoom_SJ(hDC, bullet_head, 1100, 100);
+				SunBoom_SJ(hDC, bullet_head, 100, 700);
+				SunBoom_SJ(hDC, bullet_head, 1100, 700);
+				break;
+			case 310:
+				addBoom(head, Boom_Laser2, 200, -100, 250, 900);
+				SunBoom_SJ(hDC, bullet_head, 850, 650);
+				break;
+			case 315:
+				addBoom(head, Boom_Laser2, 900, -100, 950, 900);
+				break;
+			case 320:
+				SunBoom_SJ(hDC, bullet_head, 250, 650);
+				addBoom(head, Boom_Laser, -100, 200, 1300, 250);
+				break;
+			case 325:
+				addBoom(head, Boom_Laser, -100, 600, 1300, 650);
+				break;
+			case 390:
+				SunBoom_SJ(hDC, bullet_head, 124, 350);
+				SunBoom_SJ(hDC, bullet_head, 842, 420);
+				break;
+			default:
+				break;
+>>>>>>> ABCDEFG
 			}
 			break;
 		case 2: //1초 단위로
-			setAnimation(head);
-			setBoomPosition(head);
 			break;
 		}
 		InvalidateRect(hWnd, NULL, FALSE);
@@ -298,6 +393,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		KillTimer(hWnd, 1);
 		KillTimer(hWnd, 2);
 		free(head);
+		DeleteObject(Circle_Boom);
+		DeleteObject(Laser_Boom);
 		PostQuitMessage(0);
 		break;
 
