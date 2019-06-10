@@ -19,6 +19,10 @@ void soundSetup()
 	FMOD_System_Init(SJ_pSystem, 1, FMOD_INIT_NORMAL, NULL);
 
 	//사운드 경로
+	/*for (int i = 0; i < SD_END; i++) {
+		wsprintfA(str, "sound\\Perion.mp3", i);
+		FMOD_System_CreateStream(SJ_pSystem, str, FMOD_LOOP_NORMAL, 0, &SJ_pSound[i]);
+	}*/
 	for (int i = 0; i < SD_END; i++) {
 		wsprintfA(str, "sound\\STAGE2.mp3", i);
 		FMOD_System_CreateStream(SJ_pSystem, str, FMOD_LOOP_NORMAL, 0, &SJ_pSound[i]);

@@ -54,7 +54,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	PAINTSTRUCT ps;
 	static Boom* head;
 	static Boom* bullet_head;
-
 	//int boomCount = 0;  //폭탄 카운트는 0;
 
 	//메시지 처리하기
@@ -66,13 +65,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		head->nextBoom = NULL;
 		GetClientRect(hWnd, &WindowSize);
 		GetClientRect(hWnd, &Energybar);
+		tmp.left = 0;
+		tmp.right = 0;
+		tmp.top = 0;
+		tmp.bottom = 0;
+		Tp = FALSE;
 		Player_1.top = 380;
 		Player_1.bottom = 405;
 		Player_1.left = 380;
 		Player_1.right = 405;
 		Laser_Boom = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_LASERBOOM));
 		Circle_Boom = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_CIRCLEBOOM));
-
+		Teleport= LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_TELEPORT));
+		PLAYER_1 = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_PLAYER));
+		Tp = FALSE;
 
 		soundSetup(); //사운드 셋업
 		effSoundSetup();//이펙트 셋업
@@ -80,7 +86,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		SetTimer(hWnd, 1, 100, NULL);
 		SetTimer(hWnd, 2, 1000, NULL);
 		
-		playSound(Perion);//페리온 재생
+		playSound(STAGE2);//페리온 재생
 		break;
 	case WM_TIMER:
 		switch (wParam) {
@@ -135,6 +141,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			case 40:
 				addBoom(head, Boom_Circle, 450, 80, 1050, 680);
 				break;
+			case 41:
+				addBoom(head, Boom_Circle, 50, 50, 350, 350);
+				break;
+			case 42:
+				addBoom(head, Boom_Circle, 300, 300, 600, 600);
+				break;
 			case 110:
 				addBoom(head, Boom_Laser, -100, 50, 1300, 100);
 				break;
@@ -153,6 +165,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			case 115:
 				addBoom(head, Boom_Laser, -100, 550, 1300, 600);
 				break;
+			case 116:
+				addBoom(head, Boom_Laser, -100, 650, 1300, 700);
+				break;
+			case 117:
+				addBoom(head, Boom_Laser, -100, 750, 1300, 800);
+				break;
 			case 160:
 				addBoom(head, Boom_Laser, -100, 650, 1300, 700);
 				break;
@@ -164,6 +182,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				break;
 			case 163:
 				addBoom(head, Boom_Laser, -100, 350, 1300, 400);
+				break;
+			case 164:
+				addBoom(head, Boom_Laser, -100, 250, 1300, 300);
+				break;
+			case 165:
+				addBoom(head, Boom_Laser, -100, 150, 1300, 200);
+				break;
+			case 166:
+				addBoom(head, Boom_Laser, -100, 50, 1300, 100);
 				break;
 			case 203:
 				SunBoom_SJ(hDC, bullet_head, 540, 380);
@@ -178,6 +205,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				SunBoom_SJ(hDC, bullet_head, 550, 300);
 				break;
 			case 240:
+				addBoom(head, Boom_Rectangle, -100, 0, 550, 650);
+				addBoom(head, Boom_Rectangle, 450, 150, 1050, 750);
 				SunBoom_SJ(hDC, bullet_head, 750, 300);
 				break;
 			case 241:
@@ -196,7 +225,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				SunBoom_SJ(hDC, bullet_head, 1100, 700);
 				break;
 			case 310:
-				addBoom(head, Boom_Laser2, 200, -100, 250, 900);
+				addBoom(head, Boom_LeftLaser, -100, 340, 1300, 390);
+				addBoom(head, Boom_RightLaser, -100, 340, 1300, 390);
+				addBoom(head, Boom_UpLaser, 540, -100, 590, 900);
+				addBoom(head, Boom_DownLaser, 540, -100, 590, 900);
+				addBoom(head, Boom_Laser2, 50, -100, 100, 900);
+				addBoom(head, Boom_Laser2, 1130, -100, 1180, 900);
 				SunBoom_SJ(hDC, bullet_head, 850, 650);
 				break;
 			case 315:
@@ -212,6 +246,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			case 390:
 				SunBoom_SJ(hDC, bullet_head, 124, 350);
 				SunBoom_SJ(hDC, bullet_head, 842, 420);
+				break;
+			case 393:
+				SunBoom_SJ(hDC, bullet_head, 640, 150);
+				SunBoom_SJ(hDC, bullet_head, 4, 560);
 				break;
 			default:
 				break;
@@ -251,7 +289,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				Player_1.right += 100;
 			}
 		}
-		
+		else if (wParam == 'R')
+		{
+			if (Tp)
+			{
+				Player_1.bottom = tmp.bottom;
+				Player_1.left = tmp.left;
+				Player_1.right = tmp.right;
+				Player_1.top = tmp.top;
+				Tp = FALSE;
+			}
+			else
+			{
+				tmp.bottom = Player_1.bottom;
+				tmp.left = Player_1.left;
+				tmp.right = Player_1.right;
+				tmp.top = Player_1.top;
+				Tp = TRUE;
+			}
+		}
+
 		switch (wParam) {
 		case VK_BACK:
 			sj_Timer -= 10;
@@ -284,6 +341,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		KillTimer(hWnd, 1);
 		KillTimer(hWnd, 2);
 		free(head);
+		DeleteObject(Teleport);
+		DeleteObject(PLAYER_1);
 		DeleteObject(Circle_Boom);
 		DeleteObject(Laser_Boom);
 		PostQuitMessage(0);
