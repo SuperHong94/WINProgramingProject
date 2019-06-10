@@ -10,6 +10,10 @@ extern RECT WindowSize;
 extern RECT Energybar;
 extern HBITMAP Laser_Boom;
 extern HBITMAP Circle_Boom;
+extern HBITMAP Teleport;
+extern HBITMAP PLAYER_1;
+extern bool Tp;
+extern RECT tmp;
 
 enum ETURNN {
 	turn0 = 0,

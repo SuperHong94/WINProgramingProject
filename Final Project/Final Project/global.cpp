@@ -6,6 +6,10 @@ RECT WindowSize;
 RECT Energybar;
 HBITMAP Laser_Boom;
 HBITMAP Circle_Boom;
+HBITMAP Teleport;
+HBITMAP PLAYER_1;
+bool Tp;
+RECT tmp;
 
 bool Crush(RECT* player, int LX, int LY, int RX, int RY) //충돌!!LY는 LeftY의 준말 plyaer하고 폭탄의 범위랑 충돌처리할꺼임  //충돌하면 true리턴
 {
@@ -548,17 +552,18 @@ void CheckBoom(Boom* head)
 void Animation(HDC hDC, HINSTANCE g_hInst, Boom* head, Boom* bullet_head)
 {
 	HDC memDC;
-	HBITMAP Character;
-
-	Character = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_PLAYER));
 
 	printBoomAnimation(hDC, g_hInst, head);
 	printBoomAnimation(hDC, g_hInst, bullet_head);
 
 	memDC = CreateCompatibleDC(hDC);
-	(HBITMAP)SelectObject(memDC, Character);
+	if (Tp)
+	{
+		(HBITMAP)SelectObject(memDC, Teleport);
+		TransparentBlt(hDC, tmp.left, tmp.top, tmp.right - tmp.left, tmp.bottom - tmp.top, memDC, 0, 0, 50, 50, RGB(0, 0, 0));
+	}
+	(HBITMAP)SelectObject(memDC, PLAYER_1);
 	StretchBlt(hDC, Player_1.left, Player_1.top, Player_1.right - Player_1.left, Player_1.bottom - Player_1.top, memDC, 0, 0, 50, 50, SRCCOPY);
-	DeleteObject(Character);
 	DeleteDC(memDC);
 }
 

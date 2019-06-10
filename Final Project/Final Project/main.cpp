@@ -54,8 +54,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	PAINTSTRUCT ps;
 	static Boom* head;
 	static Boom* bullet_head;
-	static bool Tp;
-	static RECT tmp;
 	//int boomCount = 0;  //폭탄 카운트는 0;
 
 	//메시지 처리하기
@@ -67,12 +65,19 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		head->nextBoom = NULL;
 		GetClientRect(hWnd, &WindowSize);
 		GetClientRect(hWnd, &Energybar);
+		tmp.left = 0;
+		tmp.right = 0;
+		tmp.top = 0;
+		tmp.bottom = 0;
+		Tp = FALSE;
 		Player_1.top = 380;
 		Player_1.bottom = 405;
 		Player_1.left = 380;
 		Player_1.right = 405;
 		Laser_Boom = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_LASERBOOM));
 		Circle_Boom = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_CIRCLEBOOM));
+		Teleport= LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_TELEPORT));
+		PLAYER_1 = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_PLAYER));
 		Tp = FALSE;
 
 		soundSetup(); //사운드 셋업
@@ -336,6 +341,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		KillTimer(hWnd, 1);
 		KillTimer(hWnd, 2);
 		free(head);
+		DeleteObject(Teleport);
+		DeleteObject(PLAYER_1);
 		DeleteObject(Circle_Boom);
 		DeleteObject(Laser_Boom);
 		PostQuitMessage(0);
