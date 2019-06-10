@@ -24,6 +24,7 @@ enum EShape {
 	MyRectangle,
 	MyTriangle,
 	Boom_Circle,
+	Boom_Rectangle,
 	Boom_Laser,
 	Bullet_Up,
 	Bullet_Down,

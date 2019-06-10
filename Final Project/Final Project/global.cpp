@@ -204,6 +204,25 @@ void Boom::setPosition()
 				boomAnimaition = -1;
 		}
 		break;
+	case Boom_Rectangle:
+		if (boomAnimaition == 100)
+		{
+			leftTop.x -= 25;
+			leftTop.y -= 25;
+			rightBottom.x += 25;
+			rightBottom.y += 25;
+		}
+
+		else if (boomAnimaition > 100)
+		{
+			leftTop.x += 10;
+			leftTop.y += 10;
+			rightBottom.x -= 10;
+			rightBottom.y -= 10;
+			if (leftTop.x >= rightBottom.x)
+				boomAnimaition = -1;
+		}
+		break;
 	case Boom_Laser:
 		if (boomAnimaition == 100)
 		{
@@ -468,6 +487,7 @@ void printBoomAnimation(HDC hDC, HINSTANCE g_hInst, Boom* head)
 		case Boom_RightLaser:
 		case Boom_UpLaser:
 		case Boom_DownLaser:
+		case Boom_Rectangle:
 			LaserBoom(hDC, g_hInst, p->nextBoom);
 			break;
 		default:
