@@ -218,6 +218,86 @@ void Boom::setPosition()
 				boomAnimaition = -1;
 		}
 		break;
+	case Boom_LeftLaser:
+		if (boomAnimaition == 100)
+		{
+			leftTop.x = 1100;
+		}
+		else if (boomAnimaition > 100 && boomAnimaition < 110)
+		{
+			leftTop.x -= 2;
+		}
+		else if (boomAnimaition == 110)
+		{
+			leftTop.x = -100;
+		}
+		else if (boomAnimaition > 110)
+		{
+			rightBottom.x -= 100;
+			if (rightBottom.x <= -100)
+				boomAnimaition = -1;
+		}
+		break;
+	case Boom_RightLaser:
+		if (boomAnimaition == 100)
+		{
+			rightBottom.x = 0;
+		}
+		else if (boomAnimaition > 100 && boomAnimaition < 110)
+		{
+			rightBottom.x += 2;
+		}
+		else if (boomAnimaition == 110)
+		{
+			rightBottom.x = 1300;
+		}
+		else if (boomAnimaition > 110)
+		{
+			leftTop.x += 100;
+			if (leftTop.x >= 1300)
+				boomAnimaition = -1;
+		}
+		break;
+	case Boom_DownLaser:
+		if (boomAnimaition == 100)
+		{
+			rightBottom.y = 0;
+		}
+		else if (boomAnimaition > 100 && boomAnimaition < 110)
+		{
+			rightBottom.y += 2;
+		}
+		else if (boomAnimaition == 110)
+		{
+			rightBottom.y = 900;
+		}
+		else if (boomAnimaition > 110)
+		{
+			leftTop.y += 100;
+			if (leftTop.y >= 900)
+				boomAnimaition = -1;
+		}
+		break;
+	case Boom_UpLaser:
+		if (boomAnimaition == 100)
+		{
+			leftTop.y = 900;
+		}
+		else if (boomAnimaition > 100 && boomAnimaition < 110)
+		{
+			leftTop.y -= 2;
+		}
+		else if (boomAnimaition == 110)
+		{
+			leftTop.y = -100;
+		}
+		else if (boomAnimaition > 110)
+		{
+			rightBottom.y -= 100;
+			if (rightBottom.y <= -100)
+				boomAnimaition = -1;
+		}
+		break;
 	case Bullet_Up:
 		leftTop.y -= 3;
 		rightBottom.y -= 3;
@@ -384,6 +464,10 @@ void printBoomAnimation(HDC hDC, HINSTANCE g_hInst, Boom* head)
 			break;
 		case Boom_Laser:
 		case Boom_Laser2:
+		case Boom_LeftLaser:
+		case Boom_RightLaser:
+		case Boom_UpLaser:
+		case Boom_DownLaser:
 			LaserBoom(hDC, g_hInst, p->nextBoom);
 			break;
 		default:

@@ -33,6 +33,10 @@ enum EShape {
 	Bullet_DownRight,
 	Bullet_DownLeft,
 	Bullet_UpLeft,
+	Boom_LeftLaser,
+	Boom_RightLaser,
+	Boom_DownLaser,
+	Boom_UpLaser,
 	Boom_Laser2
 };
 enum EBoomStatus {

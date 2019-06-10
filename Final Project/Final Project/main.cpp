@@ -80,7 +80,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		SetTimer(hWnd, 1, 100, NULL);
 		SetTimer(hWnd, 2, 1000, NULL);
 		
-		playSound(Perion);//其府柯 犁积
+		playSound(STAGE2);//其府柯 犁积
 		break;
 	case WM_TIMER:
 		switch (wParam) {
@@ -121,7 +121,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			switch (sj_Timer)
 			{
 			case 10:
-				addBoom(head, Boom_Laser2, 50, -100, 100, 1000);
 				addBoom(head, Boom_Circle, 100, 80, 500, 480);
 				break;
 			case 11:
@@ -134,6 +133,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				addBoom(head, Boom_Circle, 500, 80, 800, 380);
 				break;
 			case 40:
+				addBoom(head, Boom_Circle, 450, 80, 1050, 680);
+				break;
+			case 41:
+				addBoom(head, Boom_Circle, 450, 80, 1050, 680);
+				break;
+			case 42:
 				addBoom(head, Boom_Circle, 450, 80, 1050, 680);
 				break;
 			case 110:
