@@ -7,7 +7,8 @@
 
 enum ESOUNDKIND
 {
-	Perion = 0,
+	MainSound=0,
+	Perion,
 	STAGE2,
 	Effect,  //¿Ã∆Â∆Æ
 	SD_END,   //¿Ã∆Â∆Æ ≥° 
@@ -15,8 +16,8 @@ enum ESOUNDKIND
 enum EFFOUNDKIND //¿Ã∆Â∆Æ ªÁøÓµÂ
 {
 	jump = 0,
-	EFFSD_2,
-	EFFSD_END
+	click = 1,
+	EFFSD_END=2
 };
 
 

@@ -54,5 +54,17 @@
     <Image Include="Tp.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
+    <Image Include="You-Died.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="HELP.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="MAIN.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="SELECTSTAGE.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
 </Project>

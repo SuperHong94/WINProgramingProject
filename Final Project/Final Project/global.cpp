@@ -20,7 +20,7 @@ bool Crush(RECT* player, int LX, int LY, int RX, int RY) //충돌!!LY는 LeftY의 준
 	int boomLY = LY - playerWidth;
 	int boomRX = playerWidth + RX;
 	int boomRY = RY + playerWidth;
-	if ((playerX >= boomLX && playerX <= boomRX) && (playerY >= boomLY && playerY <= boomRY))	
+	if ((playerX >= boomLX && playerX <= boomRX) && (playerY >= boomLY && playerY <= boomRY))
 		return true;
 	else
 		return false;
@@ -99,7 +99,7 @@ void NormalBullet(HDC hDC, Boom* boom)
 	case MyDoughnut3:
 	case MyDoughnut4:
 		Rectangle(hDC, boom->leftTop.x, boom->leftTop.y, boom->rightBottom.x, boom->rightBottom.y);
-		
+
 		break;
 	case Bullet_Up:
 		Ellipse(hDC, boom->leftTop.x, boom->leftTop.y, boom->rightBottom.x, boom->rightBottom.y);
@@ -112,7 +112,7 @@ void NormalBullet(HDC hDC, Boom* boom)
 	case Bullet_DownRight:
 	case Bullet_DownLeft:
 		Ellipse(hDC, boom->leftTop.x, boom->leftTop.y, boom->rightBottom.x, boom->rightBottom.y);
-		
+
 		break;
 	}
 	(HPEN)SelectObject(hDC, oldPen);
@@ -382,7 +382,7 @@ void Boom::setPosition()
 }
 
 
-void CircleBoom(HDC hDC, HINSTANCE g_hInst,Boom* boom)
+void CircleBoom(HDC hDC, HINSTANCE g_hInst, Boom* boom)
 {
 	HPEN hPen, oldPen;
 	HBRUSH hBrush, oldBrush;
@@ -505,7 +505,7 @@ void CheckBullet(Boom* head)
 	Boom* p;
 	for (p = head; p->nextBoom != NULL; p = p->nextBoom)
 	{
-		
+
 		while (OutOfRange(p->nextBoom))
 		{
 			deleteBoom(p);
@@ -567,15 +567,31 @@ void Animation(HDC hDC, HINSTANCE g_hInst, Boom* head, Boom* bullet_head)
 	DeleteDC(memDC);
 }
 
-void DrawEnergybar(HDC hDC)
+void DrawEnergybar(HDC hDC, HINSTANCE hInstance)
 {
+	HDC mDC;
+	BITMAP bit;
+	HBITMAP hBit;
 	HBRUSH hBrush, hBrush1;
+	//BLENDFUNCTION m_BlendFuntion; //불투명;
+	//m_BlendFuntion.BlendOp = AC_SRC_OVER;  //블렌딩 옵션_ACSRCC_OVER는 혼합옵션
+	//m_BlendFuntion.AlphaFormat = 0;
+	//m_BlendFuntion.AlphaFormat = 0;
+	//m_BlendFuntion.SourceConstantAlpha = 150; //0은 완전 투명  255는 완전 불투명)
 	hBrush = CreateSolidBrush(RGB(100, 100, 100));
 	hBrush1 = CreateSolidBrush(RGB(0, 0, 100));
 	(HBRUSH)SelectObject(hDC, hBrush);
 	Rectangle(hDC, WindowSize.left, WindowSize.bottom - 20, WindowSize.right, WindowSize.bottom);
 	(HBRUSH)SelectObject(hDC, hBrush1);
 	Rectangle(hDC, Energybar.left, Energybar.bottom - 20, Energybar.right, Energybar.bottom);
+	if (Energybar.right <= 0) {
+		mDC = CreateCompatibleDC(hDC);
+		hBit = LoadBitmap(hInstance, MAKEINTRESOURCE(IDB_YOUDIE));
+		GetObject(hBit, sizeof(BITMAP), &bit);
+		(HBITMAP)SelectObject(mDC, hBit);
+		TransparentBlt(hDC, 0, 0, WindowSize.right, WindowSize.bottom, mDC, 0, 0, bit.bmWidth, bit.bmHeight, RGB(0, 0, 0));  //글씨만 출력
+		DeleteDC(mDC);
+	}
 	DeleteObject(hBrush);
 	DeleteObject(hBrush1);
 }
@@ -600,4 +616,68 @@ void CheckBoomCrush(Boom* head)
 		if ((p->nextBoom->boomAnimaition >= 100) && Crush(&Player_1, p->nextBoom->leftTop.x, p->nextBoom->leftTop.y, p->nextBoom->rightBottom.x, p->nextBoom->rightBottom.y))
 			Energybar.right -= 10;
 	}
+}
+
+int DrawMenu(HDC hDC, EROUND& eRound, HINSTANCE hInst)
+{
+	HBITMAP hBit;
+	BITMAP bit;
+	HDC mDC;
+	switch (eRound)
+	{
+	case MAIN:
+		mDC = CreateCompatibleDC(hDC);
+		hBit = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_MAIN));
+		GetObject(hBit, sizeof(bit), &bit);
+		(HBITMAP)SelectObject(mDC, hBit);
+		TransparentBlt(hDC, 0, 0, WindowSize.right, WindowSize.bottom, mDC, 0, 0, bit.bmWidth, bit.bmHeight, SRCCOPY);
+		return 0;
+	case HELP:
+		mDC = CreateCompatibleDC(hDC);
+		hBit = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_HELP));
+		GetObject(hBit, sizeof(bit), &bit);
+		(HBITMAP)SelectObject(mDC, hBit);
+		TransparentBlt(hDC, 0, 0, WindowSize.right, WindowSize.bottom, mDC, 0, 0, bit.bmWidth, bit.bmHeight, SRCCOPY);
+		return 0;
+	case Select:
+		mDC = CreateCompatibleDC(hDC);
+		hBit = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_SELECTSTAGE));
+		GetObject(hBit, sizeof(bit), &bit);
+		(HBITMAP)SelectObject(mDC, hBit);
+		TransparentBlt(hDC, 0, 0, WindowSize.right, WindowSize.bottom, mDC, 0, 0, bit.bmWidth, bit.bmHeight, SRCCOPY);
+		return 0;
+	case Round1:
+		return 1;
+	case Round2:
+		return 2;
+	default:
+		break;
+	}
+}
+
+void ClickRange(LPARAM lParam, EROUND& eRound)
+{
+	int x = LOWORD(lParam);
+	int y = HIWORD(lParam);
+	switch (eRound) {
+	case MAIN:
+		if ((x >= 190 && y >= 250) && (x <= 1000 && y <= 370))
+			eRound = Select;
+		if ((x >= 190 && y >= 400) && (x <= 1000 && y <= 525))
+			eRound = HELP;
+		if ((x >= 190 && y >= 555) && (x <= 1000 && y <= 680))
+			PostQuitMessage(0);
+		break;
+	case Select:
+		if ((x >= 80 && y >= 100) && (x <= 1110 && y <= 260)) {
+			eRound = Round1;
+		}
+		if ((x >= 190 && y >= 300) && (x <= 1110 && y <= 460)) {
+			eRound = Round2;
+		}
+		if ((x >= 190 && y >= 500) && (x <= 1110 && y <= 660))
+			PostQuitMessage(0);
+		break;
+	}
+
 }

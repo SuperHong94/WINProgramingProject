@@ -2,7 +2,6 @@
 #include <Windows.h>
 #include <iostream>
 #include "SoundManager.h"
-#include "SoundManager.h"
 #include "resource.h"
 extern int sj_Timer;
 extern RECT Player_1;
@@ -15,6 +14,14 @@ extern HBITMAP PLAYER_1;
 extern bool Tp;
 extern RECT tmp;
 
+enum EROUND {
+	Round1,
+	MAIN,
+	HELP,
+	Select,
+	
+	Round2
+};
 enum ETURNN {
 	turn0 = 0,
 	turn1, turn2, turn3, turn4, turn5
@@ -80,6 +87,8 @@ bool Crush(RECT*, int LX, int LY, int RX, int RY); //충돌!!LY는 LeftY의 준말 ply
 void DrawDie(RECT*);
 void Doughnut(HDC hDC, Boom* head, int x, int y,int width);
 bool OutOfRange(Boom* boom);
-void DrawEnergybar(HDC hDC);
+void DrawEnergybar(HDC hDC, HINSTANCE hInstance);
 void CheckBulletCrush(Boom* head);
 void CheckBoomCrush(Boom* head);
+int DrawMenu(HDC hDC, EROUND& eRound, HINSTANCE hInst);
+void ClickRange(LPARAM, EROUND&);
