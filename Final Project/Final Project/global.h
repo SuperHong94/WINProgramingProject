@@ -8,6 +8,9 @@ extern int sj_Timer;
 extern RECT Player_1;
 extern RECT WindowSize;
 extern RECT Energybar;
+extern HBITMAP Laser_Boom;
+extern HBITMAP Circle_Boom;
+
 enum ETURNN {
 	turn0 = 0,
 	turn1, turn2, turn3, turn4, turn5

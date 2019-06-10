@@ -4,6 +4,9 @@ int sj_Timer = 0;
 RECT Player_1;
 RECT WindowSize;
 RECT Energybar;
+HBITMAP Laser_Boom;
+HBITMAP Circle_Boom;
+
 bool Crush(RECT* player, int LX, int LY, int RX, int RY) //충돌!!LY는 LeftY의 준말 plyaer하고 폭탄의 범위랑 충돌처리할꺼임  //충돌하면 true리턴
 {
 	int playerWidth = (player->bottom - player->top) / 2;  //높이구해서 2로 나눔 player중점좌표구할려고하는거임
@@ -282,15 +285,12 @@ void CircleBoom(HDC hDC, HINSTANCE g_hInst,Boom* boom)
 	HBRUSH hBrush, oldBrush;
 
 	HDC memDC;
-	HBITMAP CircleBoom;
 
 	if (boom->boomAnimaition < 100)
 	{
-		CircleBoom = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_CIRCLEBOOM));
 		memDC = CreateCompatibleDC(hDC);
-		(HBITMAP)SelectObject(memDC, CircleBoom);
+		(HBITMAP)SelectObject(memDC, Circle_Boom);
 		TransparentBlt(hDC, boom->leftTop.x, boom->leftTop.y, boom->rightBottom.x - boom->leftTop.x, boom->rightBottom.y - boom->leftTop.y, memDC, 0, 0, 1024, 1024, RGB(0, 0, 0));
-		DeleteObject(CircleBoom);
 		DeleteDC(memDC);
 	}
 
@@ -322,16 +322,13 @@ void LaserBoom(HDC hDC, HINSTANCE g_hInst, Boom* boom)
 	HBRUSH hBrush, oldBrush;
 
 	HDC memDC;
-	HBITMAP LaserBoom;
 
 
 	if (boom->boomAnimaition < 100)
 	{
-		LaserBoom = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_LASERBOOM));
 		memDC = CreateCompatibleDC(hDC);
-		(HBITMAP)SelectObject(memDC, LaserBoom);
+		(HBITMAP)SelectObject(memDC, Laser_Boom);
 		TransparentBlt(hDC, boom->leftTop.x, boom->leftTop.y, boom->rightBottom.x - boom->leftTop.x, boom->rightBottom.y - boom->leftTop.y, memDC, 0, 0, 1024, 1024, RGB(0, 0, 0));
-		DeleteObject(LaserBoom);
 		DeleteDC(memDC);
 	}
 	else

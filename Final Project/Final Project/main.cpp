@@ -70,7 +70,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		Player_1.bottom = 405;
 		Player_1.left = 380;
 		Player_1.right = 405;
-		
+		Laser_Boom = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_LASERBOOM));
+		Circle_Boom = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_CIRCLEBOOM));
 
 
 		soundSetup(); //사운드 셋업
@@ -145,6 +146,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				break;
 			case 113:
 				addBoom(head, Boom_Laser, -100, 350, 1300, 400);
+				break;
+			case 114:
+				addBoom(head, Boom_Laser, -100, 450, 1300, 500);
+				break;
+			case 115:
+				addBoom(head, Boom_Laser, -100, 550, 1300, 600);
 				break;
 			case 160:
 				addBoom(head, Boom_Laser, -100, 650, 1300, 700);
@@ -277,6 +284,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		KillTimer(hWnd, 1);
 		KillTimer(hWnd, 2);
 		free(head);
+		DeleteObject(Circle_Boom);
+		DeleteObject(Laser_Boom);
 		PostQuitMessage(0);
 		break;
 
