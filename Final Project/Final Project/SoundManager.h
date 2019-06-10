@@ -8,6 +8,7 @@
 enum ESOUNDKIND
 {
 	Perion = 0,
+	STAGE2,
 	Effect,  //¿Ã∆Â∆Æ
 	SD_END,   //¿Ã∆Â∆Æ ≥° 
 };
@@ -24,4 +25,3 @@ void effSoundSetup();
 void playSound(ESOUNDKIND eSound);
 void effSoundoff();
 void effPlaySound(EFFOUNDKIND eSound);
-void volum(EFFOUNDKIND eSound);

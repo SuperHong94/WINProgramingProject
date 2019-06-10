@@ -10,6 +10,10 @@ extern RECT WindowSize;
 extern RECT Energybar;
 extern HBITMAP Laser_Boom;
 extern HBITMAP Circle_Boom;
+extern HBITMAP Teleport;
+extern HBITMAP PLAYER_1;
+extern bool Tp;
+extern RECT tmp;
 
 enum ETURNN {
 	turn0 = 0,
@@ -24,6 +28,7 @@ enum EShape {
 	MyRectangle,
 	MyTriangle,
 	Boom_Circle,
+	Boom_Rectangle,
 	Boom_Laser,
 	Bullet_Up,
 	Bullet_Down,
@@ -33,6 +38,10 @@ enum EShape {
 	Bullet_DownRight,
 	Bullet_DownLeft,
 	Bullet_UpLeft,
+	Boom_LeftLaser,
+	Boom_RightLaser,
+	Boom_DownLaser,
+	Boom_UpLaser,
 	Boom_Laser2
 };
 enum EBoomStatus {
