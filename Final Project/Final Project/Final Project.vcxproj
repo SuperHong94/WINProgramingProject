@@ -159,6 +159,7 @@
     <Image Include="CircleBoom.bmp" />
     <Image Include="LaserBoom.bmp" />
     <Image Include="Player_1.bmp" />
+    <Image Include="Tp.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
