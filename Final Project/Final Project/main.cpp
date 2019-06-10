@@ -78,7 +78,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		Player_1.right = 405;
 		Laser_Boom = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_LASERBOOM));
 		Circle_Boom = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_CIRCLEBOOM));
-		Teleport= LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_TELEPORT));
+		Teleport = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_TELEPORT));
 		PLAYER_1 = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_PLAYER));
 		Tp = FALSE;
 
@@ -90,7 +90,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 
 		//playSound(Perion);//페리온 재생
-		
+
 		playSound(STAGE2);//페리온 재생
 		break;
 	case WM_TIMER:
@@ -399,73 +399,67 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				Player_1.left += 100;
 				Player_1.right += 100;
 			}
+			else if (wParam == 'R')
+			{
+				if (Tp)
+				{
+					Player_1.bottom = tmp.bottom;
+					Player_1.left = tmp.left;
+					Player_1.right = tmp.right;
+					Player_1.top = tmp.top;
+					Tp = FALSE;
+				}
+				else
+				{
+					tmp.bottom = Player_1.bottom;
+					tmp.left = Player_1.left;
+					tmp.right = Player_1.right;
+					tmp.top = Player_1.top;
+					Tp = TRUE;
+				}
+			}
 			break;
 		case VK_F1:
 			synch++;
 			break;
 		case VK_F2:
 			synch--;
-		}
-		else if (wParam == 'R')
-		{
-			if (Tp)
-			{
-				Player_1.bottom = tmp.bottom;
-				Player_1.left = tmp.left;
-				Player_1.right = tmp.right;
-				Player_1.top = tmp.top;
-				Tp = FALSE;
-			}
-			else
-			{
-				tmp.bottom = Player_1.bottom;
-				tmp.left = Player_1.left;
-				tmp.right = Player_1.right;
-				tmp.top = Player_1.top;
-				Tp = TRUE;
-			}
-		}
-
-		switch (wParam) {
-		case VK_BACK:
-			sj_Timer -= 10;
 			break;
+		case WM_PAINT:
+			MemDC = BeginPaint(hWnd, &ps);
+			//GetClientRect(hWnd, &bufferRT);
+			hDC = CreateCompatibleDC(MemDC);
+			BackBit = CreateCompatibleBitmap(MemDC, WindowSize.right, WindowSize.bottom);
+			oldBackBit = (HBITMAP)SelectObject(hDC, BackBit);
+			PatBlt(hDC, 0, 0, WindowSize.right, WindowSize.bottom, BLACKNESS);
+
+			sprintf(buffer, "시간: %d", sj_Timer);
+			TextOutA(hDC, 500, 10, buffer, 10);
+			Animation(hDC, g_hInst, head, bullet_head);
+			DrawEnergybar(hDC);
+
+			GetClientRect(hWnd, &WindowSize);
+
+			BitBlt(MemDC, 0, 0, WindowSize.right, WindowSize.bottom, hDC, 0, 0, SRCCOPY);
+			SelectObject(hDC, oldBackBit);
+			DeleteObject(BackBit);
+			DeleteDC(hDC);
+			EndPaint(hWnd, &ps);
+			break;
+		case WM_DESTROY:
+			KillTimer(hWnd, 0);
+			KillTimer(hWnd, 1);
+			KillTimer(hWnd, 2);
+			free(head);
+			DeleteObject(Teleport);
+			DeleteObject(PLAYER_1);
+			DeleteObject(Circle_Boom);
+			DeleteObject(Laser_Boom);
+			PostQuitMessage(0);
+			break;
+
 		}
-		break;
-	case WM_PAINT:
-		MemDC = BeginPaint(hWnd, &ps);
-		//GetClientRect(hWnd, &bufferRT);
-		hDC = CreateCompatibleDC(MemDC);
-		BackBit = CreateCompatibleBitmap(MemDC, WindowSize.right, WindowSize.bottom);
-		oldBackBit = (HBITMAP)SelectObject(hDC, BackBit);
-		PatBlt(hDC, 0, 0, WindowSize.right, WindowSize.bottom, BLACKNESS);
-
-		sprintf(buffer, "시간: %d", sj_Timer);
-		TextOutA(hDC, 500, 10, buffer, 10);
-		Animation(hDC, g_hInst, head, bullet_head);
-		DrawEnergybar(hDC);
-
-		GetClientRect(hWnd, &WindowSize);
-
-		BitBlt(MemDC, 0, 0, WindowSize.right, WindowSize.bottom, hDC, 0, 0, SRCCOPY);
-		SelectObject(hDC, oldBackBit);
-		DeleteObject(BackBit);
-		DeleteDC(hDC);
-		EndPaint(hWnd, &ps);
-		break;
-	case WM_DESTROY:
-		KillTimer(hWnd, 0);
-		KillTimer(hWnd, 1);
-		KillTimer(hWnd, 2);
-		free(head);
-		DeleteObject(Teleport);
-		DeleteObject(PLAYER_1);
-		DeleteObject(Circle_Boom);
-		DeleteObject(Laser_Boom);
-		PostQuitMessage(0);
-		break;
-
+		return DefWindowProc(hWnd, uMsg, wParam, lParam);
 	}
-	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
