@@ -1,8 +1,10 @@
 #pragma once
 #include <Windows.h>
 #include <iostream>
+#include <math.h>
 #include "SoundManager.h"
 #include "resource.h"
+
 extern int sj_Timer;
 extern RECT Player_1;
 extern RECT WindowSize;
@@ -70,7 +72,8 @@ struct Boom
 
 	void setPosition();
 };
-
+bool IsPointInCircle(int CenterX, int CenterY, int Radius, int X, int Y);
+bool CircleCrush(RECT* player, int LX, int LY, int RX, int RY);
 void SunBoom_SJ(HDC hDC, Boom* head, int x, int y);
 void CheckBullet(Boom* head);
 void CheckBoom(Boom* head);

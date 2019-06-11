@@ -26,6 +26,55 @@ bool Crush(RECT* player, int LX, int LY, int RX, int RY) //충돌!!LY는 LeftY의 준
 		return false;
 
 }
+
+bool IsPointInCircle(int CenterX, int CenterY, int Radius, int X, int Y)
+{
+	float deltaX = (float)CenterX - (float)X;
+	float deltaY = (float)CenterY - (float)Y;
+	float length = sqrt(deltaX*deltaX + deltaY * deltaY);
+
+	if (length > Radius)
+		return FALSE;
+	return TRUE;
+}
+
+bool CircleCrush(RECT* player, int LX, int LY, int RX, int RY)
+{
+	int CenterX = (LX + RX) / 2;
+	int CenterY = (LY + RY) / 2;
+	int radius = CenterX - LX;
+
+
+	if ((player->left <= CenterX && CenterX <= player->right) || (
+		player->top <= CenterY && CenterY <= player->bottom))
+	{
+		RECT tmpRect{
+			player->left - radius,
+			player->top - radius,
+			player->right + radius,
+			player->bottom + radius
+		};
+		if ((tmpRect.left < CenterX&&CenterX < tmpRect.right) &&
+			(tmpRect.top < CenterY&&CenterY < tmpRect.bottom))
+			return TRUE;
+	}
+	else
+	{
+		if (IsPointInCircle(CenterX, CenterY, radius, player->left, player->top))
+			return TRUE;
+
+		if (IsPointInCircle(CenterX, CenterY, radius, player->left, player->bottom))
+			return TRUE;
+
+		if (IsPointInCircle(CenterX, CenterY, radius, player->right, player->top))
+			return TRUE;
+
+		if (IsPointInCircle(CenterX, CenterY, radius, player->right, player->top))
+			return TRUE;
+	}
+	return FALSE;
+}
+
 bool OutOfRange(Boom* boom)
 {
 	if (boom == NULL)
@@ -596,7 +645,7 @@ void CheckBulletCrush(Boom* head)
 
 	for (p = head; p->nextBoom != NULL; p = p->nextBoom)
 	{
-		if (Crush(&Player_1, p->nextBoom->leftTop.x, p->nextBoom->leftTop.y, p->nextBoom->rightBottom.x, p->nextBoom->rightBottom.y))
+		if (CircleCrush(&Player_1, p->nextBoom->leftTop.x, p->nextBoom->leftTop.y, p->nextBoom->rightBottom.x, p->nextBoom->rightBottom.y))
 			Energybar.right -= 10;
 	}
 }
@@ -607,8 +656,17 @@ void CheckBoomCrush(Boom* head)
 
 	for (p = head; p->nextBoom != NULL; p = p->nextBoom)
 	{
-		if ((p->nextBoom->boomAnimaition >= 100) && Crush(&Player_1, p->nextBoom->leftTop.x, p->nextBoom->leftTop.y, p->nextBoom->rightBottom.x, p->nextBoom->rightBottom.y))
-			Energybar.right -= 10;
+		switch (p->nextBoom->boomShape)
+		{
+		case Boom_Circle:
+			if ((p->nextBoom->boomAnimaition >= 100) && CircleCrush(&Player_1, p->nextBoom->leftTop.x, p->nextBoom->leftTop.y, p->nextBoom->rightBottom.x, p->nextBoom->rightBottom.y))
+				Energybar.right -= 10;
+			break;
+		default:
+			if ((p->nextBoom->boomAnimaition >= 100) && Crush(&Player_1, p->nextBoom->leftTop.x, p->nextBoom->leftTop.y, p->nextBoom->rightBottom.x, p->nextBoom->rightBottom.y))
+				Energybar.right -= 10;
+			break;
+		}
 	}
 }
 
