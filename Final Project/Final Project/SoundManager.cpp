@@ -43,7 +43,7 @@ void effSoundSetup()
 
 	//사운드 경로
 
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 4; i++) {
 		wsprintfA(str, "effect\\effect%d.mp3", i);
 		FMOD_System_CreateStream(effg_pSystem, str, FMOD_LOOP_OFF, 0, &effg_pSound[i]);
 	}

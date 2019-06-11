@@ -723,13 +723,13 @@ void CheckBulletCrush(Boom* head)
 		{
 			Energybar.right -= 200;
 			PLAYER1_HIT = 50;
-			effPlaySound(teleP);
+			effPlaySound(Damage);
 		}
 		if (PLAYER2_HIT == 0 && Crush(&Player_2, p->nextBoom->leftTop.x, p->nextBoom->leftTop.y, p->nextBoom->rightBottom.x, p->nextBoom->rightBottom.y))
 		{
 			Energybar.right -= 200;
 			PLAYER2_HIT = 50;
-			effPlaySound(teleP);
+			effPlaySound(Damage);
 		}
 	}
 }
@@ -744,13 +744,13 @@ void CheckBoomCrush(Boom* head)
 		{
 			Energybar.right -= 200;
 			PLAYER1_HIT = 50;
-			effPlaySound(teleP);
+			effPlaySound(Damage);
 		}
 		if ((PLAYER2_HIT == 0) && (p->nextBoom->boomAnimaition >= 100) && Crush(&Player_2, p->nextBoom->leftTop.x, p->nextBoom->leftTop.y, p->nextBoom->rightBottom.x, p->nextBoom->rightBottom.y))
 		{
 			Energybar.right -= 200;
 			PLAYER2_HIT = 50;
-			effPlaySound(teleP);
+			effPlaySound(Damage);
 		}
 	}
 }
