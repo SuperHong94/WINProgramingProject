@@ -66,5 +66,8 @@
     <Image Include="SELECTSTAGE.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
+    <Image Include="WIN.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
 </Project>

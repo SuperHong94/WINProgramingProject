@@ -163,6 +163,7 @@
     <Image Include="Player_1.bmp" />
     <Image Include="SELECTSTAGE.bmp" />
     <Image Include="Tp.bmp" />
+    <Image Include="WIN.bmp" />
     <Image Include="You-Died.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -567,7 +567,7 @@ void Animation(HDC hDC, HINSTANCE g_hInst, Boom* head, Boom* bullet_head)
 	DeleteDC(memDC);
 }
 
-void DrawEnergybar(HDC hDC, HINSTANCE hInstance)
+void DrawEnergybar(HDC hDC, HINSTANCE hInst,EROUND& eRound)
 {
 	HDC mDC;
 	BITMAP bit;
@@ -584,16 +584,10 @@ void DrawEnergybar(HDC hDC, HINSTANCE hInstance)
 	Rectangle(hDC, WindowSize.left, WindowSize.bottom - 20, WindowSize.right, WindowSize.bottom);
 	(HBRUSH)SelectObject(hDC, hBrush1);
 	Rectangle(hDC, Energybar.left, Energybar.bottom - 20, Energybar.right, Energybar.bottom);
-	if (Energybar.right <= 0) {
-		mDC = CreateCompatibleDC(hDC);
-		hBit = LoadBitmap(hInstance, MAKEINTRESOURCE(IDB_YOUDIE));
-		GetObject(hBit, sizeof(BITMAP), &bit);
-		(HBITMAP)SelectObject(mDC, hBit);
-		TransparentBlt(hDC, 0, 0, WindowSize.right, WindowSize.bottom, mDC, 0, 0, bit.bmWidth, bit.bmHeight, SRCCOPY);  //±Û¾¾¸¸ Ãâ·Â
-		DeleteDC(mDC);
-	}
+	
 	DeleteObject(hBrush);
 	DeleteObject(hBrush1);
+
 }
 
 void CheckBulletCrush(Boom* head)
@@ -631,6 +625,7 @@ int DrawMenu(HDC hDC, EROUND& eRound, HINSTANCE hInst)
 		GetObject(hBit, sizeof(bit), &bit);
 		(HBITMAP)SelectObject(mDC, hBit);
 		TransparentBlt(hDC, 0, 0, WindowSize.right, WindowSize.bottom, mDC, 0, 0, bit.bmWidth, bit.bmHeight, SRCCOPY);
+		DeleteDC(mDC);
 		return 0;
 	case HELP:
 		mDC = CreateCompatibleDC(hDC);
@@ -638,6 +633,7 @@ int DrawMenu(HDC hDC, EROUND& eRound, HINSTANCE hInst)
 		GetObject(hBit, sizeof(bit), &bit);
 		(HBITMAP)SelectObject(mDC, hBit);
 		TransparentBlt(hDC, 0, 0, WindowSize.right, WindowSize.bottom, mDC, 0, 0, bit.bmWidth, bit.bmHeight, SRCCOPY);
+		DeleteDC(mDC);
 		return 0;
 	case Select:
 		mDC = CreateCompatibleDC(hDC);
@@ -645,6 +641,23 @@ int DrawMenu(HDC hDC, EROUND& eRound, HINSTANCE hInst)
 		GetObject(hBit, sizeof(bit), &bit);
 		(HBITMAP)SelectObject(mDC, hBit);
 		TransparentBlt(hDC, 0, 0, WindowSize.right, WindowSize.bottom, mDC, 0, 0, bit.bmWidth, bit.bmHeight, SRCCOPY);
+		DeleteDC(mDC);
+		return 0;
+	case YouDie:
+		mDC = CreateCompatibleDC(hDC);
+		hBit = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_YOUDIE));
+		GetObject(hBit, sizeof(BITMAP), &bit);
+		(HBITMAP)SelectObject(mDC, hBit);
+		TransparentBlt(hDC, 0, 0, WindowSize.right, WindowSize.bottom, mDC, 0, 0, bit.bmWidth, bit.bmHeight, SRCCOPY);  //±Û¾¾¸¸ Ãâ·Â
+		DeleteDC(mDC);
+		return 0;
+	case YouWin:
+		mDC = CreateCompatibleDC(hDC);
+		hBit = LoadBitmap(hInst, MAKEINTRESOURCE(IDB_YOUWIN));
+		GetObject(hBit, sizeof(BITMAP), &bit);
+		(HBITMAP)SelectObject(mDC, hBit);
+		TransparentBlt(hDC, 0, 0, WindowSize.right, WindowSize.bottom, mDC, 0, 0, bit.bmWidth, bit.bmHeight, SRCCOPY);  //±Û¾¾¸¸ Ãâ·Â
+		DeleteDC(mDC);
 		return 0;
 	case Round1:
 		return 1;

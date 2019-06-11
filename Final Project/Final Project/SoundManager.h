@@ -10,7 +10,8 @@ enum ESOUNDKIND
 	MainSound=0,
 	Perion,
 	STAGE2,
-	Effect,  //이펙트
+	YOUDIE,
+	YOUWIN,
 	SD_END,   //이펙트 끝 
 };
 enum EFFOUNDKIND //이펙트 사운드
