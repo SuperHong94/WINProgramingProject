@@ -45,7 +45,7 @@ void effSoundSetup()
 
 	for (int i = 0; i < 3; i++) {
 		wsprintfA(str, "effect\\effect%d.mp3", i);
-		FMOD_System_CreateStream(effg_pSystem, str, FMOD_LOOP_OFF, 0, &effg_pSound[i]);
+		FMOD_System_CreateStream(effg_pSystem, str, FMOD_LOOP_NORMAL, 0, &effg_pSound[i]);
 	}
 }
 void effSoundoff()
