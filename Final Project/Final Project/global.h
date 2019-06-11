@@ -16,6 +16,7 @@ extern HBITMAP PLAYER_1;
 extern bool Tp;
 extern bool POWEROVERWHELMING;
 extern RECT tmp;
+extern int score;
 
 enum PLAYERDIRECTION {
 	UP,

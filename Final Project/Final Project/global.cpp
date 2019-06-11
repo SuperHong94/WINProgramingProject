@@ -8,10 +8,11 @@ HBITMAP Laser_Boom;
 HBITMAP Circle_Boom;
 HBITMAP Teleport;
 HBITMAP PLAYER_1;
-PLAYERDIRECTION PLAYER1DR;
 bool Tp;
-bool POWEROVERWHELMING;
 RECT tmp;
+PLAYERDIRECTION PLAYER1DR;
+bool POWEROVERWHELMING;
+int score;
 
 bool Crush(RECT* player, int LX, int LY, int RX, int RY) //충돌!!LY는 LeftY의 준말 plyaer하고 폭탄의 범위랑 충돌처리할꺼임  //충돌하면 true리턴
 {
@@ -51,10 +52,10 @@ bool CircleCrush(RECT* player, int LX, int LY, int RX, int RY)
 		player->top <= CenterY && CenterY <= player->bottom))
 	{
 		RECT tmpRect{
-			player->left - radius,
-			player->top - radius,
-			player->right + radius,
-			player->bottom + radius
+		   player->left - radius,
+		   player->top - radius,
+		   player->right + radius,
+		   player->bottom + radius
 		};
 		if ((tmpRect.left < CenterX&&CenterX < tmpRect.right) &&
 			(tmpRect.top < CenterY&&CenterY < tmpRect.bottom))
@@ -616,7 +617,6 @@ void Animation(HDC hDC, HINSTANCE g_hInst, Boom* head, Boom* bullet_head)
 		TransparentBlt(hDC, tmp.left, tmp.top, tmp.right - tmp.left, tmp.bottom - tmp.top, memDC, 0, 0, 50, 50, RGB(0, 0, 0));
 	}
 	(HBITMAP)SelectObject(memDC, PLAYER_1);
-
 	StretchBlt(hDC, Player_1.left, Player_1.top, Player_1.right - Player_1.left, Player_1.bottom - Player_1.top, memDC, 0, 0, 50, 50, SRCCOPY);
 	DeleteDC(memDC);
 }
@@ -650,7 +650,7 @@ void CheckBulletCrush(Boom* head)
 
 	for (p = head; p->nextBoom != NULL; p = p->nextBoom)
 	{
-		if (CircleCrush(&Player_1, p->nextBoom->leftTop.x, p->nextBoom->leftTop.y, p->nextBoom->rightBottom.x, p->nextBoom->rightBottom.y))
+		if (Crush(&Player_1, p->nextBoom->leftTop.x, p->nextBoom->leftTop.y, p->nextBoom->rightBottom.x, p->nextBoom->rightBottom.y))
 			Energybar.right -= 10;
 	}
 }
@@ -661,22 +661,15 @@ void CheckBoomCrush(Boom* head)
 
 	for (p = head; p->nextBoom != NULL; p = p->nextBoom)
 	{
-		switch (p->nextBoom->boomShape)
-		{
-		case Boom_Circle:
-			if ((p->nextBoom->boomAnimaition >= 100) && CircleCrush(&Player_1, p->nextBoom->leftTop.x, p->nextBoom->leftTop.y, p->nextBoom->rightBottom.x, p->nextBoom->rightBottom.y))
-				Energybar.right -= 10;
-			break;
-		default:
-			if ((p->nextBoom->boomAnimaition >= 100) && Crush(&Player_1, p->nextBoom->leftTop.x, p->nextBoom->leftTop.y, p->nextBoom->rightBottom.x, p->nextBoom->rightBottom.y))
-				Energybar.right -= 10;
-			break;
-		}
+		if ((p->nextBoom->boomAnimaition >= 100) && Crush(&Player_1, p->nextBoom->leftTop.x, p->nextBoom->leftTop.y, p->nextBoom->rightBottom.x, p->nextBoom->rightBottom.y))
+			Energybar.right -= 10;
 	}
 }
 
 int DrawMenu(HDC hDC, EROUND& eRound, HINSTANCE hInst)
 {
+	char buffer[1000]; //초세는 타이머
+	HFONT hFont;
 	HBITMAP hBit;
 	BITMAP bit;
 	HDC mDC;
@@ -720,6 +713,14 @@ int DrawMenu(HDC hDC, EROUND& eRound, HINSTANCE hInst)
 		GetObject(hBit, sizeof(BITMAP), &bit);
 		(HBITMAP)SelectObject(mDC, hBit);
 		TransparentBlt(hDC, 0, 0, WindowSize.right, WindowSize.bottom, mDC, 0, 0, bit.bmWidth, bit.bmHeight, SRCCOPY);  //글씨만 출력
+
+		hFont = CreateFont(100, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, L"궁서체");
+		(HFONT)SelectObject(hDC, hFont);
+		SetTextColor(hDC, RGB(255, 255, 255));
+		SetBkColor(hDC, RGB(0, 0, 0));
+		sprintf(buffer, "점수: %d", score);
+		TextOutA(hDC, 600, 0, buffer, strlen(buffer));
+		DeleteObject(hFont);
 		DeleteDC(mDC);
 		return 0;
 	case Round1:
@@ -752,7 +753,7 @@ void ClickRange(LPARAM lParam, EROUND& eRound)
 			eRound = Round2;
 		}
 		if ((x >= 190 && y >= 500) && (x <= 1110 && y <= 660))
-			PostQuitMessage(0);
+			eRound = MAIN;
 		break;
 	}
 

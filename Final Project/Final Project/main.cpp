@@ -5,7 +5,7 @@ LPCTSTR lpszClass = L"Window Class Name";
 LPCTSTR lpszWindowName = L"Window Programming Lab";
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 EROUND eRound = MAIN;
- bool PauseOnOff = true;
+bool PauseOnOff = true;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdParam, int nCmdShow)
 {
@@ -49,13 +49,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdPa
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	static bool menuOnOff = true; //메뉴 그릴지 말지
-	char buffer[1000]; //초세는 타이머
+
 	static HDC hDC, MemDC;
 	static HBITMAP BackBit, oldBackBit, hBit[10];
 	static RECT bufferRT;
 	PAINTSTRUCT ps;
 	static Boom* head;
 	static Boom* bullet_head;
+	static int syc = 0;
+
 	//int boomCount = 0;  //폭탄 카운트는 0;
 
 	//메시지 처리하기
@@ -82,13 +84,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		PLAYER_1 = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_PLAYER));
 		Tp = FALSE;
 		POWEROVERWHELMING = FALSE;
+
 		soundSetup(); //사운드 셋업
 		effSoundSetup();//이펙트 셋업
+
 
 		SetTimer(hWnd, 0, 10, NULL);
 		SetTimer(hWnd, 1, 100, NULL);
 		playSound(MainSound);
-		//playSound(STAGE2);//페리온 재생
 		break;
 	case WM_LBUTTONDOWN:
 		effPlaySound(click);
@@ -123,519 +126,112 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 	case WM_TIMER:
-<<<<<<< HEAD
-		switch (wParam) {
-		case 0:
-			PLAYER1DR = STOP;
-
-			if (GetAsyncKeyState('A') < 0)
-			{
-				Player_1.left -= 3;
-				Player_1.right -= 3;
-				if (Player_1.left < 0)
-				{
-					Player_1.left = 0;
-					Player_1.right = 25;
-				}
-				PLAYER1DR = LEFT;
-			}
-
-			else if(GetAsyncKeyState('D') < 0)
-			{
-				Player_1.left += 3;
-				Player_1.right += 3;
-
-				if (Player_1.right > 1184)
-				{
-					Player_1.left = 1159;
-					Player_1.right = 1184;
-				}
-				PLAYER1DR = RIGHT;
-			}
-
-			if (GetAsyncKeyState('W') < 0)
-			{
-				Player_1.top -= 3;
-				Player_1.bottom -= 3;
-
-				if (Player_1.top < 0)
-				{
-					Player_1.top = 0;
-					Player_1.bottom = 25;
-				}
-
-				switch (PLAYER1DR)
-				{
-				case STOP:
-					PLAYER1DR = UP;
-					break;
-				case LEFT:
-					PLAYER1DR = UPLEFT;
-					break;
-				case RIGHT:
-					PLAYER1DR = UPRIGHT;
-					break;
-				}
-			}
-
-			else if (GetAsyncKeyState('S') < 0)
-			{
-				Player_1.top += 3;
-				Player_1.bottom += 3;
-				switch (PLAYER1DR)
-				{
-				case STOP:
-					PLAYER1DR = DOWN;
-					break;
-				case LEFT:
-					PLAYER1DR = DOWNLEFT;
-					break;
-				case RIGHT:
-					PLAYER1DR = DOWNRIGHT;
-					break;
-				}
-
-				if (Player_1.bottom > WindowSize.bottom - 20)
-				{
-					Player_1.top = WindowSize.bottom - 45;
-					Player_1.bottom = WindowSize.bottom - 20;
-				}
-			}
-
-			
-			CheckBullet(bullet_head);
-			CheckBoom(head);
-			setBoomPosition(bullet_head);
-			setAnimation(head);
-			setBoomPosition(head);
-			if (!POWEROVERWHELMING)
-			{
-				CheckBulletCrush(bullet_head);
-				CheckBoomCrush(head);
-			}
-			break;
-		case 1:  //0.1초 단위로 생성됨
-			sj_Timer++;
-			if (Energybar.right <= 0) {
-				eRound = YouDie;
-				KillTimer(hWnd, 1);
-				playSound(YOUDIE);
-				menuOnOff = true;
-				
-			}
-			switch (eRound)
-			{
-			case Round1:
-				switch (sj_Timer) {
-				case 10:
-					SunBoom_SJ(hDC, bullet_head, 300, 300);
-					break;
-				case 20:
-					SunBoom_SJ(hDC, bullet_head, 400, 400);
-					break;
-				case 30:
-					SunBoom_SJ(hDC, bullet_head, 500, 500);
-					break;
-				case 40:
-					SunBoom_SJ(hDC, bullet_head, 700, 700);
-					break;
-				case 45:
-					SunBoom_SJ(hDC, bullet_head, 500, 500);
-					break;
-				case 50:
-					SunBoom_SJ(hDC, bullet_head, 200, 200);
-					break;
-				case 55:
-					SunBoom_SJ(hDC, bullet_head, 200, 300);
-					break;
-				case 60:
-					SunBoom_SJ(hDC, bullet_head, 200, 300);
-					break;
-				case 70:
-					SunBoom_SJ(hDC, bullet_head, 200, 400);
-					break;
-				case 75:
-					SunBoom_SJ(hDC, bullet_head, 200, 500);
-					break;
-				case 76:
-					SunBoom_SJ(hDC, bullet_head, 200, 600);
-					break;
-				case 100:
-					SunBoom_SJ(hDC, bullet_head, 700, 100);
-					break;
-				case 125:
-					SunBoom_SJ(hDC, bullet_head, 700, 200);
-					break;
-				case 130:
-					SunBoom_SJ(hDC, bullet_head, 700, 200);
-					break;
-				case 140:
-					SunBoom_SJ(hDC, bullet_head, 700, 300);
-					break;
-				case 160:
-					SunBoom_SJ(hDC, bullet_head, 700, 200);
-					break;
-				case 168:
-					SunBoom_SJ(hDC, bullet_head, 700, 300);
-					break;
-				case 170:
-					SunBoom_SJ(hDC, bullet_head, 700, 300);
-					break;
-				case 180:
-					SunBoom_SJ(hDC, bullet_head, 500, 500);
-					break;
-				case 190:
-					SunBoom_SJ(hDC, bullet_head, 300, 300);
-					SunBoom_SJ(hDC, bullet_head, 700, 700);
-					break;
-				case 200:
-					SunBoom_SJ(hDC, bullet_head, 100, 100);
-					SunBoom_SJ(hDC, bullet_head, 900, 900);
-					break;
-				case 230:
-					Doughnut(hDC, bullet_head, WindowSize.right / 2, WindowSize.bottom / 2, 100); //윈도우 중앙에서
-					break;
-				case 308:
-					addBoom(head, Boom_Circle, 550, 550, 700, 700);
-					break;
-				case 310:
-					addBoom(head, Boom_Circle, 400, 400, 500, 700);
-					break;
-				case 320:
-					addBoom(head, Boom_Circle, 600, 300, 700, 400);
-					break;
-				case 380:
-					addBoom(head, Boom_DownLaser, 450, -100, 500, 900);
-					addBoom(head, Boom_DownLaser, 150, -100, 200, 900);
-					addBoom(head, Boom_DownLaser, 650, -100, 700, 900);
-					break;
-				case 335:
-					SunBoom_SJ(hDC, bullet_head, 120, 400);
-					break;
-				case 337:
-					SunBoom_SJ(hDC, bullet_head, 360, 400);
-					break;
-				case 339:
-					SunBoom_SJ(hDC, bullet_head, 480, 400);
-					break;
-				case 341:
-					SunBoom_SJ(hDC, bullet_head, 600, 400);
-					break;
-				case 343:
-					SunBoom_SJ(hDC, bullet_head, 840, 400);
-					break;
-				case 500:  //승리조건
-					eRound = YouWin;
-					playSound(YOUWIN);
-					menuOnOff = true;
-					break;
-=======
 		if (PauseOnOff)
 		{
 			switch (wParam) {
 			case 0:
+				PLAYER1DR = STOP;
+
 				if (GetAsyncKeyState('A') < 0)
 				{
 					Player_1.left -= 3;
 					Player_1.right -= 3;
+					if (Player_1.left < 0)
+					{
+						Player_1.left = 0;
+						Player_1.right = 25;
+					}
+					PLAYER1DR = LEFT;
+				}
+
+				else if (GetAsyncKeyState('D') < 0)
+				{
+					Player_1.left += 3;
+					Player_1.right += 3;
+
+					if (Player_1.right > 1184)
+					{
+						Player_1.left = 1159;
+						Player_1.right = 1184;
+					}
+					PLAYER1DR = RIGHT;
 				}
 
 				if (GetAsyncKeyState('W') < 0)
 				{
 					Player_1.top -= 3;
 					Player_1.bottom -= 3;
+
+					if (Player_1.top < 0)
+					{
+						Player_1.top = 0;
+						Player_1.bottom = 25;
+					}
+
+					switch (PLAYER1DR)
+					{
+					case STOP:
+						PLAYER1DR = UP;
+						break;
+					case LEFT:
+						PLAYER1DR = UPLEFT;
+						break;
+					case RIGHT:
+						PLAYER1DR = UPRIGHT;
+						break;
+					}
 				}
 
-				if (GetAsyncKeyState('S') < 0)
+				else if (GetAsyncKeyState('S') < 0)
 				{
 					Player_1.top += 3;
 					Player_1.bottom += 3;
+					switch (PLAYER1DR)
+					{
+					case STOP:
+						PLAYER1DR = DOWN;
+						break;
+					case LEFT:
+						PLAYER1DR = DOWNLEFT;
+						break;
+					case RIGHT:
+						PLAYER1DR = DOWNRIGHT;
+						break;
+					}
+
+					if (Player_1.bottom > WindowSize.bottom - 20)
+					{
+						Player_1.top = WindowSize.bottom - 45;
+						Player_1.bottom = WindowSize.bottom - 20;
+					}
 				}
 
-				if (GetAsyncKeyState('D') < 0)
-				{
-					Player_1.left += 3;
-					Player_1.right += 3;
->>>>>>> SJ
-				}
+
 				CheckBullet(bullet_head);
 				CheckBoom(head);
 				setBoomPosition(bullet_head);
 				setAnimation(head);
 				setBoomPosition(head);
-				CheckBulletCrush(bullet_head);
-				CheckBoomCrush(head);
-				break;
-<<<<<<< HEAD
-			case Round2:
-				switch (sj_Timer)
+
+				if (!POWEROVERWHELMING)
 				{
-				case 10:
-					addBoom(head, Boom_Circle, 100, 80, 500, 480);
-					break;
-				case 11:
-					addBoom(head, Boom_Circle, 100, 350, 500, 750);
-					break;
-				case 12:
-					addBoom(head, Boom_Circle, 500, 350, 800, 650);
-					break;
-				case 13:
-					addBoom(head, Boom_Circle, 500, 80, 800, 380);
-					break;
-				case 40:
-					addBoom(head, Boom_Circle, 450, 80, 1050, 680);
-					break;
-				case 41:
-					addBoom(head, Boom_Circle, 50, 50, 350, 350);
-					break;
-				case 42:
-					addBoom(head, Boom_Circle, 300, 300, 600, 600);
-					break;
-				case 110:
-					addBoom(head, Boom_Laser, -100, 50, 1300, 100);
-					break;
-				case 111:
-					addBoom(head, Boom_Laser, -100, 150, 1300, 200);
-					break;
-				case 112:
-					addBoom(head, Boom_Laser, -100, 250, 1300, 300);
-					break;
-				case 113:
-					addBoom(head, Boom_Laser, -100, 350, 1300, 400);
-					break;
-				case 114:
-					addBoom(head, Boom_Laser, -100, 450, 1300, 500);
-					break;
-				case 115:
-					addBoom(head, Boom_Laser, -100, 550, 1300, 600);
-					break;
-				case 116:
-					addBoom(head, Boom_Laser, -100, 650, 1300, 700);
-					break;
-				case 117:
-					addBoom(head, Boom_Laser, -100, 750, 1300, 800);
-					break;
-				case 160:
-					addBoom(head, Boom_Laser, -100, 650, 1300, 700);
-					break;
-				case 161:
-					addBoom(head, Boom_Laser, -100, 550, 1300, 600);
-					break;
-				case 162:
-					addBoom(head, Boom_Laser, -100, 450, 1300, 500);
-					break;
-				case 163:
-					addBoom(head, Boom_Laser, -100, 350, 1300, 400);
-					break;
-				case 164:
-					addBoom(head, Boom_Laser, -100, 250, 1300, 300);
-					break;
-				case 165:
-					addBoom(head, Boom_Laser, -100, 150, 1300, 200);
-					break;
-				case 166:
-					addBoom(head, Boom_Laser, -100, 50, 1300, 100);
-					break;
-				case 203:
-					SunBoom_SJ(hDC, bullet_head, 540, 380);
-					break;
-				case 208:
-					SunBoom_SJ(hDC, bullet_head, 150, 200);
-					break;
-				case 209:
-					SunBoom_SJ(hDC, bullet_head, 250, 300);
-					break;
-				case 210:
-					SunBoom_SJ(hDC, bullet_head, 550, 300);
-					break;
-				case 240:
-					addBoom(head, Boom_Rectangle, 50, 50, 350, 350);
-					SunBoom_SJ(hDC, bullet_head, 750, 300);
-					break;
-				case 241:
-					addBoom(head, Boom_Rectangle, 700, 150, 1000, 450);
-					SunBoom_SJ(hDC, bullet_head, 650, 450);
-					break;
-				case 242:
-					SunBoom_SJ(hDC, bullet_head, 730, 380);
-					addBoom(head, Boom_Rectangle, 300, 300, 600, 600);
-					break;
-				case 243:
-					addBoom(head, Boom_Rectangle, 850, 450, 1150, 750);
-
-					break;
-				case 296:
-					Doughnut(hDC, head, 520, 380, 50);
-					break;
-				case 297:
-					SunBoom_SJ(hDC, bullet_head, 100, 100);
-					SunBoom_SJ(hDC, bullet_head, 1100, 100);
-					SunBoom_SJ(hDC, bullet_head, 100, 700);
-					SunBoom_SJ(hDC, bullet_head, 1100, 700);
-					break;
-				case 310:
-					addBoom(head, Boom_LeftLaser, -100, 340, 1300, 390);
-					addBoom(head, Boom_RightLaser, -100, 340, 1300, 390);
-					addBoom(head, Boom_UpLaser, 540, -100, 590, 900);
-					addBoom(head, Boom_DownLaser, 540, -100, 590, 900);
-					addBoom(head, Boom_Laser2, 20, -100, 70, 900);
-					SunBoom_SJ(hDC, bullet_head, 850, 650);
-					break;
-				case 315:
-					addBoom(head, Boom_Laser2, 980, -100, 1030, 900);
-					break;
-				case 320:
-					SunBoom_SJ(hDC, bullet_head, 250, 650);
-					addBoom(head, Boom_Laser, -100, 120, 1300, 170);
-					break;
-				case 325:
-					addBoom(head, Boom_Laser, -100, 600, 1300, 650);
-					break;
-				case 330:
-					addBoom(head, Boom_Laser2, 150, -100, 200, 900);
-					break;
-				case 390:
-					SunBoom_SJ(hDC, bullet_head, 124, 350);
-					SunBoom_SJ(hDC, bullet_head, 842, 420);
-					break;
-				case 393:
-					SunBoom_SJ(hDC, bullet_head, 640, 150);
-					SunBoom_SJ(hDC, bullet_head, 4, 560);
-					break;
-				case 405:
-					addBoom(head, Boom_LeftLaser, -100, 340, 1300, 390);
-					addBoom(head, Boom_RightLaser, -100, 340, 1300, 390);
-					addBoom(head, Boom_UpLaser, 540, -100, 590, 900);
-					addBoom(head, Boom_DownLaser, 540, -100, 590, 900);
-					addBoom(head, Boom_Laser2, 50, -100, 100, 900);
-					addBoom(head, Boom_Laser2, 1090, -100, 1140, 900);
-					addBoom(head, Boom_Laser, -100, 100, 1300, 150);
-					addBoom(head, Boom_Laser, -100, 650, 1300, 700);
-					break;
-				case 440:
-					addBoom(head, Boom_Circle, 100, 80, 500, 480);
-					addBoom(head, Boom_Circle, 850, 400, 1150, 700);
-					break;
-				case 445:
-					SunBoom_SJ(hDC, bullet_head, 124, 350);
-					SunBoom_SJ(hDC, bullet_head, 842, 420);
-					SunBoom_SJ(hDC, bullet_head, 640, 150);
-					SunBoom_SJ(hDC, bullet_head, 4, 560);
-					break;
-				case 446:
-					addBoom(head, Boom_Circle, 460, 260, 660, 460);
-					break;
-				case 448:
-					addBoom(head, Boom_Circle, 360, 160, 760, 560);
-					break;
-				case 450:
-					addBoom(head, Boom_Circle, 260, 60, 860, 660);
-					break;
-				case 452:
-					addBoom(head, Boom_Circle, 160, -40, 960, 760);
-					break;
-				case 453:
-					addBoom(head, Boom_Circle, 60, -140, 1060, 860);
-					break;
-				case 490:
-					SunBoom_SJ(hDC, bullet_head, 50, 50);
-					SunBoom_SJ(hDC, bullet_head, 450, 600);
-					SunBoom_SJ(hDC, bullet_head, 223, 700);
-					SunBoom_SJ(hDC, bullet_head, 900, 560);
-					SunBoom_SJ(hDC, bullet_head, 930, 220);
-					break;
-				case 580:
-					Doughnut(hDC, head, 520, 340, 50);
-					SunBoom_SJ(hDC, bullet_head, 540, 380);
-					break;
-				case 581:
-					addBoom(head, Boom_LeftLaser, -100, 340, 1300, 390);
-					SunBoom_SJ(hDC, bullet_head, 150, 200);
-					break;
-				case 582:
-					addBoom(head, Boom_RightLaser, -100, 340, 1300, 390);
-					SunBoom_SJ(hDC, bullet_head, 250, 300);
-					break;
-				case 583:
-					addBoom(head, Boom_UpLaser, 540, -100, 590, 900);
-					SunBoom_SJ(hDC, bullet_head, 550, 300);
-					break;
-				case 584:
-					addBoom(head, Boom_DownLaser, 540, -100, 590, 900);
-					SunBoom_SJ(hDC, bullet_head, 380, 600);
-					break;
-				case 628:
-					addBoom(head, Boom_RightLaser, -100, 100, 1300, 150);
-					addBoom(head, Boom_RightLaser, -100, 200, 1300, 250);
-					addBoom(head, Boom_DownLaser, 990, -100, 1040, 900);
-					addBoom(head, Boom_DownLaser, 1090, -100, 1140, 900);
-					addBoom(head, Boom_Rectangle, 460, 280, 660, 480);
-					break;
-				case 629:
-					addBoom(head, Boom_LeftLaser, -100, 550, 1300, 600);
-					addBoom(head, Boom_LeftLaser, -100, 650, 1300, 700);
-					addBoom(head, Boom_UpLaser, 50, -100, 100, 900);
-					addBoom(head, Boom_UpLaser, 150, -100, 200, 900);
-					break;
-				case 675:
-					SunBoom_SJ(hDC, bullet_head, 580 - 350 * cos(0 * (3.1415926535897 / 180)), 350 - 350 * sin(0 * (3.1415926535897 / 180)));
-					addBoom(head, Boom_Circle, 230, 0, 930, 700);
-					break;
-				case 676:
-					SunBoom_SJ(hDC, bullet_head, 580 - 350 * cos(60 * (3.1415926535897 / 180)), 350 - 350 * sin(60 * (3.1415926535897 / 180)));
-					break;
-				case 677:
-					SunBoom_SJ(hDC, bullet_head, 580 - 350 * cos(120 * (3.1415926535897 / 180)), 350 - 350 * sin(120 * (3.1415926535897 / 180)));
-					addBoom(head, Boom_Rectangle, 230, 0, 930, 700);
-					break;
-				case 678:
-					SunBoom_SJ(hDC, bullet_head, 580 - 350 * cos(180 * (3.1415926535897 / 180)), 350 - 350 * sin(180 * (3.1415926535897 / 180)));
-					break;
-				case 679:
-					SunBoom_SJ(hDC, bullet_head, 580 - 350 * cos(240 * (3.1415926535897 / 180)), 350 - 350 * sin(240 * (3.1415926535897 / 180)));
-					addBoom(head, Boom_Circle, 230, 0, 930, 700);
-					break;
-				case 680:
-					SunBoom_SJ(hDC, bullet_head, 580 - 350 * cos(300 * (3.1415926535897 / 180)), 350 - 350 * sin(300 * (3.1415926535897 / 180)));
-					break;
-				case 681:
-					SunBoom_SJ(hDC, bullet_head, 580 - 500 * cos(0 * (3.1415926535897 / 180)), 350 - 500 * sin(0 * (3.1415926535897 / 180)));
-					addBoom(head, Boom_Rectangle, 230, 0, 930, 700);
-					break;
-				case 682:
-					SunBoom_SJ(hDC, bullet_head, 580 - 500 * cos(60 * (3.1415926535897 / 180)), 350 - 500 * sin(60 * (3.1415926535897 / 180)));
-					break;
-				case 683:
-					SunBoom_SJ(hDC, bullet_head, 580 - 500 * cos(120 * (3.1415926535897 / 180)), 350 - 500 * sin(120 * (3.1415926535897 / 180)));
-					break;
-				case 684:
-					SunBoom_SJ(hDC, bullet_head, 580 - 500 * cos(180 * (3.1415926535897 / 180)), 350 - 500 * sin(180 * (3.1415926535897 / 180)));
-					break;
-				case 685:
-					SunBoom_SJ(hDC, bullet_head, 580 - 500 * cos(240 * (3.1415926535897 / 180)), 350 - 500 * sin(240 * (3.1415926535897 / 180)));
-					break;
-				case 686:
-					SunBoom_SJ(hDC, bullet_head, 580 - 500 * cos(300 * (3.1415926535897 / 180)), 350 - 500 * sin(300 * (3.1415926535897 / 180)));
-					break;
-
-				case 755:  //승리조건
-					eRound = YouWin;
-					playSound(YOUWIN);
-=======
+					CheckBulletCrush(bullet_head);
+					CheckBoomCrush(head);
+				}
+				break;
 			case 1:  //0.1초 단위로 생성됨
 				sj_Timer++;
 				if (Energybar.right <= 0) {
 					eRound = YouDie;
 					KillTimer(hWnd, 1);
 					playSound(YOUDIE);
->>>>>>> SJ
 					menuOnOff = true;
 
 				}
 				switch (eRound)
 				{
 				case Round1:
-					switch (sj_Timer) {
+					switch (sj_Timer + syc) {
 					case 10:
 						SunBoom_SJ(hDC, bullet_head, 300, 300);
 						break;
@@ -819,29 +415,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 						addBoom(head, Boom_Circle, 110, -90, 1010, 810);
 						break;
 
-					case 500:  //승리조건
+					case 500://승리조건
 						eRound = YouWin;
+						score = sj_Timer * Energybar.right;
 						playSound(YOUWIN);
 						menuOnOff = true;
 						break;
 					}
 					break;
-<<<<<<< HEAD
-				default:
-					break;
-				}
-				
-			}
-			break;
-=======
 				case Round2:
-					switch (sj_Timer)
+					switch (sj_Timer + syc)
 					{
-					case 500:  //승리조건
-						eRound = YouWin;
-						playSound(YOUWIN);
-						menuOnOff = true;
-						break;
 					case 10:
 						addBoom(head, Boom_Circle, 100, 80, 500, 480);
 						break;
@@ -921,15 +505,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 						SunBoom_SJ(hDC, bullet_head, 550, 300);
 						break;
 					case 240:
-						addBoom(head, Boom_Rectangle, 0, 0, 600, 600);
-						addBoom(head, Boom_Rectangle, 550, 150, 1150, 750);
+						addBoom(head, Boom_Rectangle, 50, 50, 350, 350);
 						SunBoom_SJ(hDC, bullet_head, 750, 300);
 						break;
 					case 241:
+						addBoom(head, Boom_Rectangle, 700, 150, 1000, 450);
 						SunBoom_SJ(hDC, bullet_head, 650, 450);
 						break;
 					case 242:
 						SunBoom_SJ(hDC, bullet_head, 730, 380);
+						addBoom(head, Boom_Rectangle, 300, 300, 600, 600);
+						break;
+					case 243:
+						addBoom(head, Boom_Rectangle, 850, 450, 1150, 750);
+
 						break;
 					case 296:
 						Doughnut(hDC, head, 520, 380, 50);
@@ -975,7 +564,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 						addBoom(head, Boom_UpLaser, 540, -100, 590, 900);
 						addBoom(head, Boom_DownLaser, 540, -100, 590, 900);
 						addBoom(head, Boom_Laser2, 50, -100, 100, 900);
-						addBoom(head, Boom_Laser2, 1130, -100, 1180, 900);
+						addBoom(head, Boom_Laser2, 1090, -100, 1140, 900);
 						addBoom(head, Boom_Laser, -100, 100, 1300, 150);
 						addBoom(head, Boom_Laser, -100, 650, 1300, 700);
 						break;
@@ -992,26 +581,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 					case 446:
 						addBoom(head, Boom_Circle, 460, 260, 660, 460);
 						break;
-					case 447:
-						addBoom(head, Boom_Circle, 410, 210, 710, 510);
-						break;
 					case 448:
 						addBoom(head, Boom_Circle, 360, 160, 760, 560);
 						break;
-					case 449:
-						addBoom(head, Boom_Circle, 310, 110, 810, 610);
-						break;
 					case 450:
 						addBoom(head, Boom_Circle, 260, 60, 860, 660);
-						break;
-					case 451:
-						addBoom(head, Boom_Circle, 210, 10, 910, 710);
 						break;
 					case 452:
 						addBoom(head, Boom_Circle, 160, -40, 960, 760);
 						break;
 					case 453:
-						addBoom(head, Boom_Circle, 110, -90, 1010, 810);
+						addBoom(head, Boom_Circle, 60, -140, 1060, 860);
 						break;
 					case 490:
 						SunBoom_SJ(hDC, bullet_head, 50, 50);
@@ -1020,32 +600,92 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 						SunBoom_SJ(hDC, bullet_head, 900, 560);
 						SunBoom_SJ(hDC, bullet_head, 930, 220);
 						break;
-					case 568:
+					case 580:
 						Doughnut(hDC, head, 520, 340, 50);
 						SunBoom_SJ(hDC, bullet_head, 540, 380);
 						break;
-					case 569:
+					case 581:
 						addBoom(head, Boom_LeftLaser, -100, 340, 1300, 390);
 						SunBoom_SJ(hDC, bullet_head, 150, 200);
 						break;
-					case 570:
+					case 582:
 						addBoom(head, Boom_RightLaser, -100, 340, 1300, 390);
 						SunBoom_SJ(hDC, bullet_head, 250, 300);
 						break;
-					case 571:
+					case 583:
 						addBoom(head, Boom_UpLaser, 540, -100, 590, 900);
 						SunBoom_SJ(hDC, bullet_head, 550, 300);
+						break;
+					case 584:
+						addBoom(head, Boom_DownLaser, 540, -100, 590, 900);
+						SunBoom_SJ(hDC, bullet_head, 380, 600);
+						break;
+					case 628:
+						addBoom(head, Boom_RightLaser, -100, 100, 1300, 150);
+						addBoom(head, Boom_RightLaser, -100, 200, 1300, 250);
+						addBoom(head, Boom_DownLaser, 990, -100, 1040, 900);
+						addBoom(head, Boom_DownLaser, 1090, -100, 1140, 900);
+						addBoom(head, Boom_Rectangle, 460, 280, 660, 480);
+						break;
+					case 629:
+						addBoom(head, Boom_LeftLaser, -100, 550, 1300, 600);
+						addBoom(head, Boom_LeftLaser, -100, 650, 1300, 700);
+						addBoom(head, Boom_UpLaser, 50, -100, 100, 900);
+						addBoom(head, Boom_UpLaser, 150, -100, 200, 900);
+						break;
+					case 675:
+						SunBoom_SJ(hDC, bullet_head, 580 - 350 * cos(0 * (3.1415926535897 / 180)), 350 - 350 * sin(0 * (3.1415926535897 / 180)));
+						addBoom(head, Boom_Circle, 230, 0, 930, 700);
+						break;
+					case 676:
+						SunBoom_SJ(hDC, bullet_head, 580 - 350 * cos(60 * (3.1415926535897 / 180)), 350 - 350 * sin(60 * (3.1415926535897 / 180)));
+						break;
+					case 677:
+						SunBoom_SJ(hDC, bullet_head, 580 - 350 * cos(120 * (3.1415926535897 / 180)), 350 - 350 * sin(120 * (3.1415926535897 / 180)));
+						addBoom(head, Boom_Rectangle, 230, 0, 930, 700);
+						break;
+					case 678:
+						SunBoom_SJ(hDC, bullet_head, 580 - 350 * cos(180 * (3.1415926535897 / 180)), 350 - 350 * sin(180 * (3.1415926535897 / 180)));
+						break;
+					case 679:
+						SunBoom_SJ(hDC, bullet_head, 580 - 350 * cos(240 * (3.1415926535897 / 180)), 350 - 350 * sin(240 * (3.1415926535897 / 180)));
+						addBoom(head, Boom_Circle, 230, 0, 930, 700);
+						break;
+					case 680:
+						SunBoom_SJ(hDC, bullet_head, 580 - 350 * cos(300 * (3.1415926535897 / 180)), 350 - 350 * sin(300 * (3.1415926535897 / 180)));
+						break;
+					case 681:
+						SunBoom_SJ(hDC, bullet_head, 580 - 500 * cos(0 * (3.1415926535897 / 180)), 350 - 500 * sin(0 * (3.1415926535897 / 180)));
+						addBoom(head, Boom_Rectangle, 230, 0, 930, 700);
+						break;
+					case 682:
+						SunBoom_SJ(hDC, bullet_head, 580 - 500 * cos(60 * (3.1415926535897 / 180)), 350 - 500 * sin(60 * (3.1415926535897 / 180)));
+						break;
+					case 683:
+						SunBoom_SJ(hDC, bullet_head, 580 - 500 * cos(120 * (3.1415926535897 / 180)), 350 - 500 * sin(120 * (3.1415926535897 / 180)));
+						break;
+					case 684:
+						SunBoom_SJ(hDC, bullet_head, 580 - 500 * cos(180 * (3.1415926535897 / 180)), 350 - 500 * sin(180 * (3.1415926535897 / 180)));
+						break;
+					case 685:
+						SunBoom_SJ(hDC, bullet_head, 580 - 500 * cos(240 * (3.1415926535897 / 180)), 350 - 500 * sin(240 * (3.1415926535897 / 180)));
+						break;
+					case 686:
+						SunBoom_SJ(hDC, bullet_head, 580 - 500 * cos(300 * (3.1415926535897 / 180)), 350 - 500 * sin(300 * (3.1415926535897 / 180)));
+						break;
+
+					case 755:  //승리조건
+						eRound = YouWin;
+						score = sj_Timer * Energybar.right;
+						playSound(YOUWIN);
+						menuOnOff = true;
 						break;
 					default:
 						break;
 					}
-
 				}
 				break;
-			case 2: //1초 단위로
-				break;
 			}
->>>>>>> SJ
 		}
 		InvalidateRect(hWnd, NULL, FALSE);
 		break;
@@ -1109,37 +749,43 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				Player_1.left = tmp.left;
 				Player_1.right = tmp.right;
 				Player_1.top = tmp.top;
+				effPlaySound(teleP);
 				Tp = FALSE;
 			}
 			else
 			{
+
 				tmp.bottom = Player_1.bottom;
 				tmp.left = Player_1.left;
 				tmp.right = Player_1.right;
 				tmp.top = Player_1.top;
 				Tp = TRUE;
+
 			}
 		}
-
 		switch (wParam) {
 		case VK_BACK:
 			sj_Timer -= 10;
 			break;
-<<<<<<< HEAD
-		case VK_F3:
-			if (POWEROVERWHELMING)
-				POWEROVERWHELMING = FALSE;
-			else
-				POWEROVERWHELMING = TRUE;
-			break;
-=======
 		case VK_F4:
 			if (PauseOnOff)
 				PauseOnOff = false;
 			else
 				PauseOnOff = true;
 			SoundPause();
->>>>>>> SJ
+			break;
+		case VK_F3:
+			if (POWEROVERWHELMING)
+				POWEROVERWHELMING = FALSE;
+			else
+				POWEROVERWHELMING = TRUE;
+			break;
+		case VK_F1:
+			syc--;
+			break;
+		case VK_F2:
+			syc++;
+			break;
 		}
 		break;
 	case WM_PAINT:
@@ -1155,16 +801,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			{
 			case 1:
 				KillTimer(hWnd, 0);
-<<<<<<< HEAD
-				KillTimer(hWnd, 1);\
-				SetTimer(hWnd, 0, 10, NULL);
-				SetTimer(hWnd, 1, 100, NULL);
-=======
 				KillTimer(hWnd, 1);
 				SetTimer(hWnd, 0, 10, NULL);
 				SetTimer(hWnd, 1, 100, NULL);
 
->>>>>>> SJ
 				sj_Timer = 0;
 				playSound(Perion);
 				menuOnOff = false;
@@ -1183,17 +823,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			}
 		}
 		else {
-			sprintf(buffer, "시간: %d", sj_Timer);
-			TextOutA(hDC, 500, 10, buffer, 10);
+
 			Animation(hDC, g_hInst, head, bullet_head);
 			//SelectObject(hDC, oldBackBit);
 			DrawEnergybar(hDC, g_hInst, eRound);
 			GetClientRect(hWnd, &WindowSize);
+
 		}
 
+		
 
 		BitBlt(MemDC, 0, 0, WindowSize.right, WindowSize.bottom, hDC, 0, 0, SRCCOPY);
-
 
 		DeleteObject(BackBit);
 		DeleteDC(hDC);

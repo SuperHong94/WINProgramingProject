@@ -18,7 +18,8 @@ enum EFFOUNDKIND //이펙트 사운드
 {
 	jump = 0,
 	click = 1,
-	EFFSD_END=2
+	teleP,
+	EFFSD_END
 };
 
 
