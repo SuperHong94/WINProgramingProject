@@ -6,16 +6,23 @@
 #include "resource.h"
 
 extern int sj_Timer;
+extern int PLAYER1_HIT;
+extern int PLAYER2_HIT;
 extern RECT Player_1;
+extern RECT Player_2;
 extern RECT WindowSize;
 extern RECT Energybar;
 extern HBITMAP Laser_Boom;
 extern HBITMAP Circle_Boom;
 extern HBITMAP Teleport;
+extern HBITMAP Teleport2;
 extern HBITMAP PLAYER_1;
+extern HBITMAP PLAYER_2;
 extern bool Tp;
+extern bool Tp_2;
 extern bool POWEROVERWHELMING;
 extern RECT tmp;
+extern RECT tmp2;
 extern int score;
 
 enum PLAYERDIRECTION {
@@ -31,6 +38,8 @@ enum PLAYERDIRECTION {
 };
 
 extern PLAYERDIRECTION PLAYER1DR;
+extern PLAYERDIRECTION PLAYER2DR;
+
 
 enum EROUND {
 	Round1,

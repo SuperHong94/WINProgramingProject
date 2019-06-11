@@ -161,7 +161,9 @@
     <Image Include="LaserBoom.bmp" />
     <Image Include="MAIN.bmp" />
     <Image Include="Player_1.bmp" />
+    <Image Include="Player_2.bmp" />
     <Image Include="SELECTSTAGE.bmp" />
+    <Image Include="teleport.bmp" />
     <Image Include="Tp.bmp" />
     <Image Include="WIN.bmp" />
     <Image Include="You-Died.bmp" />

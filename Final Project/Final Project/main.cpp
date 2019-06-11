@@ -74,15 +74,26 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		tmp.top = 0;
 		tmp.bottom = 0;
 		Tp = FALSE;
+		Tp_2 = FALSE;
 		Player_1.top = 380;
 		Player_1.bottom = 405;
 		Player_1.left = 380;
 		Player_1.right = 405;
+		PLAYER1_HIT = 0;
+
+		Player_2.top = 380;
+		Player_2.bottom = 405;
+		Player_2.left = 410;
+		Player_2.right = 435;
+		PLAYER2_HIT = 0;
+
 		Laser_Boom = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_LASERBOOM));
 		Circle_Boom = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_CIRCLEBOOM));
 		Teleport = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_TELEPORT));
+		Teleport2 = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_TELEPORT2));
 		PLAYER_1 = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_PLAYER));
-		Tp = FALSE;
+		PLAYER_2 = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_PLAYER2));
+
 		POWEROVERWHELMING = FALSE;
 
 		soundSetup(); //사운드 셋업
@@ -203,6 +214,82 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 					{
 						Player_1.top = WindowSize.bottom - 45;
 						Player_1.bottom = WindowSize.bottom - 20;
+					}
+				}
+
+				PLAYER2DR = STOP;
+
+				if (GetAsyncKeyState('J') < 0)
+				{
+					Player_2.left -= 3;
+					Player_2.right -= 3;
+					if (Player_2.left < 0)
+					{
+						Player_2.left = 0;
+						Player_2.right = 25;
+					}
+					PLAYER2DR = LEFT;
+				}
+
+				else if (GetAsyncKeyState('L') < 0)
+				{
+					Player_2.left += 3;
+					Player_2.right += 3;
+
+					if (Player_2.right > 1184)
+					{
+						Player_2.left = 1159;
+						Player_2.right = 1184;
+					}
+					PLAYER2DR = RIGHT;
+				}
+
+				if (GetAsyncKeyState('I') < 0)
+				{
+					Player_2.top -= 3;
+					Player_2.bottom -= 3;
+
+					if (Player_2.top < 0)
+					{
+						Player_2.top = 0;
+						Player_2.bottom = 25;
+					}
+
+					switch (PLAYER2DR)
+					{
+					case STOP:
+						PLAYER2DR = UP;
+						break;
+					case LEFT:
+						PLAYER2DR = UPLEFT;
+						break;
+					case RIGHT:
+						PLAYER2DR = UPRIGHT;
+						break;
+					}
+				}
+
+				else if (GetAsyncKeyState('K') < 0)
+				{
+					Player_2.top += 3;
+					Player_2.bottom += 3;
+					switch (PLAYER2DR)
+					{
+					case STOP:
+						PLAYER2DR = DOWN;
+						break;
+					case LEFT:
+						PLAYER2DR = DOWNLEFT;
+						break;
+					case RIGHT:
+						PLAYER2DR = DOWNRIGHT;
+						break;
+					}
+
+					if (Player_2.bottom > WindowSize.bottom - 20)
+					{
+						Player_2.top = WindowSize.bottom - 45;
+						Player_2.bottom = WindowSize.bottom - 20;
 					}
 				}
 
@@ -763,6 +850,80 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 			}
 		}
+
+		if (wParam == 'O')
+		{
+			effPlaySound(jump);
+
+			if (GetAsyncKeyState('J') < 0)
+			{
+				Player_2.left -= 100;
+				Player_2.right -= 100;
+
+				if (Player_2.left < 0)
+				{
+					Player_2.left = 0;
+					Player_2.right = 25;
+				}
+			}
+
+			if (GetAsyncKeyState('I') < 0)
+			{
+				Player_2.top -= 100;
+				Player_2.bottom -= 100;
+				if (Player_2.top < 0)
+				{
+					Player_2.top = 0;
+					Player_2.bottom = 25;
+				}
+			}
+
+			if (GetAsyncKeyState('K') < 0)
+			{
+				Player_2.top += 100;
+				Player_2.bottom += 100;
+
+				if (Player_2.bottom > WindowSize.bottom - 20)
+				{
+					Player_2.top = WindowSize.bottom - 45;
+					Player_2.bottom = WindowSize.bottom - 20;
+				}
+			}
+
+			if (GetAsyncKeyState('L') < 0)
+			{
+				Player_2.left += 100;
+				Player_2.right += 100;
+
+				if (Player_2.right > 1184)
+				{
+					Player_2.left = 1159;
+					Player_2.right = 1184;
+				}
+			}
+		}
+		else if (wParam == 'P')
+		{
+			if (Tp_2)
+			{
+				Player_2.bottom = tmp2.bottom;
+				Player_2.left = tmp2.left;
+				Player_2.right = tmp2.right;
+				Player_2.top = tmp2.top;
+				effPlaySound(teleP);
+				Tp_2 = FALSE;
+			}
+			else
+			{
+
+				tmp2.bottom = Player_2.bottom;
+				tmp2.left = Player_2.left;
+				tmp2.right = Player_2.right;
+				tmp2.top = Player_2.top;
+				Tp_2 = TRUE;
+
+			}
+		}
 		switch (wParam) {
 		case VK_BACK:
 			sj_Timer -= 10;
@@ -845,6 +1006,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		free(head);
 		DeleteObject(Teleport);
 		DeleteObject(PLAYER_1);
+		DeleteObject(PLAYER_2);
 		DeleteObject(Circle_Boom);
 		DeleteObject(Laser_Boom);
 		PostQuitMessage(0);

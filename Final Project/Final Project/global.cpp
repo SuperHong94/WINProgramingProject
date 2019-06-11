@@ -2,15 +2,26 @@
 
 int sj_Timer = 0;
 RECT Player_1;
+RECT Player_2;
 RECT WindowSize;
 RECT Energybar;
 HBITMAP Laser_Boom;
 HBITMAP Circle_Boom;
 HBITMAP Teleport;
+HBITMAP Teleport2;
 HBITMAP PLAYER_1;
+HBITMAP PLAYER_2;
+
+int PLAYER1_HIT;
+int PLAYER2_HIT;
+
+
+bool Tp_2;
 bool Tp;
+RECT tmp2;
 RECT tmp;
 PLAYERDIRECTION PLAYER1DR;
+PLAYERDIRECTION PLAYER2DR;
 bool POWEROVERWHELMING;
 int score;
 
@@ -606,6 +617,7 @@ void CheckBoom(Boom* head)
 void Animation(HDC hDC, HINSTANCE g_hInst, Boom* head, Boom* bullet_head)
 {
 	HDC memDC;
+	HBRUSH hBrush, oldBrush;
 
 	printBoomAnimation(hDC, g_hInst, head);
 	printBoomAnimation(hDC, g_hInst, bullet_head);
@@ -616,8 +628,65 @@ void Animation(HDC hDC, HINSTANCE g_hInst, Boom* head, Boom* bullet_head)
 		(HBITMAP)SelectObject(memDC, Teleport);
 		TransparentBlt(hDC, tmp.left, tmp.top, tmp.right - tmp.left, tmp.bottom - tmp.top, memDC, 0, 0, 50, 50, RGB(0, 0, 0));
 	}
-	(HBITMAP)SelectObject(memDC, PLAYER_1);
-	StretchBlt(hDC, Player_1.left, Player_1.top, Player_1.right - Player_1.left, Player_1.bottom - Player_1.top, memDC, 0, 0, 50, 50, SRCCOPY);
+
+	if (Tp_2)
+	{
+		(HBITMAP)SelectObject(memDC, Teleport2);
+		TransparentBlt(hDC, tmp2.left, tmp2.top, tmp2.right - tmp2.left, tmp2.bottom - tmp2.top, memDC, 0, 0, 50, 50, RGB(0, 0, 0));
+	}
+
+	if (PLAYER1_HIT > 0)
+	{
+		switch (PLAYER1_HIT%2)
+		{
+		case 0:
+			hBrush = CreateSolidBrush(RGB(126, 66, 31));
+			oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
+			Rectangle(hDC, Player_1.left, Player_1.top, Player_1.right, Player_1.bottom);
+			SelectObject(hDC, oldBrush);
+			DeleteObject(hBrush);
+			break;
+		case 1:
+			(HBITMAP)SelectObject(memDC, PLAYER_1);
+			StretchBlt(hDC, Player_1.left, Player_1.top, Player_1.right - Player_1.left, Player_1.bottom - Player_1.top, memDC, 0, 0, 50, 50, SRCCOPY);
+			break;
+		default:
+			break;
+		}
+		--PLAYER1_HIT;
+	}
+
+	else
+	{
+		(HBITMAP)SelectObject(memDC, PLAYER_1);
+		StretchBlt(hDC, Player_1.left, Player_1.top, Player_1.right - Player_1.left, Player_1.bottom - Player_1.top, memDC, 0, 0, 50, 50, SRCCOPY);
+	}
+
+	if (PLAYER2_HIT > 0)
+	{
+		switch (PLAYER2_HIT % 2)
+		{
+		case 0:
+			hBrush = CreateSolidBrush(RGB(255, 0, 204));
+			oldBrush = (HBRUSH)SelectObject(hDC, hBrush);
+			Rectangle(hDC, Player_2.left, Player_2.top, Player_2.right, Player_2.bottom);
+			SelectObject(hDC, oldBrush);
+			DeleteObject(hBrush);
+			break;
+		case 1:
+			(HBITMAP)SelectObject(memDC, PLAYER_2);
+			StretchBlt(hDC, Player_2.left, Player_2.top, Player_2.right - Player_2.left, Player_2.bottom - Player_2.top, memDC, 0, 0, 50, 50, SRCCOPY);
+			break;
+		default:
+			break;
+		}
+		--PLAYER2_HIT;
+	}
+	else
+	{
+		(HBITMAP)SelectObject(memDC, PLAYER_2);
+		StretchBlt(hDC, Player_2.left, Player_2.top, Player_2.right - Player_2.left, Player_2.bottom - Player_2.top, memDC, 0, 0, 50, 50, SRCCOPY);
+	}
 	DeleteDC(memDC);
 }
 
@@ -650,8 +719,18 @@ void CheckBulletCrush(Boom* head)
 
 	for (p = head; p->nextBoom != NULL; p = p->nextBoom)
 	{
-		if (Crush(&Player_1, p->nextBoom->leftTop.x, p->nextBoom->leftTop.y, p->nextBoom->rightBottom.x, p->nextBoom->rightBottom.y))
-			Energybar.right -= 10;
+		if (PLAYER1_HIT == 0 && Crush(&Player_1, p->nextBoom->leftTop.x, p->nextBoom->leftTop.y, p->nextBoom->rightBottom.x, p->nextBoom->rightBottom.y))
+		{
+			Energybar.right -= 200;
+			PLAYER1_HIT = 50;
+			effPlaySound(teleP);
+		}
+		if (PLAYER2_HIT == 0 && Crush(&Player_2, p->nextBoom->leftTop.x, p->nextBoom->leftTop.y, p->nextBoom->rightBottom.x, p->nextBoom->rightBottom.y))
+		{
+			Energybar.right -= 200;
+			PLAYER2_HIT = 50;
+			effPlaySound(teleP);
+		}
 	}
 }
 
@@ -661,8 +740,18 @@ void CheckBoomCrush(Boom* head)
 
 	for (p = head; p->nextBoom != NULL; p = p->nextBoom)
 	{
-		if ((p->nextBoom->boomAnimaition >= 100) && Crush(&Player_1, p->nextBoom->leftTop.x, p->nextBoom->leftTop.y, p->nextBoom->rightBottom.x, p->nextBoom->rightBottom.y))
-			Energybar.right -= 10;
+		if ((PLAYER1_HIT == 0) && (p->nextBoom->boomAnimaition >= 100) && Crush(&Player_1, p->nextBoom->leftTop.x, p->nextBoom->leftTop.y, p->nextBoom->rightBottom.x, p->nextBoom->rightBottom.y))
+		{
+			Energybar.right -= 200;
+			PLAYER1_HIT = 50;
+			effPlaySound(teleP);
+		}
+		if ((PLAYER2_HIT == 0) && (p->nextBoom->boomAnimaition >= 100) && Crush(&Player_2, p->nextBoom->leftTop.x, p->nextBoom->leftTop.y, p->nextBoom->rightBottom.x, p->nextBoom->rightBottom.y))
+		{
+			Energybar.right -= 200;
+			PLAYER2_HIT = 50;
+			effPlaySound(teleP);
+		}
 	}
 }
 
