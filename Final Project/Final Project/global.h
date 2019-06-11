@@ -50,7 +50,8 @@ enum EShape {
 	Boom_RightLaser,
 	Boom_DownLaser,
 	Boom_UpLaser,
-	Boom_Laser2
+	Boom_Laser2,
+	Boom_Meet
 };
 enum EBoomStatus {
 	noExplosion = 0,
@@ -88,8 +89,9 @@ bool Crush(RECT*, int LX, int LY, int RX, int RY); //충돌!!LY는 LeftY의 준말 ply
 void DrawDie(RECT*);
 void Doughnut(HDC hDC, Boom* head, int x, int y, int width);
 bool OutOfRange(Boom* boom);
-void DrawEnergybar(HDC hDC, HINSTANCE hInstance,EROUND&);
+void DrawEnergybar(HDC hDC, HINSTANCE hInstance, EROUND&);
 void CheckBulletCrush(Boom* head);
 void CheckBoomCrush(Boom* head);
 int DrawMenu(HDC hDC, EROUND& eRound, HINSTANCE hInst);
 void ClickRange(LPARAM, EROUND&);
+void MeetBoom(HDC, Boom*);

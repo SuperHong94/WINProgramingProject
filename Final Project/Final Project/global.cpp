@@ -111,6 +111,7 @@ void NormalBullet(HDC hDC, Boom* boom)
 	case Bullet_UpLeft:
 	case Bullet_DownRight:
 	case Bullet_DownLeft:
+	case Boom_Meet:
 		Ellipse(hDC, boom->leftTop.x, boom->leftTop.y, boom->rightBottom.x, boom->rightBottom.y);
 
 		break;
@@ -483,6 +484,7 @@ void printBoomAnimation(HDC hDC, HINSTANCE g_hInst, Boom* head)
 		case Bullet_DownRight:
 		case Bullet_DownLeft:
 		case Bullet_UpLeft:
+		case Boom_Meet:
 			NormalBullet(hDC, p->nextBoom);
 			break;
 		case Boom_Laser:
@@ -567,7 +569,7 @@ void Animation(HDC hDC, HINSTANCE g_hInst, Boom* head, Boom* bullet_head)
 	DeleteDC(memDC);
 }
 
-void DrawEnergybar(HDC hDC, HINSTANCE hInst,EROUND& eRound)
+void DrawEnergybar(HDC hDC, HINSTANCE hInst, EROUND& eRound)
 {
 	HDC mDC;
 	BITMAP bit;
@@ -584,7 +586,7 @@ void DrawEnergybar(HDC hDC, HINSTANCE hInst,EROUND& eRound)
 	Rectangle(hDC, WindowSize.left, WindowSize.bottom - 20, WindowSize.right, WindowSize.bottom);
 	(HBRUSH)SelectObject(hDC, hBrush1);
 	Rectangle(hDC, Energybar.left, Energybar.bottom - 20, Energybar.right, Energybar.bottom);
-	
+
 	DeleteObject(hBrush);
 	DeleteObject(hBrush1);
 
@@ -693,4 +695,16 @@ void ClickRange(LPARAM lParam, EROUND& eRound)
 		break;
 	}
 
+}
+
+void MeetBoom(HDC hDC, Boom* head)
+{
+	addBoom(head, Bullet_DownRight, 0, 0, 50, 50);//1
+	addBoom(head, Bullet_Down, 600, 0, 650, 50);//2
+	addBoom(head, Bullet_DownLeft, 1150, 0, 1200, 50);//3
+	addBoom(head, Bullet_Right, 0, 400, 50, 450);//4
+	addBoom(head, Bullet_Left, 1150, 400, 1200, 450);//6
+	addBoom(head, Bullet_UpRight, 0, 750, 50, 800);//7
+	addBoom(head, Bullet_Up, 600, 750, 650, 800);//8
+	addBoom(head, Bullet_UpLeft, 1150, 750, 1200, 800);//9
 }
