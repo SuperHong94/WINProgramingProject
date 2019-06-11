@@ -205,8 +205,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				SunBoom_SJ(hDC, bullet_head, 550, 300);
 				break;
 			case 240:
-				addBoom(head, Boom_Rectangle, -100, 0, 550, 650);
-				addBoom(head, Boom_Rectangle, 450, 150, 1050, 750);
+				addBoom(head, Boom_Rectangle, 0, 0, 600, 600);
+				addBoom(head, Boom_Rectangle, 550, 150, 1150, 750);
 				SunBoom_SJ(hDC, bullet_head, 750, 300);
 				break;
 			case 241:
@@ -229,19 +229,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				addBoom(head, Boom_RightLaser, -100, 340, 1300, 390);
 				addBoom(head, Boom_UpLaser, 540, -100, 590, 900);
 				addBoom(head, Boom_DownLaser, 540, -100, 590, 900);
-				addBoom(head, Boom_Laser2, 50, -100, 100, 900);
-				addBoom(head, Boom_Laser2, 1130, -100, 1180, 900);
+				addBoom(head, Boom_Laser2, 20, -100, 70, 900);
 				SunBoom_SJ(hDC, bullet_head, 850, 650);
 				break;
 			case 315:
-				addBoom(head, Boom_Laser2, 900, -100, 950, 900);
+				addBoom(head, Boom_Laser2, 980, -100, 1030, 900);
 				break;
 			case 320:
 				SunBoom_SJ(hDC, bullet_head, 250, 650);
-				addBoom(head, Boom_Laser, -100, 200, 1300, 250);
+				addBoom(head, Boom_Laser, -100, 120, 1300, 170);
 				break;
 			case 325:
 				addBoom(head, Boom_Laser, -100, 600, 1300, 650);
+				break;
+			case 330:
+				addBoom(head, Boom_Laser2, 150, -100, 200, 900);
 				break;
 			case 390:
 				SunBoom_SJ(hDC, bullet_head, 124, 350);
@@ -250,6 +252,73 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			case 393:
 				SunBoom_SJ(hDC, bullet_head, 640, 150);
 				SunBoom_SJ(hDC, bullet_head, 4, 560);
+				break;
+			case 405:
+				addBoom(head, Boom_LeftLaser, -100, 340, 1300, 390);
+				addBoom(head, Boom_RightLaser, -100, 340, 1300, 390);
+				addBoom(head, Boom_UpLaser, 540, -100, 590, 900);
+				addBoom(head, Boom_DownLaser, 540, -100, 590, 900);
+				addBoom(head, Boom_Laser2, 50, -100, 100, 900);
+				addBoom(head, Boom_Laser2, 1130, -100, 1180, 900);
+				addBoom(head, Boom_Laser, -100, 100, 1300, 150);
+				addBoom(head, Boom_Laser, -100, 650, 1300, 700);
+				break;
+			case 440:
+				addBoom(head, Boom_Circle, 100, 80, 500, 480);
+				addBoom(head, Boom_Circle, 850, 400, 1150, 700);
+				break;
+			case 445:
+				SunBoom_SJ(hDC, bullet_head, 124, 350);
+				SunBoom_SJ(hDC, bullet_head, 842, 420);
+				SunBoom_SJ(hDC, bullet_head, 640, 150);
+				SunBoom_SJ(hDC, bullet_head, 4, 560);
+				break;
+			case 446:
+				addBoom(head, Boom_Circle, 460, 260, 660, 460);
+				break;
+			case 447:
+				addBoom(head, Boom_Circle, 410, 210, 710, 510);
+				break;
+			case 448:
+				addBoom(head, Boom_Circle, 360, 160, 760, 560);
+				break;
+			case 449:
+				addBoom(head, Boom_Circle, 310, 110, 810, 610);
+				break;
+			case 450:
+				addBoom(head, Boom_Circle, 260, 60, 860, 660);
+				break;
+			case 451:
+				addBoom(head, Boom_Circle, 210, 10, 910, 710);
+				break;
+			case 452:
+				addBoom(head, Boom_Circle, 160, -40, 960, 760);
+				break;
+			case 453:
+				addBoom(head, Boom_Circle, 110, -90, 1010, 810);
+				break;
+			case 490:
+				SunBoom_SJ(hDC, bullet_head, 50, 50);
+				SunBoom_SJ(hDC, bullet_head, 450, 600);
+				SunBoom_SJ(hDC, bullet_head, 223, 700);
+				SunBoom_SJ(hDC, bullet_head, 900, 560);
+				SunBoom_SJ(hDC, bullet_head, 930, 220);
+				break;
+			case 568:
+				Doughnut(hDC, head, 520, 340, 50);
+				SunBoom_SJ(hDC, bullet_head, 540, 380);
+				break;
+			case 569:
+				addBoom(head, Boom_LeftLaser, -100, 340, 1300, 390);
+				SunBoom_SJ(hDC, bullet_head, 150, 200);
+				break;
+			case 570:
+				addBoom(head, Boom_RightLaser, -100, 340, 1300, 390);
+				SunBoom_SJ(hDC, bullet_head, 250, 300);
+				break;
+			case 571:
+				addBoom(head, Boom_UpLaser, 540, -100, 590, 900);
+				SunBoom_SJ(hDC, bullet_head, 550, 300);
 				break;
 			default:
 				break;
