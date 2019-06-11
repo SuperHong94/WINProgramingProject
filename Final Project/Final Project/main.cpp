@@ -689,6 +689,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 						break;
 					case 580:
 						Doughnut(hDC, head, 520, 340, 50);
+						addBoom(head, Boom_DownLaser, 50, -100, 100, 900);
+						addBoom(head, Boom_DownLaser, 1120, -100, 1170, 900);
 						SunBoom_SJ(hDC, bullet_head, 540, 380);
 						break;
 					case 581:
@@ -759,6 +761,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 						break;
 					case 686:
 						SunBoom_SJ(hDC, bullet_head, 580 - 500 * cos(300 * (3.1415926535897 / 180)), 350 - 500 * sin(300 * (3.1415926535897 / 180)));
+						break;
+					case 700:
+						addBoom(head, Boom_DownLaser, 50, -100, 100, 900);
+						addBoom(head, Boom_DownLaser, 1120, -100, 1170, 900);
+						break;
+
+					case 701:
+						addBoom(head, Boom_DownLaser, 130, -100, 180, 900);
+						addBoom(head, Boom_DownLaser, 1040, -100, 1090, 900);
+						break;
+
+					case 702:
+						addBoom(head, Boom_DownLaser, 210, -100, 260, 900);
+						addBoom(head, Boom_DownLaser, 960, -100, 1010, 900);
+						break;
+
+					case 703:
+						addBoom(head, Boom_DownLaser, 290, -100, 340, 900);
+						addBoom(head, Boom_DownLaser, 880, -100, 930, 900);
 						break;
 
 					case 755:  //½Â¸®Á¶°Ç
