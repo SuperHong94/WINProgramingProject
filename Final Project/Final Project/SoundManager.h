@@ -27,3 +27,4 @@ void effSoundSetup();
 void playSound(ESOUNDKIND eSound);
 void effSoundoff();
 void effPlaySound(EFFOUNDKIND eSound);
+void SoundPause();

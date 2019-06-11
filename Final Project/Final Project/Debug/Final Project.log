@@ -1,16 +1,5 @@
 ﻿  main.cpp
-c:\users\msi\documents\github\winprogramingproject\final project\final project\main.cpp(545): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\msi\documents\github\winprogramingproject\final project\final project\main.cpp(549): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\msi\documents\github\winprogramingproject\final project\final project\main.cpp(552): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\msi\documents\github\winprogramingproject\final project\final project\main.cpp(556): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\msi\documents\github\winprogramingproject\final project\final project\main.cpp(559): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\msi\documents\github\winprogramingproject\final project\final project\main.cpp(563): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\msi\documents\github\winprogramingproject\final project\final project\main.cpp(566): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\msi\documents\github\winprogramingproject\final project\final project\main.cpp(570): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\msi\documents\github\winprogramingproject\final project\final project\main.cpp(573): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\msi\documents\github\winprogramingproject\final project\final project\main.cpp(576): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\msi\documents\github\winprogramingproject\final project\final project\main.cpp(579): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\msi\documents\github\winprogramingproject\final project\final project\main.cpp(582): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\msi\documents\github\winprogramingproject\final project\final project\main.cpp(723): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+
+c:\users\홍순조\desktop\git\winprogramingproject\final project\final project\main.cpp(675): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.17763.0\ucrt\stdio.h(1774): note: 'sprintf' 선언을 참조하십시오.
   Final Project.vcxproj -> C:\Users\msi\Documents\Github\WINProgramingProject\Final Project\Debug\Final Project.exe
