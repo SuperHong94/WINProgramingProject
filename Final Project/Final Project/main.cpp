@@ -81,13 +81,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		Teleport = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_TELEPORT));
 		PLAYER_1 = LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_PLAYER));
 		Tp = FALSE;
-
+		POWEROVERWHELMING = FALSE;
 		soundSetup(); //사운드 셋업
 		effSoundSetup();//이펙트 셋업
 
 		SetTimer(hWnd, 0, 10, NULL);
 		SetTimer(hWnd, 1, 100, NULL);
-		SetTimer(hWnd, 2, 1000, NULL);
 		playSound(MainSound);
 		//playSound(STAGE2);//페리온 재생
 		break;
@@ -126,36 +125,93 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_TIMER:
 		switch (wParam) {
 		case 0:
+			PLAYER1DR = STOP;
+
 			if (GetAsyncKeyState('A') < 0)
 			{
 				Player_1.left -= 3;
 				Player_1.right -= 3;
+				if (Player_1.left < 0)
+				{
+					Player_1.left = 0;
+					Player_1.right = 25;
+				}
+				PLAYER1DR = LEFT;
+			}
+
+			else if(GetAsyncKeyState('D') < 0)
+			{
+				Player_1.left += 3;
+				Player_1.right += 3;
+
+				if (Player_1.right > 1184)
+				{
+					Player_1.left = 1159;
+					Player_1.right = 1184;
+				}
+				PLAYER1DR = RIGHT;
 			}
 
 			if (GetAsyncKeyState('W') < 0)
 			{
 				Player_1.top -= 3;
 				Player_1.bottom -= 3;
+
+				if (Player_1.top < 0)
+				{
+					Player_1.top = 0;
+					Player_1.bottom = 25;
+				}
+
+				switch (PLAYER1DR)
+				{
+				case STOP:
+					PLAYER1DR = UP;
+					break;
+				case LEFT:
+					PLAYER1DR = UPLEFT;
+					break;
+				case RIGHT:
+					PLAYER1DR = UPRIGHT;
+					break;
+				}
 			}
 
-			if (GetAsyncKeyState('S') < 0)
+			else if (GetAsyncKeyState('S') < 0)
 			{
 				Player_1.top += 3;
 				Player_1.bottom += 3;
+				switch (PLAYER1DR)
+				{
+				case STOP:
+					PLAYER1DR = DOWN;
+					break;
+				case LEFT:
+					PLAYER1DR = DOWNLEFT;
+					break;
+				case RIGHT:
+					PLAYER1DR = DOWNRIGHT;
+					break;
+				}
+
+				if (Player_1.bottom > WindowSize.bottom - 20)
+				{
+					Player_1.top = WindowSize.bottom - 45;
+					Player_1.bottom = WindowSize.bottom - 20;
+				}
 			}
 
-			if (GetAsyncKeyState('D') < 0)
-			{
-				Player_1.left += 3;
-				Player_1.right += 3;
-			}
+			
 			CheckBullet(bullet_head);
 			CheckBoom(head);
 			setBoomPosition(bullet_head);
 			setAnimation(head);
 			setBoomPosition(head);
-			CheckBulletCrush(bullet_head);
-			CheckBoomCrush(head);
+			if (!POWEROVERWHELMING)
+			{
+				CheckBulletCrush(bullet_head);
+				CheckBoomCrush(head);
+			}
 			break;
 		case 1:  //0.1초 단위로 생성됨
 			sj_Timer++;
@@ -356,15 +412,20 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 					SunBoom_SJ(hDC, bullet_head, 550, 300);
 					break;
 				case 240:
-					addBoom(head, Boom_Rectangle, 0, 0, 600, 600);
-					addBoom(head, Boom_Rectangle, 550, 150, 1150, 750);
+					addBoom(head, Boom_Rectangle, 50, 50, 350, 350);
 					SunBoom_SJ(hDC, bullet_head, 750, 300);
 					break;
 				case 241:
+					addBoom(head, Boom_Rectangle, 700, 150, 1000, 450);
 					SunBoom_SJ(hDC, bullet_head, 650, 450);
 					break;
 				case 242:
 					SunBoom_SJ(hDC, bullet_head, 730, 380);
+					addBoom(head, Boom_Rectangle, 300, 300, 600, 600);
+					break;
+				case 243:
+					addBoom(head, Boom_Rectangle, 850, 450, 1150, 750);
+
 					break;
 				case 296:
 					Doughnut(hDC, head, 520, 380, 50);
@@ -410,7 +471,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 					addBoom(head, Boom_UpLaser, 540, -100, 590, 900);
 					addBoom(head, Boom_DownLaser, 540, -100, 590, 900);
 					addBoom(head, Boom_Laser2, 50, -100, 100, 900);
-					addBoom(head, Boom_Laser2, 1130, -100, 1180, 900);
+					addBoom(head, Boom_Laser2, 1090, -100, 1140, 900);
 					addBoom(head, Boom_Laser, -100, 100, 1300, 150);
 					addBoom(head, Boom_Laser, -100, 650, 1300, 700);
 					break;
@@ -427,26 +488,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				case 446:
 					addBoom(head, Boom_Circle, 460, 260, 660, 460);
 					break;
-				case 447:
-					addBoom(head, Boom_Circle, 410, 210, 710, 510);
-					break;
 				case 448:
 					addBoom(head, Boom_Circle, 360, 160, 760, 560);
 					break;
-				case 449:
-					addBoom(head, Boom_Circle, 310, 110, 810, 610);
-					break;
 				case 450:
 					addBoom(head, Boom_Circle, 260, 60, 860, 660);
-					break;
-				case 451:
-					addBoom(head, Boom_Circle, 210, 10, 910, 710);
 					break;
 				case 452:
 					addBoom(head, Boom_Circle, 160, -40, 960, 760);
 					break;
 				case 453:
-					addBoom(head, Boom_Circle, 110, -90, 1010, 810);
+					addBoom(head, Boom_Circle, 60, -140, 1060, 860);
 					break;
 				case 490:
 					SunBoom_SJ(hDC, bullet_head, 50, 50);
@@ -455,23 +507,81 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 					SunBoom_SJ(hDC, bullet_head, 900, 560);
 					SunBoom_SJ(hDC, bullet_head, 930, 220);
 					break;
-				case 568:
+				case 580:
 					Doughnut(hDC, head, 520, 340, 50);
 					SunBoom_SJ(hDC, bullet_head, 540, 380);
 					break;
-				case 569:
+				case 581:
 					addBoom(head, Boom_LeftLaser, -100, 340, 1300, 390);
 					SunBoom_SJ(hDC, bullet_head, 150, 200);
 					break;
-				case 570:
+				case 582:
 					addBoom(head, Boom_RightLaser, -100, 340, 1300, 390);
 					SunBoom_SJ(hDC, bullet_head, 250, 300);
 					break;
-				case 571:
+				case 583:
 					addBoom(head, Boom_UpLaser, 540, -100, 590, 900);
 					SunBoom_SJ(hDC, bullet_head, 550, 300);
 					break;
-				case 600:  //승리조건
+				case 584:
+					addBoom(head, Boom_DownLaser, 540, -100, 590, 900);
+					SunBoom_SJ(hDC, bullet_head, 380, 600);
+					break;
+				case 628:
+					addBoom(head, Boom_RightLaser, -100, 100, 1300, 150);
+					addBoom(head, Boom_RightLaser, -100, 200, 1300, 250);
+					addBoom(head, Boom_DownLaser, 990, -100, 1040, 900);
+					addBoom(head, Boom_DownLaser, 1090, -100, 1140, 900);
+					addBoom(head, Boom_Rectangle, 460, 280, 660, 480);
+					break;
+				case 629:
+					addBoom(head, Boom_LeftLaser, -100, 550, 1300, 600);
+					addBoom(head, Boom_LeftLaser, -100, 650, 1300, 700);
+					addBoom(head, Boom_UpLaser, 50, -100, 100, 900);
+					addBoom(head, Boom_UpLaser, 150, -100, 200, 900);
+					break;
+				case 675:
+					SunBoom_SJ(hDC, bullet_head, 580 - 350 * cos(0 * (3.1415926535897 / 180)), 350 - 350 * sin(0 * (3.1415926535897 / 180)));
+					addBoom(head, Boom_Circle, 230, 0, 930, 700);
+					break;
+				case 676:
+					SunBoom_SJ(hDC, bullet_head, 580 - 350 * cos(60 * (3.1415926535897 / 180)), 350 - 350 * sin(60 * (3.1415926535897 / 180)));
+					break;
+				case 677:
+					SunBoom_SJ(hDC, bullet_head, 580 - 350 * cos(120 * (3.1415926535897 / 180)), 350 - 350 * sin(120 * (3.1415926535897 / 180)));
+					addBoom(head, Boom_Rectangle, 230, 0, 930, 700);
+					break;
+				case 678:
+					SunBoom_SJ(hDC, bullet_head, 580 - 350 * cos(180 * (3.1415926535897 / 180)), 350 - 350 * sin(180 * (3.1415926535897 / 180)));
+					break;
+				case 679:
+					SunBoom_SJ(hDC, bullet_head, 580 - 350 * cos(240 * (3.1415926535897 / 180)), 350 - 350 * sin(240 * (3.1415926535897 / 180)));
+					addBoom(head, Boom_Circle, 230, 0, 930, 700);
+					break;
+				case 680:
+					SunBoom_SJ(hDC, bullet_head, 580 - 350 * cos(300 * (3.1415926535897 / 180)), 350 - 350 * sin(300 * (3.1415926535897 / 180)));
+					break;
+				case 681:
+					SunBoom_SJ(hDC, bullet_head, 580 - 500 * cos(0 * (3.1415926535897 / 180)), 350 - 500 * sin(0 * (3.1415926535897 / 180)));
+					addBoom(head, Boom_Rectangle, 230, 0, 930, 700);
+					break;
+				case 682:
+					SunBoom_SJ(hDC, bullet_head, 580 - 500 * cos(60 * (3.1415926535897 / 180)), 350 - 500 * sin(60 * (3.1415926535897 / 180)));
+					break;
+				case 683:
+					SunBoom_SJ(hDC, bullet_head, 580 - 500 * cos(120 * (3.1415926535897 / 180)), 350 - 500 * sin(120 * (3.1415926535897 / 180)));
+					break;
+				case 684:
+					SunBoom_SJ(hDC, bullet_head, 580 - 500 * cos(180 * (3.1415926535897 / 180)), 350 - 500 * sin(180 * (3.1415926535897 / 180)));
+					break;
+				case 685:
+					SunBoom_SJ(hDC, bullet_head, 580 - 500 * cos(240 * (3.1415926535897 / 180)), 350 - 500 * sin(240 * (3.1415926535897 / 180)));
+					break;
+				case 686:
+					SunBoom_SJ(hDC, bullet_head, 580 - 500 * cos(300 * (3.1415926535897 / 180)), 350 - 500 * sin(300 * (3.1415926535897 / 180)));
+					break;
+
+				case 755:  //승리조건
 					eRound = YouWin;
 					playSound(YOUWIN);
 					menuOnOff = true;
@@ -481,8 +591,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				}
 				
 			}
-			break;
-		case 2: //1초 단위로
 			break;
 		}
 		InvalidateRect(hWnd, NULL, FALSE);
@@ -496,24 +604,47 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			{
 				Player_1.left -= 100;
 				Player_1.right -= 100;
+
+				if (Player_1.left < 0)
+				{
+					Player_1.left = 0;
+					Player_1.right = 25;
+				}
 			}
 
 			if (GetAsyncKeyState('W') < 0)
 			{
 				Player_1.top -= 100;
 				Player_1.bottom -= 100;
+				if (Player_1.top < 0)
+				{
+					Player_1.top = 0;
+					Player_1.bottom = 25;
+				}
 			}
 
 			if (GetAsyncKeyState('S') < 0)
 			{
 				Player_1.top += 100;
 				Player_1.bottom += 100;
+
+				if (Player_1.bottom > WindowSize.bottom - 20)
+				{
+					Player_1.top = WindowSize.bottom - 45;
+					Player_1.bottom = WindowSize.bottom - 20;
+				}
 			}
 
 			if (GetAsyncKeyState('D') < 0)
 			{
 				Player_1.left += 100;
 				Player_1.right += 100;
+
+				if (Player_1.right > 1184)
+				{
+					Player_1.left = 1159;
+					Player_1.right = 1184;
+				}
 			}
 		}
 		else if (wParam == 'R')
@@ -540,6 +671,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		case VK_BACK:
 			sj_Timer -= 10;
 			break;
+		case VK_F3:
+			if (POWEROVERWHELMING)
+				POWEROVERWHELMING = FALSE;
+			else
+				POWEROVERWHELMING = TRUE;
+			break;
 		}
 		break;
 	case WM_PAINT:
@@ -555,11 +692,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			{
 			case 1:
 				KillTimer(hWnd, 0);
-				KillTimer(hWnd, 1);
-				KillTimer(hWnd, 2);
+				KillTimer(hWnd, 1);\
 				SetTimer(hWnd, 0, 10, NULL);
 				SetTimer(hWnd, 1, 100, NULL);
-				SetTimer(hWnd, 2, 1000, NULL);
 				sj_Timer = 0;
 				playSound(Perion);
 				menuOnOff = false;
@@ -567,10 +702,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			case 2:
 				KillTimer(hWnd, 0);
 				KillTimer(hWnd, 1);
-				KillTimer(hWnd, 2);
 				SetTimer(hWnd, 0, 10, NULL);
 				SetTimer(hWnd, 1, 100, NULL);
-				SetTimer(hWnd, 2, 1000, NULL);
 				sj_Timer = 0;
 				playSound(STAGE2);
 				menuOnOff = false;
@@ -598,7 +731,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_DESTROY:
 		KillTimer(hWnd, 0);
 		KillTimer(hWnd, 1);
-		KillTimer(hWnd, 2);
 		free(head);
 		DeleteObject(Teleport);
 		DeleteObject(PLAYER_1);

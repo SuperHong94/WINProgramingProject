@@ -14,7 +14,22 @@ extern HBITMAP Circle_Boom;
 extern HBITMAP Teleport;
 extern HBITMAP PLAYER_1;
 extern bool Tp;
+extern bool POWEROVERWHELMING;
 extern RECT tmp;
+
+enum PLAYERDIRECTION {
+	UP,
+	DOWN,
+	RIGHT,
+	LEFT,
+	UPRIGHT,
+	UPLEFT,
+	DOWNRIGHT,
+	DOWNLEFT,
+	STOP
+};
+
+extern PLAYERDIRECTION PLAYER1DR;
 
 enum EROUND {
 	Round1,
@@ -72,6 +87,7 @@ struct Boom
 
 	void setPosition();
 };
+
 bool IsPointInCircle(int CenterX, int CenterY, int Radius, int X, int Y);
 bool CircleCrush(RECT* player, int LX, int LY, int RX, int RY);
 void SunBoom_SJ(HDC hDC, Boom* head, int x, int y);
