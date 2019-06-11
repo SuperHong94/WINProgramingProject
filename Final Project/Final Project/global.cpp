@@ -589,7 +589,7 @@ void DrawEnergybar(HDC hDC, HINSTANCE hInstance)
 		hBit = LoadBitmap(hInstance, MAKEINTRESOURCE(IDB_YOUDIE));
 		GetObject(hBit, sizeof(BITMAP), &bit);
 		(HBITMAP)SelectObject(mDC, hBit);
-		TransparentBlt(hDC, 0, 0, WindowSize.right, WindowSize.bottom, mDC, 0, 0, bit.bmWidth, bit.bmHeight, RGB(0, 0, 0));  //±Û¾¾¸¸ Ãâ·Â
+		TransparentBlt(hDC, 0, 0, WindowSize.right, WindowSize.bottom, mDC, 0, 0, bit.bmWidth, bit.bmHeight, SRCCOPY);  //±Û¾¾¸¸ Ãâ·Â
 		DeleteDC(mDC);
 	}
 	DeleteObject(hBrush);

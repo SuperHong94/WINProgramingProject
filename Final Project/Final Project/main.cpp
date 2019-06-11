@@ -149,7 +149,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 			sj_Timer++;
 			switch (eRound)
 			{
-				
+
 			case Select:
 				break;
 			case Round1:

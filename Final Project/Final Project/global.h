@@ -19,7 +19,7 @@ enum EROUND {
 	MAIN,
 	HELP,
 	Select,
-	
+
 	Round2
 };
 enum ETURNN {
@@ -64,7 +64,7 @@ struct Boom
 	Boom* nextBoom;
 
 	int boomAnimaition;
-	int width=100;
+	int width = 100;
 	int height;
 
 	void setPosition();
@@ -85,7 +85,7 @@ void Animation(HDC hDC, HINSTANCE g_hInst, Boom* head, Boom* bullet_head);
 void InitBoom(Boom& boom, int lX, int lY, int rX, int rY); //폭탄 초기화 함수
 bool Crush(RECT*, int LX, int LY, int RX, int RY); //충돌!!LY는 LeftY의 준말 plyaer하고 폭탄의 범위랑 충돌처리할꺼임  //충돌하면 true리턴
 void DrawDie(RECT*);
-void Doughnut(HDC hDC, Boom* head, int x, int y,int width);
+void Doughnut(HDC hDC, Boom* head, int x, int y, int width);
 bool OutOfRange(Boom* boom);
 void DrawEnergybar(HDC hDC, HINSTANCE hInstance);
 void CheckBulletCrush(Boom* head);
