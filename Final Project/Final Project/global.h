@@ -124,3 +124,5 @@ void CheckBoomCrush(Boom* head);
 int DrawMenu(HDC hDC, EROUND& eRound, HINSTANCE hInst);
 void ClickRange(LPARAM, EROUND&);
 void MeetBoom(HDC, Boom*);
+void SetUp(Boom* head, Boom* bullet_head);
+

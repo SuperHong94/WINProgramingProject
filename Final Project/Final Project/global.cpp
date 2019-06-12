@@ -859,3 +859,33 @@ void MeetBoom(HDC hDC, Boom* head)
 	addBoom(head, Bullet_Up, 600, 750, 650, 800);//8
 	addBoom(head, Bullet_UpLeft, 1150, 750, 1200, 800);//9
 }
+
+void SetUp(Boom* head, Boom* bullet_head)
+{
+	Tp = FALSE;
+	Tp_2 = FALSE;
+
+	Player_1.top = 380;
+	Player_1.bottom = 405;
+	Player_1.left = 380;
+	Player_1.right = 405;
+	PLAYER1_HIT = 0;
+
+	Player_2.top = 380;
+	Player_2.bottom = 405;
+	Player_2.left = 410;
+	Player_2.right = 435;
+	PLAYER2_HIT = 0;
+
+	Boom* p;
+	p = head;
+	while (p->nextBoom != NULL)
+	{
+		deleteBoom(p);
+	}
+	p = bullet_head;
+	while (p->nextBoom != NULL)
+	{
+		deleteBoom(p);
+	}
+}

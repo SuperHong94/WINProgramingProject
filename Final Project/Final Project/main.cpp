@@ -313,7 +313,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 					KillTimer(hWnd, 1);
 					playSound(YOUDIE);
 					menuOnOff = true;
-
+					SetUp(head, bullet_head);
 				}
 				switch (eRound)
 				{
